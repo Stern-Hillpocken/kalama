@@ -9,7 +9,7 @@ export class GameStateService {
 
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("map",0));
 
-  constructor() { }
+  constructor() {}
 
   _getGameState$(): Observable<GameState> {
     return this._gameState$.asObservable();

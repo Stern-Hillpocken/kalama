@@ -1,1 +1,2 @@
-<p>game works!</p>
+<app-game-map *ngIf="gameState.display === 'map'"></app-game-map>
+<app-game-battle *ngIf="gameState.display === 'battle'"></app-game-battle>

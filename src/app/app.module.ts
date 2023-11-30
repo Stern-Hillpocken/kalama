@@ -9,10 +9,11 @@ import { HomeChoicesComponent } from './components/ui/home/home-choices/home-cho
 import { HomeTitleComponent } from './components/ui/home/home-title/home-title.component';
 import { LoadoutConfirmComponent } from './components/ui/loadout/loadout-confirm/loadout-confirm.component';
 import { GameComponent } from './pages/game/game.component';
-import { GameLoadoutComponent } from './components/feature/game-loadout/game-loadout.component';
 import { GameMapComponent } from './components/feature/game-map/game-map.component';
 import { GameBattleComponent } from './components/feature/game-battle/game-battle.component';
 import { HomeDisplayComponent } from './components/feature/home-display/home-display.component';
+import { HomeLoadoutComponent } from './components/feature/home-loadout/home-loadout.component';
+import { ErrorComponent } from './pages/error/error.component';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,11 @@ import { HomeDisplayComponent } from './components/feature/home-display/home-dis
     HomeTitleComponent,
     LoadoutConfirmComponent,
     GameComponent,
-    GameLoadoutComponent,
     GameMapComponent,
     GameBattleComponent,
-    HomeDisplayComponent
+    HomeDisplayComponent,
+    HomeLoadoutComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
