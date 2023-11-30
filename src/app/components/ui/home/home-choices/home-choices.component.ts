@@ -8,14 +8,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HomeChoicesComponent {
 
   @Output()
-  launchGameEmitter: EventEmitter<string> = new EventEmitter();
+  buttonSelectionEmitter: EventEmitter<"loadout" | "tutorial"> = new EventEmitter();
 
-  newGame(): void {
-    this.launchGameEmitter.emit("normal game");
+  loadout(): void {
+    this.buttonSelectionEmitter.emit("loadout");
   }
 
   tutorial(): void {
-    this.launchGameEmitter.emit("tuto");
+    this.buttonSelectionEmitter.emit("tutorial");
   }
 
 }

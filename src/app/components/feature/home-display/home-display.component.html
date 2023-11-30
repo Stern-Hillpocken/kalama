@@ -1,3 +1,10 @@
-<app-home-title></app-home-title>
-<app-home-choices (launchGameEmitter)="onLaunchGameReceive($event)"></app-home-choices>
-<app-home-settings></app-home-settings>
+<div *ngIf="!isLoadout">
+    <app-home-title></app-home-title>
+    <app-home-choices (buttonSelectionEmitter)="onButtonSelectionReceive($event)"></app-home-choices>
+    <app-home-settings></app-home-settings>
+</div>
+
+<app-home-loadout
+    *ngIf="isLoadout"
+    (closeLoadoutEmitter)="onCloseLoadoutReceive()"
+    ></app-home-loadout>

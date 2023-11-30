@@ -12,8 +12,8 @@ import { GameComponent } from './pages/game/game.component';
 import { GameMapComponent } from './components/feature/game-map/game-map.component';
 import { GameBattleComponent } from './components/feature/game-battle/game-battle.component';
 import { HomeDisplayComponent } from './components/feature/home-display/home-display.component';
-import { HomeLoadoutComponent } from './components/feature/home-loadout/home-loadout.component';
 import { ErrorComponent } from './pages/error/error.component';
+import { HomeLoadoutComponent } from './components/ui/home/home-loadout/home-loadout.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +27,8 @@ import { ErrorComponent } from './pages/error/error.component';
     GameMapComponent,
     GameBattleComponent,
     HomeDisplayComponent,
-    HomeLoadoutComponent,
-    ErrorComponent
+    ErrorComponent,
+    HomeLoadoutComponent
   ],
   imports: [
     BrowserModule,

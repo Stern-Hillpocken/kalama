@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("map",0));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle",0)); // tutorial settings
 
   constructor() {}
 
@@ -19,7 +19,4 @@ export class GameStateService {
     this._gameState$.next(state);
   }
 
-  launchAsTuto(): void {
-    //
-  }
 }
