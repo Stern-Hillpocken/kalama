@@ -14,6 +14,7 @@ import { GameBattleComponent } from './components/feature/game-battle/game-battl
 import { HomeDisplayComponent } from './components/feature/home-display/home-display.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { HomeLoadoutComponent } from './components/ui/home/home-loadout/home-loadout.component';
+import { BattleSpawnStripComponent } from './components/ui/battle/battle-spawn-strip/battle-spawn-strip.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HomeLoadoutComponent } from './components/ui/home/home-loadout/home-loa
     GameBattleComponent,
     HomeDisplayComponent,
     ErrorComponent,
-    HomeLoadoutComponent
+    HomeLoadoutComponent,
+    BattleSpawnStripComponent
   ],
   imports: [
     BrowserModule,
