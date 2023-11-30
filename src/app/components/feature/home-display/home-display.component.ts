@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-display',
@@ -7,8 +8,13 @@ import { Component } from '@angular/core';
 })
 export class HomeDisplayComponent {
 
+  constructor(
+    private router: Router
+  ){}
+
   onLaunchGameReceive(difficulty: string): void {
     console.log(difficulty)
+    this.router.navigateByUrl("game");
   }
 
 }
