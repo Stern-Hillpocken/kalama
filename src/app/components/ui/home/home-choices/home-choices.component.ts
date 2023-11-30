@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-home-choices',
@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-choices.component.scss']
 })
 export class HomeChoicesComponent {
+
+  @Output()
+  launchGameEmitter: EventEmitter<string> = new EventEmitter();
+
+  newGame(): void {
+    this.launchGameEmitter.emit("normal game");
+  }
+
+  tutorial(): void {
+    this.launchGameEmitter.emit("tuto");
+  }
 
 }
