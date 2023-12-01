@@ -11,6 +11,8 @@ export class GameBattleComponent {
 
   gameState!: GameState;
 
+  isCharacterOnTheGrid: boolean = false;
+
   constructor(
     private gameStateService: GameStateService
   ){}
@@ -19,6 +21,10 @@ export class GameBattleComponent {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
     });
+  }
+
+  onActionReceive(action: string): void {
+    if (action === "wait") this.gameStateService.wait();
   }
 
 }

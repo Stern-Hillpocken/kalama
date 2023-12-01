@@ -15,6 +15,9 @@ import { HomeDisplayComponent } from './components/feature/home-display/home-dis
 import { ErrorComponent } from './pages/error/error.component';
 import { HomeLoadoutComponent } from './components/ui/home/home-loadout/home-loadout.component';
 import { BattleSpawnStripComponent } from './components/ui/battle/battle-spawn-strip/battle-spawn-strip.component';
+import { BattleConstructionsComponent } from './components/ui/battle/battle-constructions/battle-constructions.component';
+import { BattleGridComponent } from './components/ui/battle/battle-grid/battle-grid.component';
+import { BattleCharacterComponent } from './components/ui/battle/battle-character/battle-character.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { BattleSpawnStripComponent } from './components/ui/battle/battle-spawn-s
     HomeDisplayComponent,
     ErrorComponent,
     HomeLoadoutComponent,
-    BattleSpawnStripComponent
+    BattleSpawnStripComponent,
+    BattleConstructionsComponent,
+    BattleGridComponent,
+    BattleCharacterComponent
   ],
   imports: [
     BrowserModule,

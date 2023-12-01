@@ -1,0 +1,7 @@
+img {
+    image-rendering: pixelated;
+    width: 32px;
+    &:hover {
+        cursor: grab;
+    }
+}

@@ -20,6 +20,6 @@ export class GameState {
 
         public wave: number,
         public spawnStrip: string[],
-        public grid: string[][]
+        public grid: any[][]
     ){}
 }
