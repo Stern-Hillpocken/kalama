@@ -11,5 +11,11 @@
             alt="{{img}}"
             (dragend)="onDragEnd($event)">
     </div>
-    <div *ngIf="isCharacterOnTheGrid && gameState.buildingsAvailable.length === 0"><img *ngFor="let img of gameState.towersAvailable" src="assets/images/sprites/{{img}}.png"></div>
+    <div *ngIf="isCharacterOnTheGrid && gameState.buildingsAvailable.length === 0">
+        <img
+            *ngFor="let img of gameState.towersAvailable"
+            src="assets/images/sprites/{{img}}.png"
+            alt="{{img}}"
+            (dragend)="onDragEnd($event)">
+    </div>
 </div>

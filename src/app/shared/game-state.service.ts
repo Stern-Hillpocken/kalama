@@ -45,11 +45,23 @@ export class GameStateService {
         break;
       }
     }
+
+    let characterPosition: number[] = [];
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for(let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].img && newGameState.grid[r][c].img === "character"){
+          characterPosition = [r,c];
+        }
+      }
+    }
     for (let i = 0; i < newGameState.towersAvailable.length; i++){
       if (newGameState.towersAvailable[i] === name){
-        newGameState.towersAvailable.splice(i,1);
-        type = "tower";
-        break;
+        if (characterPosition.length === 0) return;
+        if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
+          newGameState.towersAvailable.splice(i,1);
+          type = "tower";
+          break;
+        }
       }
     }
     if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name};
