@@ -4,6 +4,7 @@ export class GameState {
         public difficulty: number,
 
         public structure: number,
+        public koCounter: number,
         public wood: number,
         public stone: number,
         public gem: number,
