@@ -1,1 +1,10 @@
 <app-battle-spawn-strip [gameState]="gameState"></app-battle-spawn-strip>
+<app-battle-constructions
+    [gameState]="gameState"
+    [isCharacterOnTheGrid]="isCharacterOnTheGrid"
+></app-battle-constructions>
+<app-battle-grid [gameState]="gameState"></app-battle-grid>
+<app-battle-character
+    [gameState]="gameState"
+    (actionEmitter)="onActionReceive($event)"
+></app-battle-character>

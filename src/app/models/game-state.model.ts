@@ -4,6 +4,7 @@ export class GameState {
         public difficulty: number,
 
         public structure: number,
+        public koCounter: number,
         public wood: number,
         public stone: number,
         public gem: number,
@@ -19,6 +20,6 @@ export class GameState {
 
         public wave: number,
         public spawnStrip: string[],
-        public grid: string[][]
+        public grid: any[][]
     ){}
 }

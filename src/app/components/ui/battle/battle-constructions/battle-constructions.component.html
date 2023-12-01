@@ -1,0 +1,4 @@
+<div>
+    <div><img *ngIf="!isCharacterOnTheGrid" src="assets/images/sprites/character.png"><img *ngFor="let img of gameState.buildingsAvailable" src="assets/images/sprites/{{img}}.png"></div>
+    <div *ngIf="isCharacterOnTheGrid && gameState.buildingsAvailable.length === 0"><img *ngFor="let img of gameState.towersAvailable" src="assets/images/sprites/{{img}}.png"></div>
+</div>
