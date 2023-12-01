@@ -14,6 +14,9 @@ export class BattleGridComponent {
   @Output()
   dragPositionEmitter: EventEmitter<number[]> = new EventEmitter();
 
+  @Output()
+  clickCellPositionEmitter: EventEmitter<number[]> = new EventEmitter();
+
   ngAfterViewInit(): void {
     let width: number = Math.floor(window.innerWidth / this.gameState.grid[0].length) - 2;
     document.getElementById("grid")?.querySelectorAll("td").forEach(element => {
@@ -33,6 +36,10 @@ export class BattleGridComponent {
 
   onDragLeave(event: any): void {
     event.target.style.backgroundColor = "";
+  }
+
+  onCellClick(event: any): void {
+    this.clickCellPositionEmitter.emit([event.target.parentNode.rowIndex, event.target.cellIndex]);
   }
 
 }
