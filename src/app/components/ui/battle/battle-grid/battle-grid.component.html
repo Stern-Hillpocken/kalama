@@ -1,8 +1,14 @@
 <div id="grid">
     <table>
         <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
-            <td *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index">
-                <img *ngIf='gameState.grid[r][c] !== "" ' src='assets/images/sprites/{{gameState.grid[r][c].img}}.png'>
+            <td
+                *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index"
+                (dragenter)="onDragEnter($event)"
+                (dragleave)="onDragLeave($event)">
+                <img
+                    *ngIf='gameState.grid[r][c] !== "" '
+                    src='assets/images/sprites/{{gameState.grid[r][c].img}}.png'
+                    draggable="false">
             </td>
         </tr>
     </table>

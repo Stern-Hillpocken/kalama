@@ -2,8 +2,12 @@
 <app-battle-constructions
     [gameState]="gameState"
     [isCharacterOnTheGrid]="isCharacterOnTheGrid"
+    (dragEndEmitter)="onDragEndReceive($event)"
 ></app-battle-constructions>
-<app-battle-grid [gameState]="gameState"></app-battle-grid>
+<app-battle-grid
+    [gameState]="gameState"
+    (dragPositionEmitter)="onDragPositionReceive($event)"
+    ></app-battle-grid>
 <app-battle-character
     [gameState]="gameState"
     (actionEmitter)="onActionReceive($event)"
