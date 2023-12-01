@@ -6,6 +6,7 @@
 ></app-battle-constructions>
 <app-battle-grid
     [gameState]="gameState"
+    (clickCellPositionEmitter)="onClickCellPositionReceive($event)"
     (dragPositionEmitter)="onDragPositionReceive($event)"
     ></app-battle-grid>
 <app-battle-character

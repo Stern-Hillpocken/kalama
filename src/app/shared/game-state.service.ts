@@ -19,15 +19,10 @@ export class GameStateService {
     this._gameState$.next(state);
   }
 
-  wait(): void {
+  endTurn(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
     this._setGameState$(newGameState);
-    this.endTurn();
-  }
-
-  endTurn(): void {
-    //
   }
 
   placeConstruction(name: string, position: number[]): void {
@@ -66,6 +61,22 @@ export class GameStateService {
     }
     if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name};
     this._setGameState$(newGameState);
+    if (type === "tower") this.endTurn();
+  }
+
+  moveCharacter(position: number[]): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if(newGameState.grid[r][c].img && newGameState.grid[r][c].img === "character"){
+          newGameState.grid[r][c] = "";
+          break;
+        }
+      }
+    }
+    newGameState.grid[position[0]][position[1]] = {img:"character"};
+    this._setGameState$(newGameState);
+    this.endTurn();
   }
 
 }

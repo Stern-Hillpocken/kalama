@@ -3,6 +3,7 @@
         <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
             <td
                 *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index"
+                (click)="onCellClick($event)"
                 (dragenter)="onDragEnter($event)"
                 (dragleave)="onDragLeave($event)">
                 <img
