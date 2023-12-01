@@ -13,6 +13,8 @@ export class GameBattleComponent {
 
   isCharacterOnTheGrid: boolean = false;
 
+  lastDragPosition: number[] = [];
+
   constructor(
     private gameStateService: GameStateService
   ){}
@@ -23,8 +25,27 @@ export class GameBattleComponent {
     });
   }
 
+  checkIfCharacterIsOnTheGrid(): boolean {
+    for (let r = 0; r < this.gameState.grid.length; r++){
+      for (let c = 0; c < this.gameState.grid[r].length; c++){
+        if (this.gameState.grid[r][c].img && this.gameState.grid[r][c].img === "character") return true;
+      }
+    }
+    return false;
+  }
+
   onActionReceive(action: string): void {
     if (action === "wait") this.gameStateService.wait();
+  }
+
+  onDragPositionReceive(position: number[]): void {
+    this.lastDragPosition = position;
+  }
+
+  onDragEndReceive(img: string): void {
+    this.gameStateService.placeConstruction(img, this.lastDragPosition);
+    this.lastDragPosition = [];
+    this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
   }
 
 }

@@ -30,4 +30,30 @@ export class GameStateService {
     //
   }
 
+  placeConstruction(name: string, position: number[]): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let type: string = "";
+    if (newGameState.grid[position[0]][position[1]] !== "") return;
+
+    if (name === "character"){
+      type = "character";
+    }
+    for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
+      if (newGameState.buildingsAvailable[i] === name){
+        newGameState.buildingsAvailable.splice(i,1);
+        type = "building";
+        break;
+      }
+    }
+    for (let i = 0; i < newGameState.towersAvailable.length; i++){
+      if (newGameState.towersAvailable[i] === name){
+        newGameState.towersAvailable.splice(i,1);
+        type = "tower";
+        break;
+      }
+    }
+    if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name};
+    this._setGameState$(newGameState);
+  }
+
 }
