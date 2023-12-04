@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 1, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{img:"wood"},"","","",""],["","","","","",""],["","","","",{img:"stone"},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{img:"wood"},"","","",""],["","","","","",""],["","","","",{img:"stone"},""],["","","","","",""]])); // tutorial settings
 
   constructor() {}
 
@@ -22,6 +22,25 @@ export class GameStateService {
   endTurn(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
+    this._setGameState$(newGameState);
+    if (newGameState.wave < newGameState.spawnStrip.length && newGameState.spawnStrip[newGameState.wave] !== "") this.spawn();
+  }
+
+  random(min: number, max: number): number{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  spawn(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let emptySpaces: number[] = [];
+
+    for (let i = 0; i < newGameState.grid[0].length; i++){
+      if(newGameState.grid[0][i] === "") emptySpaces.push(i);
+    }
+
+    let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
+
+    newGameState.grid[0][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave]};
     this._setGameState$(newGameState);
   }
 
