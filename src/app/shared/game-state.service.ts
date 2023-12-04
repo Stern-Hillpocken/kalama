@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { GameState } from '../models/game-state.model';
 
 @Injectable({
@@ -23,7 +23,32 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
     this._setGameState$(newGameState);
+    this.moveEnemies();
     if (newGameState.wave < newGameState.spawnStrip.length && newGameState.spawnStrip[newGameState.wave] !== "") this.spawn();
+  }
+
+  moveEnemies(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        // For each cell
+        if (newGameState.grid[r][c].moves && newGameState.grid[r][c].activeWave < newGameState.wave){
+          if (newGameState.grid[r][c].moves[newGameState.grid[r][c].currentMoveStep] === "down"){
+            if (r+1 >= newGameState.grid.length) {
+              newGameState.structure --;
+              newGameState.grid[r][c] = "";
+            } else if (newGameState.grid[r+1][c] === ""){
+              newGameState.grid[r+1][c] = newGameState.grid[r][c];
+              newGameState.grid[r+1][c].currentMoveStep ++;
+              newGameState.grid[r+1][c].activeWave ++;
+              if (newGameState.grid[r+1][c].currentMoveStep >= newGameState.grid[r+1][c].moves.length) newGameState.grid[r+1][c].currentMoveStep = 0;
+              newGameState.grid[r][c] = "";
+            }
+          }
+        }
+
+      }
+    }
   }
 
   random(min: number, max: number): number{
@@ -47,7 +72,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave]};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave};
     this._setGameState$(newGameState);
   }
 
