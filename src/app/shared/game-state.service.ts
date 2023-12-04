@@ -33,14 +33,21 @@ export class GameStateService {
   spawn(): void {
     let newGameState: GameState = this._gameState$.getValue();
     let emptySpaces: number[] = [];
+    let rowToSpawn: number = 0;
 
     for (let i = 0; i < newGameState.grid[0].length; i++){
       if(newGameState.grid[0][i] === "") emptySpaces.push(i);
     }
+    if (emptySpaces.length === 0) {
+      rowToSpawn = 1;
+      for (let i = 0; i < newGameState.grid[1].length; i++){
+        if(newGameState.grid[1][i] === "") emptySpaces.push(i);
+      }
+    }
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
 
-    newGameState.grid[0][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave]};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave]};
     this._setGameState$(newGameState);
   }
 
