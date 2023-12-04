@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{img:"wood"},"","","",""],["","","","","",""],["","","","",{img:"stone"},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{img:"wood", life:1},"","","",""],["","","","","",""],["","","","",{img:"stone", life:2},""],["","","","","",""]])); // tutorial settings
 
   constructor() {}
 
@@ -35,7 +35,7 @@ export class GameStateService {
         if (newGameState.grid[r][c].moves && newGameState.grid[r][c].activeWave < newGameState.wave){
           if (newGameState.grid[r][c].moves[newGameState.grid[r][c].currentMoveStep] === "down"){
             if (r+1 >= newGameState.grid.length) {
-              newGameState.structure --;
+              newGameState.structure -= newGameState.grid[r][c].damage;
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r+1][c] === ""){
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
@@ -43,6 +43,12 @@ export class GameStateService {
               newGameState.grid[r+1][c].activeWave ++;
               if (newGameState.grid[r+1][c].currentMoveStep >= newGameState.grid[r+1][c].moves.length) newGameState.grid[r+1][c].currentMoveStep = 0;
               newGameState.grid[r][c] = "";
+            } else {
+              newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
+              if (newGameState.grid[r+1][c].life <= 0) newGameState.grid[r+1][c] = "";
+              newGameState.grid[r][c].currentMoveStep ++;
+              newGameState.grid[r][c].activeWave ++;
+              if (newGameState.grid[r][c].currentMoveStep >= newGameState.grid[r][c].moves.length) newGameState.grid[r][c].currentMoveStep = 0;
             }
           }
         }
@@ -72,7 +78,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1};
     this._setGameState$(newGameState);
   }
 
