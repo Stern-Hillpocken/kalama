@@ -39,22 +39,25 @@ export class GameStateService {
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r+1][c] === ""){
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
-              newGameState.grid[r+1][c].currentMoveStep ++;
-              newGameState.grid[r+1][c].activeWave ++;
-              if (newGameState.grid[r+1][c].currentMoveStep >= newGameState.grid[r+1][c].moves.length) newGameState.grid[r+1][c].currentMoveStep = 0;
+              newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
             } else {
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0) newGameState.grid[r+1][c] = "";
-              newGameState.grid[r][c].currentMoveStep ++;
-              newGameState.grid[r][c].activeWave ++;
-              if (newGameState.grid[r][c].currentMoveStep >= newGameState.grid[r][c].moves.length) newGameState.grid[r][c].currentMoveStep = 0;
+              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
             }
           }
         }
 
       }
     }
+  }
+
+  enemyPreparationForNextTurn(gs: any): any {
+    gs.currentMoveStep ++;
+    gs.activeWave ++;
+    if (gs.currentMoveStep >= gs.moves.length) gs.currentMoveStep = 0;
+    return gs;
   }
 
   random(min: number, max: number): number{
@@ -116,7 +119,7 @@ export class GameStateService {
         }
       }
     }
-    if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name};
+    if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name, life:1};
     this._setGameState$(newGameState);
     if (type === "tower") this.endTurn();
   }
