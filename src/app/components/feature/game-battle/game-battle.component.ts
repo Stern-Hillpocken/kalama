@@ -28,7 +28,7 @@ export class GameBattleComponent {
   checkIfCharacterIsOnTheGrid(): boolean {
     for (let r = 0; r < this.gameState.grid.length; r++){
       for (let c = 0; c < this.gameState.grid[r].length; c++){
-        if (this.gameState.grid[r][c].img && this.gameState.grid[r][c].img === "character") return true;
+        if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character") return true;
       }
     }
     return false;
@@ -42,8 +42,8 @@ export class GameBattleComponent {
     this.lastDragPosition = position;
   }
 
-  onDragEndReceive(img: string): void {
-    this.gameStateService.placeConstruction(img, this.lastDragPosition);
+  onDragEndReceive(image: string): void {
+    this.gameStateService.placeConstruction(image, this.lastDragPosition);
     this.lastDragPosition = [];
     this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
   }
@@ -52,7 +52,7 @@ export class GameBattleComponent {
     let characterPosition: number[] = [];
     for (let r = 0; r < this.gameState.grid.length; r++){
       for(let c = 0; c < this.gameState.grid[r].length; c++){
-        if (this.gameState.grid[r][c].img && this.gameState.grid[r][c].img === "character"){
+        if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
           characterPosition = [r,c];
         }
       }

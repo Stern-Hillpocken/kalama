@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", img:"wood", life:1},"","","",""],["","","","","",""],["","","","",{name: "stone", img:"stone", life:2},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2},""],["","","","","",""]])); // tutorial settings
 
   constructor() {}
 
@@ -22,6 +22,7 @@ export class GameStateService {
   endTurn(): void {
     this.increaseWave();
     this.buildingsProduction();
+    this.towersTrigger();
     this.moveEnemies();
     this.spawn();
     this.checkEndBattle();
@@ -30,7 +31,7 @@ export class GameStateService {
   increaseWave(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
-    this._setGameState$(newGameState);
+    //this._setGameState$(newGameState);
   }
 
   buildingsProduction(): void {
@@ -38,12 +39,41 @@ export class GameStateService {
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "building"){
+          let building = newGameState.grid[r][c];
 
-          if (newGameState.grid[r][c].name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
-            newGameState.wood += newGameState.grid[r][c].efficiency;
-          } else if (newGameState.grid[r][c].name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
-            newGameState.stone += newGameState.grid[r][c].efficiency;
+          if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
+            newGameState.wood += building.efficiency;
+          } else if (building.name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
+            newGameState.stone += building.efficiency;
           }
+
+        }
+      }
+    }
+  }
+
+  towersTrigger(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "tower"){
+          let tower = newGameState.grid[r][c];
+
+          // trigger
+          if (tower.state[tower.step] === "attack"){
+            console.log("attack")
+            if (tower.spot.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
+              console.log("attack-enemy")
+              newGameState.grid[r-1][c].life -= tower.damage;
+              if (newGameState.grid[r-1][c].life <= 0) newGameState.grid[r-1][c] = "";
+            }
+          }
+          // add step
+          tower.step ++;
+          if (tower.step >= tower.state.length) tower.step = 0;
+          // change visual
+          if(tower.state[tower.step] === "attack") tower.image = tower.name + "-engaged";
+          else tower.image = tower.name;
 
         }
       }
@@ -90,7 +120,7 @@ export class GameStateService {
   spawn(): void {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.wave >= newGameState.spawnStrip.length || newGameState.spawnStrip[newGameState.wave] === "") return;
-    console.log("in-spawn-core")
+
     let emptySpaces: number[] = [];
     let rowToSpawn: number = 0;
 
@@ -104,24 +134,22 @@ export class GameStateService {
       }
     }
 
-    let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
+    let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {name:newGameState.spawnStrip[newGameState.wave], img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1, type:"enemy"};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {name:newGameState.spawnStrip[newGameState.wave], image: newGameState.spawnStrip[newGameState.wave], life:1, currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1, type:"enemy"};
     this._setGameState$(newGameState);
   }
 
   placeConstruction(name: string, position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
-    let type: string = "";
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character"){
-      type = "character";
-    }
+    if (name === "character") newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", type:"character"};
+
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        type = "building";
+        newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, efficiency:1, type:"building"};
         break;
       }
     }
@@ -129,7 +157,7 @@ export class GameStateService {
     let characterPosition: number[] = [];
     for (let r = 0; r < newGameState.grid.length; r++){
       for(let c = 0; c < newGameState.grid[r].length; c++){
-        if (newGameState.grid[r][c].img && newGameState.grid[r][c].img === "character"){
+        if (newGameState.grid[r][c].image && newGameState.grid[r][c].image === "character"){
           characterPosition = [r,c];
         }
       }
@@ -139,28 +167,27 @@ export class GameStateService {
         if (characterPosition.length === 0) return;
         if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
           newGameState.towersAvailable.splice(i,1);
-          type = "tower";
+          newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, damage: 1, state:["wait", "attack"], step:0, spot:"top", efficiency:1, type:"tower"};
+          this.endTurn();
           break;
         }
       }
     }
-    if (type !== "") newGameState.grid[position[0]][position[1]] = {name: name, img:name, life:1, efficiency:1, type:type};
-    this._setGameState$(newGameState);
-    if (type === "tower") this.endTurn();
+    //this._setGameState$(newGameState);
   }
 
   moveCharacter(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
-        if(newGameState.grid[r][c].img && newGameState.grid[r][c].img === "character"){
+        if(newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
+          newGameState.grid[position[0]][position[1]] = {name: "character", image:"character", type:"character"};
           newGameState.grid[r][c] = "";
           break;
         }
       }
     }
-    newGameState.grid[position[0]][position[1]] = {img:"character"};
-    this._setGameState$(newGameState);
+    //this._setGameState$(newGameState);
     this.endTurn();
   }
 
