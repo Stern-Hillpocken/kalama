@@ -95,8 +95,9 @@ export class GameStateService {
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
             } else {
+              console.log("else")
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
-              if (newGameState.grid[r+1][c].life <= 0) newGameState.grid[r+1][c] = "";
+              if (newGameState.grid[r+1][c].life <= 0 || newGameState.grid[r+1][c].type === "character") newGameState.grid[r+1][c] = "";
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
             }
           }
@@ -181,7 +182,7 @@ export class GameStateService {
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if(newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
-          newGameState.grid[position[0]][position[1]] = {name: "character", image:"character", type:"character"};
+          newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
           newGameState.grid[r][c] = "";
           break;
         }
