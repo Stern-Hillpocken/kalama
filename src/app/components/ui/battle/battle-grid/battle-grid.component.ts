@@ -39,7 +39,14 @@ export class BattleGridComponent {
   }
 
   onCellClick(event: any): void {
-    this.clickCellPositionEmitter.emit([event.target.parentNode.rowIndex, event.target.cellIndex]);
+    console.log(event)
+    let row = event.target.parentNode.rowIndex;
+    let col = event.target.cellIndex;
+    if (event.target.tagName === "IMG") {
+      row = event.target.parentNode.parentNode.rowIndex;
+      col = event.target.parentNode.cellIndex;
+    }
+    this.clickCellPositionEmitter.emit([row, col]);
   }
 
 }

@@ -145,7 +145,7 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character") newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", life:1, type:"character"};
+    if (name === "character") newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", life:1, damage:1, type:"character"};
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
@@ -181,9 +181,14 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
-        if(newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
-          newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
-          newGameState.grid[r][c] = "";
+        if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
+          if (newGameState.grid[position[0]][position[1]] === ""){
+            newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
+            newGameState.grid[r][c] = "";
+          } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
+            newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
+            if(newGameState.grid[position[0]][position[1]].life <= 0) newGameState.grid[position[0]][position[1]] = "";
+          }
           this.endTurn();
           return;
         }

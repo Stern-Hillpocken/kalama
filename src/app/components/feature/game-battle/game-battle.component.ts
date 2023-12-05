@@ -67,7 +67,7 @@ export class GameBattleComponent {
   }
 
   onClickCellPositionReceive(position: number[]): void {
-    if (this.gameState.grid[position[0]][position[1]] === "" && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
+    if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
     }
   }
