@@ -180,14 +180,14 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
-        if(newGameState.grid[r][c].image && newGameState.grid[r][c].image === "character"){
+        if(newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
+          newGameState.grid[position[0]][position[1]] = {name: "character", image:"character", type:"character"};
           newGameState.grid[r][c] = "";
           break;
         }
       }
     }
-    newGameState.grid[position[0]][position[1]] = {image:"character"};
-    this._setGameState$(newGameState);
+    //this._setGameState$(newGameState);
     this.endTurn();
   }
 
