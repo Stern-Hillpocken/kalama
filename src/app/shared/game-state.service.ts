@@ -20,11 +20,16 @@ export class GameStateService {
   }
 
   endTurn(): void {
+    this.increaseWave();
+    this.moveEnemies();
+    this.spawn();
+    this.checkEndBattle();
+  }
+
+  increaseWave(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
     this._setGameState$(newGameState);
-    this.moveEnemies();
-    if (newGameState.wave < newGameState.spawnStrip.length && newGameState.spawnStrip[newGameState.wave] !== "") this.spawn();
   }
 
   moveEnemies(): void {
@@ -66,6 +71,8 @@ export class GameStateService {
 
   spawn(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.wave >= newGameState.spawnStrip.length || newGameState.spawnStrip[newGameState.wave] === "") return;
+    console.log("in-spawn-core")
     let emptySpaces: number[] = [];
     let rowToSpawn: number = 0;
 
@@ -81,7 +88,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {name:newGameState.spawnStrip[newGameState.wave], img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1, type:"enemy"};
     this._setGameState$(newGameState);
   }
 
@@ -119,7 +126,7 @@ export class GameStateService {
         }
       }
     }
-    if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name, life:1};
+    if (type !== "") newGameState.grid[position[0]][position[1]] = {name: name, img:name, life:1};
     this._setGameState$(newGameState);
     if (type === "tower") this.endTurn();
   }
@@ -137,6 +144,18 @@ export class GameStateService {
     newGameState.grid[position[0]][position[1]] = {img:"character"};
     this._setGameState$(newGameState);
     this.endTurn();
+  }
+
+  checkEndBattle(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.wave < newGameState.spawnStrip.length) return;
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "enemy") return;
+      }
+    }
+    newGameState.display = "map";
+    this._setGameState$(newGameState);
   }
 
 }
