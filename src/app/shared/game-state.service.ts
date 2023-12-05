@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{img:"wood", life:1},"","","",""],["","","","","",""],["","","","",{img:"stone", life:2},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", img:"wood", life:1},"","","",""],["","","","","",""],["","","","",{name: "stone", img:"stone", life:2},""],["","","","","",""]])); // tutorial settings
 
   constructor() {}
 
@@ -20,11 +20,34 @@ export class GameStateService {
   }
 
   endTurn(): void {
+    this.increaseWave();
+    this.buildingsProduction();
+    this.moveEnemies();
+    this.spawn();
+    this.checkEndBattle();
+  }
+
+  increaseWave(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
     this._setGameState$(newGameState);
-    this.moveEnemies();
-    if (newGameState.wave < newGameState.spawnStrip.length && newGameState.spawnStrip[newGameState.wave] !== "") this.spawn();
+  }
+
+  buildingsProduction(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "building"){
+
+          if (newGameState.grid[r][c].name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
+            newGameState.wood += newGameState.grid[r][c].efficiency;
+          } else if (newGameState.grid[r][c].name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
+            newGameState.stone += newGameState.grid[r][c].efficiency;
+          }
+
+        }
+      }
+    }
   }
 
   moveEnemies(): void {
@@ -66,6 +89,8 @@ export class GameStateService {
 
   spawn(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.wave >= newGameState.spawnStrip.length || newGameState.spawnStrip[newGameState.wave] === "") return;
+    console.log("in-spawn-core")
     let emptySpaces: number[] = [];
     let rowToSpawn: number = 0;
 
@@ -81,7 +106,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = {name:newGameState.spawnStrip[newGameState.wave], img: newGameState.spawnStrip[newGameState.wave], currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1, type:"enemy"};
     this._setGameState$(newGameState);
   }
 
@@ -119,7 +144,7 @@ export class GameStateService {
         }
       }
     }
-    if (type !== "") newGameState.grid[position[0]][position[1]] = {img:name, life:1};
+    if (type !== "") newGameState.grid[position[0]][position[1]] = {name: name, img:name, life:1, efficiency:1, type:type};
     this._setGameState$(newGameState);
     if (type === "tower") this.endTurn();
   }
@@ -137,6 +162,18 @@ export class GameStateService {
     newGameState.grid[position[0]][position[1]] = {img:"character"};
     this._setGameState$(newGameState);
     this.endTurn();
+  }
+
+  checkEndBattle(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.wave < newGameState.spawnStrip.length) return;
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "enemy") return;
+      }
+    }
+    newGameState.display = "map";
+    this._setGameState$(newGameState);
   }
 
 }

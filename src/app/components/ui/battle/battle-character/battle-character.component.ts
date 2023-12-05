@@ -11,6 +11,9 @@ export class BattleCharacterComponent {
   @Input()
   gameState!: GameState;
 
+  @Input()
+  isCharacterOnTheGrid!: boolean;
+
   @Output()
   actionEmitter: EventEmitter<string> = new EventEmitter();
 

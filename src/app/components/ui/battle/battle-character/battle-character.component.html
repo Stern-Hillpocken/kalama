@@ -1,5 +1,9 @@
 <div>
     <p><\3&nbsp;: {{ gameState.structure }}</p>
-    <button (click)="wait()">Wait</button>
-    <button>{{ gameState.power }}</button>
+    <p>Wood&nbsp;: {{ gameState.wood}}</p>
+    <p>Stone&nbsp;: {{ gameState.stone }}</p>
+    <div *ngIf="isCharacterOnTheGrid">
+        <button (click)="wait()">Wait</button>
+        <button>{{ gameState.power }}</button>
+    </div>
 </div>

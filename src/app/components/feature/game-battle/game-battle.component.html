@@ -11,5 +11,6 @@
     ></app-battle-grid>
 <app-battle-character
     [gameState]="gameState"
+    [isCharacterOnTheGrid]="isCharacterOnTheGrid"
     (actionEmitter)="onActionReceive($event)"
 ></app-battle-character>
