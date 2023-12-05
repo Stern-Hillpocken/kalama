@@ -20,7 +20,7 @@ export class GameStateService {
   }
 
   endTurn(): void {
-    this.increaseWave();
+    this.upkeep();
     this.buildingsProduction();
     this.towersTrigger();
     this.moveEnemies();
@@ -28,9 +28,11 @@ export class GameStateService {
     this.checkEndBattle();
   }
 
-  increaseWave(): void {
+  upkeep(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
+    if (newGameState.koCounter > 0) newGameState.koCounter --;
+    if (newGameState.currentPowerCoolDown < newGameState.maxPowerCoolDown) newGameState.currentPowerCoolDown ++;
     //this._setGameState$(newGameState);
   }
 
@@ -61,9 +63,7 @@ export class GameStateService {
 
           // trigger
           if (tower.state[tower.step] === "attack"){
-            console.log("attack")
             if (tower.spot.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
-              console.log("attack-enemy")
               newGameState.grid[r-1][c].life -= tower.damage;
               if (newGameState.grid[r-1][c].life <= 0) newGameState.grid[r-1][c] = "";
             }
@@ -95,9 +95,11 @@ export class GameStateService {
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
             } else {
-              console.log("else")
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
-              if (newGameState.grid[r+1][c].life <= 0 || newGameState.grid[r+1][c].type === "character") newGameState.grid[r+1][c] = "";
+              if (newGameState.grid[r+1][c].life <= 0){
+                if (newGameState.grid[r+1][c].type === "character") newGameState.koCounter = 3;
+                newGameState.grid[r+1][c] = "";
+              }
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
             }
           }
@@ -145,7 +147,7 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character") newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", life:1, damage:1, type:"character"};
+    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", life:1, damage:1, type:"character"};
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
@@ -205,7 +207,7 @@ export class GameStateService {
       }
     }
     newGameState.display = "map";
-    this._setGameState$(newGameState);
+    //this._setGameState$(newGameState);
   }
 
 }

@@ -28,9 +28,14 @@ export class BattleGridComponent {
   onDragEnter(event: any): void {
     let row: number = event.target.parentNode.rowIndex;
     let col: number = event.target.cellIndex;
+    if (event.target.tagName === "IMG") {
+      row = event.target.parentNode.parentNode.rowIndex;
+      col = event.target.parentNode.cellIndex;
+    }
 
     if (this.gameState.grid[row][col] === "") event.target.style.backgroundColor = "green";
-    else event.target.style.backgroundColor = "red";
+    else if (event.target.tagName === "TD") event.target.style.backgroundColor = "red";
+    else if (event.target.tagName === "IMG") event.target.parentNode.style.backgroundColor = "red";
     this.dragPositionEmitter.emit([row, col]);
   }
 
@@ -39,7 +44,6 @@ export class BattleGridComponent {
   }
 
   onCellClick(event: any): void {
-    console.log(event)
     let row = event.target.parentNode.rowIndex;
     let col = event.target.cellIndex;
     if (event.target.tagName === "IMG") {
