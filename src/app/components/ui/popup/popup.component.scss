@@ -1,0 +1,33 @@
+.popup-background {
+    background-color: rgba(0,0,0,0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.popup-core {
+    background-color: white;
+    border-radius: 1em;
+    margin: 1em;
+    border: 4px solid black;
+}
+
+.tutorial {
+    border-color: teal;
+    h2 {
+        background-color: teal;
+    }
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    padding: 1em;
+}
+
+.buttons-swipe {
+    display: flex;
+    justify-content: space-evenly;
+}

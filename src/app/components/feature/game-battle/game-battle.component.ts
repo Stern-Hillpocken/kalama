@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { GameState } from 'src/app/models/game-state.model';
+import { PopupMessage } from 'src/app/models/popup-message.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
+import { PopupService } from 'src/app/shared/popup.service';
 
 @Component({
   selector: 'app-game-battle',
@@ -11,18 +13,28 @@ export class GameBattleComponent {
 
   gameState!: GameState;
 
+  popupMessage!: PopupMessage[];
+
   isCharacterOnTheGrid: boolean = false;
 
   lastDragPosition: number[] = [];
 
   constructor(
-    private gameStateService: GameStateService
+    private gameStateService: GameStateService,
+    private popupService: PopupService
   ){}
 
   ngOnInit(): void {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
     });
+    this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
+      this.popupMessage = msg;
+    });
+  }
+
+  ngAfterContentInit(): void {
+    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue 1/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 2/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 3/3","Bliblou","tutorial")])
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {
@@ -74,6 +86,10 @@ export class GameBattleComponent {
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
     }
+  }
+
+  onClosePopupReceive(): void {
+    this.popupService.remove();
   }
 
 }
