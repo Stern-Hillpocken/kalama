@@ -9,13 +9,21 @@ import { PopupMessage } from 'src/app/models/popup-message.model';
 export class PopupComponent {
 
   @Input()
-  popupMessage!: PopupMessage;
+  popupMessage!: PopupMessage[];
 
   @Output()
-  popupClickEmitter: EventEmitter<void> = new EventEmitter();
+  closePopupEmitter: EventEmitter<void> = new EventEmitter();
 
-  popupClick(): void {
-    this.popupClickEmitter.emit();
+  slideDisplayed: number = 0;
+
+  popupChange(move: string): void {
+    if (move === "next") {
+      this.slideDisplayed ++;
+      if (this.slideDisplayed >= this.popupMessage.length) this.closePopupEmitter.emit();
+    } else {
+      this.slideDisplayed --;
+      if (this.slideDisplayed < 0) this.slideDisplayed = 0;
+    }
   }
 
 }

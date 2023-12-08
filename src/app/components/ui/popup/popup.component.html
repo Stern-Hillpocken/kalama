@@ -1,6 +1,10 @@
-<div (click)="popupClick()" class="popup-background">
-    <div class="popup-core {{popupMessage.type}}">
-        <h2>{{ popupMessage.title }}</h2>
-        <p>{{ popupMessage.message }}</p>
+<div class="popup-background">
+    <div class="popup-core {{popupMessage[slideDisplayed].type}}">
+        <h2>{{ popupMessage[slideDisplayed].title }}</h2>
+        <p>{{ popupMessage[slideDisplayed].message }}</p>
+        <div class="buttons-swipe">
+            <button (click)="popupChange('previous')" *ngIf="slideDisplayed > 0">Prev</button>
+            <button (click)="popupChange('next')">{{ slideDisplayed === popupMessage.length-1 ? "Close" : "Next" }}</button>
+        </div>
     </div>
 </div>

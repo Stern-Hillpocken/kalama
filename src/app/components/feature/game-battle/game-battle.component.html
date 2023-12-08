@@ -1,7 +1,7 @@
 <app-popup
-    *ngIf="popupMessage.title !== ''"
+    *ngIf="popupMessage.length > 0"
     [popupMessage]="popupMessage"
-    (popupClickEmitter)="onPopupClickReceive()"
+    (closePopupEmitter)="onClosePopupReceive()"
 ></app-popup>
 <app-battle-spawn-strip [gameState]="gameState"></app-battle-spawn-strip>
 <app-battle-constructions

@@ -7,20 +7,20 @@ import { PopupMessage } from '../models/popup-message.model';
 })
 export class PopupService {
 
-  private readonly _popupMessage$: BehaviorSubject<PopupMessage> = new BehaviorSubject<PopupMessage>(new PopupMessage("","",""));
+  private readonly _popupMessageList$: BehaviorSubject<PopupMessage[]> = new BehaviorSubject<PopupMessage[]>([]);
 
   constructor() { }
 
-  _getMessage$(): Observable<PopupMessage> {
-    return this._popupMessage$.asObservable();
+  _getMessage$(): Observable<PopupMessage[]> {
+    return this._popupMessageList$.asObservable();
   }
 
-  _setMessage$(msg: PopupMessage): void {
-    this._popupMessage$.next(msg);
+  _setMessage$(msg: PopupMessage[]): void {
+    this._popupMessageList$.next(msg);
   }
 
-  removeMessage(): void {
-    this._popupMessage$.next(new PopupMessage("","",""));
+  remove(): void {
+    this._popupMessageList$.next([]);
   }
 
 }

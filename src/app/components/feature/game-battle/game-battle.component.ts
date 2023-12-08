@@ -13,7 +13,7 @@ export class GameBattleComponent {
 
   gameState!: GameState;
 
-  popupMessage!: PopupMessage;
+  popupMessage!: PopupMessage[];
 
   isCharacterOnTheGrid: boolean = false;
 
@@ -28,13 +28,13 @@ export class GameBattleComponent {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
     });
-    this.popupService._getMessage$().subscribe((msg: PopupMessage) => {
+    this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
     });
   }
 
   ngAfterContentInit(): void {
-    if (this.gameState.difficulty === 0) this.popupService._setMessage$(new PopupMessage("Bienvenue !","Bliblou","tutorial"))
+    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue 1/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 2/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 3/3","Bliblou","tutorial")])
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {
@@ -88,8 +88,8 @@ export class GameBattleComponent {
     }
   }
 
-  onPopupClickReceive(): void {
-    this.popupService.removeMessage();
+  onClosePopupReceive(): void {
+    this.popupService.remove();
   }
 
 }
