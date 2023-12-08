@@ -18,6 +18,7 @@ import { BattleSpawnStripComponent } from './components/ui/battle/battle-spawn-s
 import { BattleConstructionsComponent } from './components/ui/battle/battle-constructions/battle-constructions.component';
 import { BattleGridComponent } from './components/ui/battle/battle-grid/battle-grid.component';
 import { BattleCharacterComponent } from './components/ui/battle/battle-character/battle-character.component';
+import { PopupComponent } from './components/ui/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { BattleCharacterComponent } from './components/ui/battle/battle-characte
     BattleSpawnStripComponent,
     BattleConstructionsComponent,
     BattleGridComponent,
-    BattleCharacterComponent
+    BattleCharacterComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,

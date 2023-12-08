@@ -1,3 +1,8 @@
+<app-popup
+    *ngIf="popupMessage.title !== ''"
+    [popupMessage]="popupMessage"
+    (popupClickEmitter)="onPopupClickReceive()"
+></app-popup>
 <app-battle-spawn-strip [gameState]="gameState"></app-battle-spawn-strip>
 <app-battle-constructions
     [gameState]="gameState"
