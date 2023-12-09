@@ -17,8 +17,15 @@ export class BattleCharacterComponent {
   @Output()
   actionEmitter: EventEmitter<string> = new EventEmitter();
 
+  @Output()
+  readyForBattleEmitter: EventEmitter<void> = new EventEmitter();
+
   wait(): void {
     this.actionEmitter.emit("wait");
+  }
+
+  readyForBattle(): void {
+    this.readyForBattleEmitter.emit();
   }
 
 }

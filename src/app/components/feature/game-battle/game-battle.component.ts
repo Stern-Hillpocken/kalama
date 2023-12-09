@@ -105,4 +105,11 @@ export class GameBattleComponent {
     this.popupService.remove();
   }
 
+  onReadyForBattleReceive(): void {
+    if (this.checkIfCharacterIsOnTheGrid()){
+      this.gameState.buildingsAvailable = [];
+      this.gameState.state = "ready";
+    }
+  }
+
 }

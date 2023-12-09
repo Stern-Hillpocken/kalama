@@ -2,10 +2,11 @@
     <p><\3&nbsp;: {{ gameState.structure }}</p>
     <p>Wood&nbsp;: {{ gameState.wood}}</p>
     <p>Stone&nbsp;: {{ gameState.stone }}</p>
-    <div *ngIf="isCharacterOnTheGrid || gameState.koCounter > 0">
+    <button *ngIf="gameState.state !== 'ready'" (click)="readyForBattle();">Ready for battle</button>
+    <div *ngIf="gameState.state === 'ready'">
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
         <button (click)="wait()">Wait</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.maxPowerCoolDown }}</p>
-        <button *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown">{{ gameState.power }}</button>
+        <button *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown && gameState.koCounter === 0">{{ gameState.power }}</button>
     </div>
 </div>
