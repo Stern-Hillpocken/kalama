@@ -7,7 +7,7 @@ import { GameState } from '../models/game-state.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2},""],["","","","","",""]])); // tutorial settings
 
   constructor() {}
 
