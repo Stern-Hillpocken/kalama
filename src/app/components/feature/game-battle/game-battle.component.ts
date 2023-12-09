@@ -34,13 +34,21 @@ export class GameBattleComponent {
   }
 
   ngAfterContentInit(): void {
-    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue 1/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 2/3","Bliblou","tutorial"),new PopupMessage("Bienvenue 3/3","Bliblou","tutorial")])
+    // tutorial
+    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Blabla de bienvenue","tutorial"),new PopupMessage("Les vagues","Victoire et défaite de la partie battle","tutorial"),new PopupMessage("Placement","Perso et constructions","tutorial")])
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {
     for (let r = 0; r < this.gameState.grid.length; r++){
       for (let c = 0; c < this.gameState.grid[r].length; c++){
-        if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character") return true;
+        if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
+          // tutorial
+          if (this.gameState.difficulty === 0 && this.gameState.buildingsAvailable.length === 0){
+            this.popupService._setMessage$([new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe", "tutorial")]);
+            this.gameState.difficulty = 0.1;
+          }
+          return true;
+        }
       }
     }
     return false;
@@ -85,6 +93,11 @@ export class GameBattleComponent {
     if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
+    }
+    // tutorial
+    if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
+      this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial")])
+      this.gameState.difficulty = 0.2;
     }
   }
 

@@ -2,6 +2,7 @@ export class GameState {
     constructor(
         public display: string,
         public difficulty: number,
+        public state: string,
 
         public structure: number,
         public koCounter: number,
