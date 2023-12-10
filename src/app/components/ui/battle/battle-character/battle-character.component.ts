@@ -14,11 +14,17 @@ export class BattleCharacterComponent {
   @Input()
   isCharacterOnTheGrid!: boolean;
 
+  @Input()
+  isPowerSelected!: boolean;
+
   @Output()
   actionEmitter: EventEmitter<string> = new EventEmitter();
 
   @Output()
   readyForBattleEmitter: EventEmitter<void> = new EventEmitter();
+
+  @Output()
+  usePowerEmitter: EventEmitter<void> = new EventEmitter();
 
   wait(): void {
     this.actionEmitter.emit("wait");
@@ -26,6 +32,10 @@ export class BattleCharacterComponent {
 
   readyForBattle(): void {
     this.readyForBattleEmitter.emit();
+  }
+
+  usePower(): void {
+    this.usePowerEmitter.emit();
   }
 
 }

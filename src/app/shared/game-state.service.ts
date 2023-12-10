@@ -211,4 +211,25 @@ export class GameStateService {
     //this._setGameState$(newGameState);
   }
 
+  getCharacterPosition(): number[] {
+    let newGameState: GameState = this._gameState$.getValue();
+    for (let r = 0; r < newGameState.grid.length; r++){
+      for (let c = 0; c < newGameState.grid[r].length; c++){
+        if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character") return [r,c];
+      }
+    }
+    return [];
+  }
+
+  powerDash(position: number[]): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let charPosition: number[] = this.getCharacterPosition();
+    if (newGameState.grid[position[0]][position[1]] === ""){
+      newGameState.grid[position[0]][position[1]] = newGameState.grid[charPosition[0]][charPosition[1]];
+      newGameState.grid[charPosition[0]][charPosition[1]] = "";
+      newGameState.currentPowerCoolDown = 0;
+      this.endTurn();
+    }
+  }
+
 }

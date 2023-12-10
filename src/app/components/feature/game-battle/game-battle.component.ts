@@ -19,6 +19,8 @@ export class GameBattleComponent {
 
   lastDragPosition: number[] = [];
 
+  isPowerSelected: boolean = false;
+
   constructor(
     private gameStateService: GameStateService,
     private popupService: PopupService
@@ -72,15 +74,14 @@ export class GameBattleComponent {
   }
 
   getCharacterPosition(): number[] {
-    let characterPosition: number[] = [];
     for (let r = 0; r < this.gameState.grid.length; r++){
       for(let c = 0; c < this.gameState.grid[r].length; c++){
-        if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
-          characterPosition = [r,c];
+        if (this.gameState.grid[r][c].name && this.gameState.grid[r][c].name === "character"){
+          return [r,c];
         }
       }
     }
-    return characterPosition;
+    return [];
   }
 
   isNearByCharacter(position: number[]): boolean {
@@ -93,6 +94,9 @@ export class GameBattleComponent {
     if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
+    } else if (this.isPowerSelected && (position[0] === this.getCharacterPosition()[0] || position[1] === this.getCharacterPosition()[1])){
+      this.gameStateService.powerDash(position);
+      this.isPowerSelected = false;
     }
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
@@ -109,6 +113,15 @@ export class GameBattleComponent {
     if (this.checkIfCharacterIsOnTheGrid()){
       this.gameState.buildingsAvailable = [];
       this.gameState.state = "ready";
+    }
+  }
+
+  onUsePowerReceive(): void {
+    if (this.gameState.currentPowerCoolDown === this.gameState.maxPowerCoolDown){
+      this.isPowerSelected = !this.isPowerSelected;
+      if (this.isPowerSelected && this.gameState.difficulty < 1) {
+        this.popupService._setMessage$([new PopupMessage("Power - dash", "Déplacement durant le tour sur n'importe quelle case vide horizontale ou verticale.", "tutorial")]);
+      }
     }
   }
 

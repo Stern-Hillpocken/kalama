@@ -7,6 +7,10 @@
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
         <button (click)="wait()">Wait</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.maxPowerCoolDown }}</p>
-        <button *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown && gameState.koCounter === 0">{{ gameState.power }}</button>
+        <button
+            *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown && gameState.koCounter === 0"
+            (click)="usePower()"
+            [ngClass]="isPowerSelected ? 'power-selected' : ''"
+            >{{ gameState.power }}</button>
     </div>
 </div>
