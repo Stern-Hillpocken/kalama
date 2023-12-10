@@ -46,7 +46,7 @@ export class GameBattleComponent {
         if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
           // tutorial
           if (this.gameState.difficulty === 0 && this.gameState.buildingsAvailable.length === 0){
-            this.popupService._setMessage$([new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe", "tutorial")]);
+            this.popupService._setMessage$([new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe : donner la séquence d'activation (nos build puis ennemis)", "tutorial")]);
             this.gameState.difficulty = 0.1;
           }
           return true;
@@ -60,6 +60,7 @@ export class GameBattleComponent {
     if (action === "wait"){
       this.gameStateService.endTurn();
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
+      this.tilesBackgroundUpdate();
     }
   }
 
@@ -71,6 +72,7 @@ export class GameBattleComponent {
     this.gameStateService.placeConstruction(image, this.lastDragPosition);
     this.lastDragPosition = [];
     this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
+    this.tilesBackgroundUpdate();
   }
 
   getCharacterPosition(): number[] {
@@ -99,6 +101,7 @@ export class GameBattleComponent {
       this.changeTilesBackground([], "");
       this.isPowerSelected = false;
     }
+    this.tilesBackgroundUpdate();
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
       this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial")])
@@ -153,6 +156,29 @@ export class GameBattleComponent {
       let currentStyle = (document.getElementById("grid")?.getElementsByTagName("table")[0].children[tiles[coordinates][0]].children[tiles[coordinates][1]] as HTMLTableElement).style;
       if (type === "movement") currentStyle.backgroundColor = "purple";
       else if (type === "attack") currentStyle.backgroundColor = "red";
+    }
+  }
+
+  tilesBackgroundUpdate(): void {
+    for (let r = 0; r < this.gameState.grid.length; r++){
+      for (let c = 0; c < this.gameState.grid[r].length; c++){
+        (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r].children[c] as HTMLTableElement).style.backgroundColor = "";
+      }
+    }
+    for (let r = 0; r < this.gameState.grid.length; r++){
+      for (let c = 0; c < this.gameState.grid[r].length; c++){
+
+        if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "enemy"){
+          if (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "down" && r+1 < this.gameState.grid.length) {
+            (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r+1].children[c] as HTMLTableElement).style.backgroundColor = "red";
+          }
+        } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
+          if (this.gameState.grid[r][c].spot === "top" && r-1 >= 0){
+            (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r-1].children[c] as HTMLTableElement).style.backgroundColor = "orange";
+          }
+        }
+
+      }
     }
   }
 
