@@ -94,8 +94,9 @@ export class GameBattleComponent {
     if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
-    } else if (this.isPowerSelected && (position[0] === this.getCharacterPosition()[0] || position[1] === this.getCharacterPosition()[1])){
+    } else if (this.isPowerSelected && (position[0] === this.getCharacterPosition()[0] || position[1] === this.getCharacterPosition()[1]) && this.gameState.grid[position[0]][position[1]] === ""){
       this.gameStateService.powerDash(position);
+      this.changeTilesBackground([], "");
       this.isPowerSelected = false;
     }
     // tutorial
@@ -119,9 +120,39 @@ export class GameBattleComponent {
   onUsePowerReceive(): void {
     if (this.gameState.currentPowerCoolDown === this.gameState.maxPowerCoolDown){
       this.isPowerSelected = !this.isPowerSelected;
+      if (this.isPowerSelected && this.gameState.power === "dash"){
+        let dashZone: number[][] = [];
+        let charPosition: number[] = this.getCharacterPosition();
+        for (let r = 0; r < this.gameState.grid.length; r++){
+          for (let c = 0; c < this.gameState.grid[r].length; c++){
+            if (this.gameState.grid[r][c] === "" && (r === charPosition[0] || c === charPosition[1])){
+              dashZone.push([r,c]);
+            }
+          }
+        }
+        this.changeTilesBackground(dashZone, "movement");
+      } else {
+        this.changeTilesBackground([], "");
+      }
+      // tutorial
       if (this.isPowerSelected && this.gameState.difficulty < 1) {
         this.popupService._setMessage$([new PopupMessage("Power - dash", "Déplacement durant le tour sur n'importe quelle case vide horizontale ou verticale.", "tutorial")]);
       }
+    }
+  }
+
+  changeTilesBackground(tiles: number[][], type: string): void {
+    if (type === ""){
+      for (let r = 0; r < this.gameState.grid.length; r++){
+        for (let c = 0; c < this.gameState.grid[r].length; c++){
+          (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r].children[c] as HTMLTableElement).style.backgroundColor = "";
+        }
+      }
+    }
+    for (let coordinates = 0; coordinates < tiles.length; coordinates++){
+      let currentStyle = (document.getElementById("grid")?.getElementsByTagName("table")[0].children[tiles[coordinates][0]].children[tiles[coordinates][1]] as HTMLTableElement).style;
+      if (type === "movement") currentStyle.backgroundColor = "purple";
+      else if (type === "attack") currentStyle.backgroundColor = "red";
     }
   }
 
