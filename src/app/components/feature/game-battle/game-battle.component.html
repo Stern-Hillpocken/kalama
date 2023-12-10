@@ -17,6 +17,8 @@
 <app-battle-character
     [gameState]="gameState"
     [isCharacterOnTheGrid]="isCharacterOnTheGrid"
+    [isPowerSelected]="isPowerSelected"
     (actionEmitter)="onActionReceive($event)"
     (readyForBattleEmitter)="onReadyForBattleReceive()"
+    (usePowerEmitter)="onUsePowerReceive()"
 ></app-battle-character>
