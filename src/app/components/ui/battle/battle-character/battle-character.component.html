@@ -2,7 +2,10 @@
     <p><\3&nbsp;: {{ gameState.structure }}</p>
     <p>Wood&nbsp;: {{ gameState.wood}}</p>
     <p>Stone&nbsp;: {{ gameState.stone }}</p>
-    <button *ngIf="gameState.state !== 'ready'" (click)="readyForBattle();">Ready for battle</button>
+    <button
+        *ngIf="isCharacterOnTheGrid && gameState.state !== 'ready'"
+        (click)="readyForBattle();"
+        >Ready for battle</button>
     <div *ngIf="gameState.state === 'ready'">
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
         <button (click)="wait()">Wait</button>
