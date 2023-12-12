@@ -1,5 +1,13 @@
 <div id="grid">
-    <table>
+    <table class="carpet">
+        <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
+            <td
+                *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index">
+                <img src='assets/images/sprites/carpet/{{gameState.grid[r][c].type ? 0 : carpetTiles[r][c]}}.png'>
+            </td>
+        </tr>
+    </table>
+    <table class="object">
         <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
             <td
                 *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index"
@@ -10,6 +18,14 @@
                     *ngIf='gameState.grid[r][c] !== "" '
                     src='assets/images/sprites/{{gameState.grid[r][c].type}}/{{gameState.grid[r][c].image}}.png'
                     draggable="false">
+            </td>
+        </tr>
+    </table>
+    <table class="floor">
+        <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
+            <td
+                *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index">
+                <img src='assets/images/sprites/floor/{{floorTiles[r][c]}}.png'>
             </td>
         </tr>
     </table>

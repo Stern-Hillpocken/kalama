@@ -95,7 +95,7 @@ export class GameStateService {
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
-            } else {
+            } else if (newGameState.grid[r+1][c] !== "enemy"){
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") newGameState.koCounter = 3;

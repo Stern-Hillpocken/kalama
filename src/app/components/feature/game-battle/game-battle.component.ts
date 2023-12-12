@@ -148,21 +148,21 @@ export class GameBattleComponent {
     if (type === ""){
       for (let r = 0; r < this.gameState.grid.length; r++){
         for (let c = 0; c < this.gameState.grid[r].length; c++){
-          (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r].children[c] as HTMLTableElement).style.backgroundColor = "";
+          (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r].children[c] as HTMLTableElement).style.background = "";
         }
       }
     }
     for (let coordinates = 0; coordinates < tiles.length; coordinates++){
-      let currentStyle = (document.getElementById("grid")?.getElementsByTagName("table")[0].children[tiles[coordinates][0]].children[tiles[coordinates][1]] as HTMLTableElement).style;
-      if (type === "movement") currentStyle.backgroundColor = "purple";
-      else if (type === "attack") currentStyle.backgroundColor = "red";
+      let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[tiles[coordinates][0]].children[tiles[coordinates][1]] as HTMLTableElement).style;
+      if (type === "movement") currentStyle.background = "repeating-radial-gradient(circle, purple, purple 10px, transparent 10px, transparent 20px)";
+      else if (type === "attack") currentStyle.background = "repeating-radial-gradient(circle, red, red 10px, #4b026f 10px, #4b026f 20px)";
     }
   }
 
   tilesBackgroundUpdate(): void {
     for (let r = 0; r < this.gameState.grid.length; r++){
       for (let c = 0; c < this.gameState.grid[r].length; c++){
-        (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r].children[c] as HTMLTableElement).style.backgroundColor = "";
+        (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r].children[c] as HTMLTableElement).style.background = "";
       }
     }
     for (let r = 0; r < this.gameState.grid.length; r++){
@@ -170,11 +170,11 @@ export class GameBattleComponent {
 
         if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "enemy"){
           if (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "down" && r+1 < this.gameState.grid.length) {
-            (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r+1].children[c] as HTMLTableElement).style.backgroundColor = "red";
+            (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,lightblue,lightblue 10px,teal 10px,teal 20px)";
           }
         } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
           if (this.gameState.grid[r][c].spot === "top" && r-1 >= 0){
-            (document.getElementById("grid")?.getElementsByTagName("table")[0].children[r-1].children[c] as HTMLTableElement).style.backgroundColor = "orange";
+            (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,red,red 10px,orange 10px,orange 20px)";
           }
         }
 
