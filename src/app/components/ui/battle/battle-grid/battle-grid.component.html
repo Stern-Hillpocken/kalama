@@ -8,7 +8,7 @@
                 (dragleave)="onDragLeave($event)">
                 <img
                     *ngIf='gameState.grid[r][c] !== "" '
-                    src='assets/images/sprites/{{gameState.grid[r][c].image}}.png'
+                    src='assets/images/sprites/{{gameState.grid[r][c].type}}/{{gameState.grid[r][c].image}}.png'
                     draggable="false">
             </td>
         </tr>
