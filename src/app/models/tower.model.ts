@@ -6,7 +6,7 @@ export class Tower {
         public damage: number,
         public state: string[],
         public step: number,
-        public spot: string,
+        public targetSpot: string,
         public type: string
     ){}
 }
