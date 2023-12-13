@@ -171,7 +171,7 @@ export class GameStateService {
         if (characterPosition.length === 0) return;
         if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
           newGameState.towersAvailable.splice(i,1);
-          newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, damage: 1, state:["wait", "attack"], step:0, spot:"top", efficiency:1, type:"tower"};
+          newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, damage: 1, state:["wait", "attack"], step:0, spot:"top", type:"tower"};
           this.endTurn();
           break;
         }

@@ -1,6 +1,10 @@
 <div *ngIf="informationFrame.type" class="information-frame">
-    {{ informationFrame.name }}<br>
-    {{ informationFrame.type }}<br>
-    {{ informationFrame.attack }}<br>
-    <button (click)="close()">Close frame</button>
+    <h2>{{ informationFrame.name }}</h2>
+    <p><img src="assets/images/sprites/{{informationFrame.type}}/{{informationFrame.image}}.png"></p>
+    <table>
+        <tr>
+            <td>Type</td><td>{{informationFrame.type}}</td>
+        </tr>
+    </table>
+    <p><button (click)="close()">Close frame</button></p>
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Character } from 'src/app/models/character.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { PopupMessage } from 'src/app/models/popup-message.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
