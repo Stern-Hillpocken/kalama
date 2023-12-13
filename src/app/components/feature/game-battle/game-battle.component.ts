@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Character } from 'src/app/models/character.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { PopupMessage } from 'src/app/models/popup-message.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
@@ -20,6 +21,8 @@ export class GameBattleComponent {
   lastDragPosition: number[] = [];
 
   isPowerSelected: boolean = false;
+
+  informationFrame: any = {};
 
   constructor(
     private gameStateService: GameStateService,
@@ -100,6 +103,8 @@ export class GameBattleComponent {
       this.gameStateService.powerDash(position);
       this.changeTilesBackground([], "");
       this.isPowerSelected = false;
+    } else if (this.gameState.grid[position[0]][position[1]] !== "" && this.gameState.grid[position[0]][position[1]].type) {
+      this.fillInformationFrame(this.gameState.grid[position[0]][position[1]]);
     }
     this.tilesBackgroundUpdate();
     // tutorial
@@ -107,6 +112,14 @@ export class GameBattleComponent {
       this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial")])
       this.gameState.difficulty = 0.2;
     }
+  }
+
+  fillInformationFrame(obj: any): void {
+    this.informationFrame = obj;
+  }
+
+  onCloseInformationFrameReceive(): void {
+    this.informationFrame = {};
   }
 
   onClosePopupReceive(): void {
@@ -173,7 +186,7 @@ export class GameBattleComponent {
             (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,lightblue,lightblue 10px,teal 10px,teal 20px)";
           }
         } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
-          if (this.gameState.grid[r][c].spot === "top" && r-1 >= 0){
+          if (this.gameState.grid[r][c].targetSpot === "top" && r-1 >= 0){
             (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,red,red 10px,orange 10px,orange 20px)";
           }
         }

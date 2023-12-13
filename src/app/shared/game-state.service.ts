@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GameState } from '../models/game-state.model';
 import { PopupService } from './popup.service';
+import { Tower } from '../models/tower.model';
+import { Building } from '../models/building.model';
+import { Character } from '../models/character.model';
+import { Enemy } from '../models/enemy.model';
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +68,7 @@ export class GameStateService {
 
           // trigger
           if (tower.state[tower.step] === "attack"){
-            if (tower.spot.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
+            if (tower.targetSpot.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
               newGameState.grid[r-1][c].life -= tower.damage;
               if (newGameState.grid[r-1][c].life <= 0) newGameState.grid[r-1][c] = "";
             }
@@ -140,7 +144,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = {name:newGameState.spawnStrip[newGameState.wave], image: newGameState.spawnStrip[newGameState.wave], life:1, currentMoveStep:0, moves: ["down"], activeWave:newGameState.wave, damage:1, type:"enemy"};
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newGameState.spawnStrip[newGameState.wave], newGameState.spawnStrip[newGameState.wave], 1, 0, ["down"], newGameState.wave, 1, "enemy");
     this._setGameState$(newGameState);
   }
 
@@ -148,12 +152,12 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = {name:"character", image:"character", life:1, damage:1, type:"character"};
+    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "character");
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, efficiency:1, type:"building"};
+        newGameState.grid[position[0]][position[1]] = new Building(name, name, 1, 1, "building");
         break;
       }
     }
@@ -171,7 +175,7 @@ export class GameStateService {
         if (characterPosition.length === 0) return;
         if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
           newGameState.towersAvailable.splice(i,1);
-          newGameState.grid[position[0]][position[1]] = {name: name, image:name, life:1, damage: 1, state:["wait", "attack"], step:0, spot:"top", efficiency:1, type:"tower"};
+          newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "tower");
           this.endTurn();
           break;
         }

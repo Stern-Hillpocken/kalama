@@ -1,12 +1,9 @@
-export class Tower {
+export class Character {
     constructor(
         public name: string,
         public image: string,
         public life: number,
         public damage: number,
-        public state: string[],
-        public step: number,
-        public targetSpot: string,
-        public type: string
+        public type: "character"
     ){}
 }

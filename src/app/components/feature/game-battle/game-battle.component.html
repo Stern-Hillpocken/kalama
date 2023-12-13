@@ -3,6 +3,10 @@
     [popupMessage]="popupMessage"
     (closePopupEmitter)="onClosePopupReceive()"
 ></app-popup>
+<app-information-frame
+    [informationFrame]="informationFrame"
+    (closeInformationFrame)="onCloseInformationFrameReceive()"
+    ></app-information-frame>
 <app-battle-spawn-strip [gameState]="gameState"></app-battle-spawn-strip>
 <app-battle-constructions
     [gameState]="gameState"
