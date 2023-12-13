@@ -1,9 +1,26 @@
-* {
+:root{
+    --color-dominant: #a87e54;
+    --color-complement: #55b8ce;
+    --color-accent: #eb3c27;
+    --color-light-accent: #916463;
+
+    --color-error: #a10000;
+    --color-valid: #309200;
+}
+
+@font-face {
+    font-family: "font-base";
+    src: url("assets/fonts/Kenney_Pixel.ttf");
+}
+
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "font-base";
+    font-size: 32px;
 }
 
-body {
-    background-color: #a87e54;
+body{
+    background-color: var(--color-dominant);
 }
