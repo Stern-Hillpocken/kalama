@@ -186,7 +186,7 @@ export class GameBattleComponent {
             (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,lightblue,lightblue 10px,teal 10px,teal 20px)";
           }
         } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
-          if (this.gameState.grid[r][c].spot === "top" && r-1 >= 0){
+          if (this.gameState.grid[r][c].targetSpot === "top" && r-1 >= 0){
             (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,red,red 10px,orange 10px,orange 20px)";
           }
         }
