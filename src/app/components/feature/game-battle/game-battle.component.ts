@@ -21,6 +21,8 @@ export class GameBattleComponent {
 
   isPowerSelected: boolean = false;
 
+  informationFrame: any = {};
+
   constructor(
     private gameStateService: GameStateService,
     private popupService: PopupService
@@ -100,6 +102,8 @@ export class GameBattleComponent {
       this.gameStateService.powerDash(position);
       this.changeTilesBackground([], "");
       this.isPowerSelected = false;
+    } else if (this.gameState.grid[position[0]][position[1]] !== "" && this.gameState.grid[position[0]][position[1]].type) {
+      this.fillInformationFrame(this.gameState.grid[position[0]][position[1]]);
     }
     this.tilesBackgroundUpdate();
     // tutorial
@@ -107,6 +111,14 @@ export class GameBattleComponent {
       this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial")])
       this.gameState.difficulty = 0.2;
     }
+  }
+
+  fillInformationFrame(obj: any): void {
+    this.informationFrame = obj;
+  }
+
+  onCloseInformationFrameReceive(): void {
+    this.informationFrame = {};
   }
 
   onClosePopupReceive(): void {

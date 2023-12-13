@@ -19,6 +19,7 @@ import { BattleConstructionsComponent } from './components/ui/battle/battle-cons
 import { BattleGridComponent } from './components/ui/battle/battle-grid/battle-grid.component';
 import { BattleCharacterComponent } from './components/ui/battle/battle-character/battle-character.component';
 import { PopupComponent } from './components/ui/popup/popup.component';
+import { InformationFrameComponent } from './components/ui/battle/information-frame/information-frame.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PopupComponent } from './components/ui/popup/popup.component';
     BattleConstructionsComponent,
     BattleGridComponent,
     BattleCharacterComponent,
-    PopupComponent
+    PopupComponent,
+    InformationFrameComponent
   ],
   imports: [
     BrowserModule,
