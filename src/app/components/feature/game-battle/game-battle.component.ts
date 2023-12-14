@@ -101,12 +101,13 @@ export class GameBattleComponent {
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
     } else if (this.isPowerSelected && (position[0] === this.getCharacterPosition()[0] || position[1] === this.getCharacterPosition()[1]) && this.gameState.grid[position[0]][position[1]] === ""){
       this.gameStateService.powerDash(position);
-      this.changeTilesBackground([], "");
+      //this.changeTilesBackground([], "");
       this.isPowerSelected = false;
     } else if (this.gameState.grid[position[0]][position[1]] !== "" && this.gameState.grid[position[0]][position[1]].type) {
       this.fillInformationFrame(this.gameState.grid[position[0]][position[1]]);
     }
     this.tilesBackgroundUpdate();
+    this.addTilesBackground();
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
       this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial"),new PopupMessage("Zone déplacement", "Look", "tutorial"),new PopupMessage("Si mort", "On a trois tours", "tutorial")])
@@ -134,41 +135,33 @@ export class GameBattleComponent {
   }
 
   onUsePowerReceive(): void {
-    if (this.gameState.currentPowerCoolDown === this.gameState.maxPowerCoolDown){
-      this.isPowerSelected = !this.isPowerSelected;
-      if (this.isPowerSelected && this.gameState.power === "dash"){
-        let dashZone: number[][] = [];
-        let charPosition: number[] = this.getCharacterPosition();
-        for (let r = 0; r < this.gameState.grid.length; r++){
-          for (let c = 0; c < this.gameState.grid[r].length; c++){
-            if (this.gameState.grid[r][c] === "" && (r === charPosition[0] || c === charPosition[1])){
-              dashZone.push([r,c]);
-            }
-          }
-        }
-        this.changeTilesBackground(dashZone, "movement");
-      } else {
-        this.changeTilesBackground([], "");
-      }
-      // tutorial
-      if (this.isPowerSelected && this.gameState.difficulty < 1) {
-        this.popupService._setMessage$([new PopupMessage("Power - dash", "Déplacement durant le tour sur n'importe quelle case vide horizontale ou verticale.", "tutorial")]);
-      }
+    if (this.gameState.currentPowerCoolDown !== this.gameState.maxPowerCoolDown) return;
+
+    this.isPowerSelected = !this.isPowerSelected;
+    if (this.isPowerSelected && this.gameState.power === "dash"){
+      this.addTilesBackground();
+    } else {
+      this.tilesBackgroundUpdate();
     }
   }
 
-  changeTilesBackground(tiles: number[][], type: string): void {
-    if (type === ""){
-      for (let r = 0; r < this.gameState.grid.length; r++){
-        for (let c = 0; c < this.gameState.grid[r].length; c++){
-          (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r].children[c] as HTMLTableElement).style.background = "";
+  addTilesBackground(): void {
+    if (this.isPowerSelected) {
+      let powerZone: number[][] = [];
+      let charPosition: number[] = this.getCharacterPosition();
+      if (this.gameState.power === "dash") {
+        for (let r = 0; r < this.gameState.grid.length; r++){
+          for (let c = 0; c < this.gameState.grid[r].length; c++){
+            if (this.gameState.grid[r][c] === "" && (r === charPosition[0] || c === charPosition[1])){
+              powerZone.push([r,c]);
+            }
+          }
         }
       }
-    }
-    for (let coordinates = 0; coordinates < tiles.length; coordinates++){
-      let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[tiles[coordinates][0]].children[tiles[coordinates][1]] as HTMLTableElement).style;
-      if (type === "movement") currentStyle.background = "repeating-radial-gradient(circle, purple, purple 10px, transparent 10px, transparent 20px)";
-      else if (type === "attack") currentStyle.background = "repeating-radial-gradient(circle, red, red 10px, #4b026f 10px, #4b026f 20px)";
+      for (let coordinates = 0; coordinates < powerZone.length; coordinates++){
+        let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[powerZone[coordinates][0]].children[powerZone[coordinates][1]] as HTMLTableElement).style;
+        currentStyle.background = "repeating-radial-gradient(circle, purple, purple 10px, transparent 10px, transparent 20px)";
+      }
     }
   }
 
