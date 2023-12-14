@@ -15,5 +15,6 @@
             (click)="usePower()"
             [ngClass]="isPowerSelected ? 'power-selected' : ''"
             >{{ gameState.power }}</button>
+        <p *ngIf="isPowerSelected">Power dash explication</p>
     </div>
 </div>
