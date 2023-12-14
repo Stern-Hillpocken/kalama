@@ -193,6 +193,8 @@ export class GameStateService {
 
   moveCharacter(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.state === "preparation") return;
+
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
