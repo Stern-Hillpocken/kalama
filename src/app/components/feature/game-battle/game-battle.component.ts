@@ -24,6 +24,14 @@ export class GameBattleComponent {
 
   informationFrame: any = {};
 
+  overlapBackgroundSpecial: string = "repeating-linear-gradient(-45deg,transparent,transparent 12.5%,var(--color-special) 12.5%,var(--color-special) 25%)";
+  overlapBackgroundAlly: string = "repeating-linear-gradient(-45deg,transparent,transparent 12.5%,var(--color-ally) 12.5%,var(--color-ally) 25%)";
+  overlapBackgroundEnemy: string = "repeating-linear-gradient(-45deg,transparent,transparent 12.5%,var(--color-enemy) 12.5%,var(--color-enemy) 25%)";
+  overlapBackgroundAllyEnemy: string = "repeating-linear-gradient(-45deg,var(--color-ally),var(--color-ally) 12.5%,var(--color-enemy) 12.5%,var(--color-enemy) 25%)";
+  overlapBackgroundSpecialAlly: string = "repeating-linear-gradient(-45deg,var(--color-special),var(--color-special) 12.5%,var(--color-ally) 12.5%,var(--color-ally) 25%)";
+  overlapBackgroundSpecialEnemy: string = "repeating-linear-gradient(-45deg,var(--color-special),var(--color-special) 12.5%,var(--color-enemy) 12.5%,var(--color-enemy) 25%)";
+  overlapBackgroundSpecialAllyEnemy: string = "repeating-linear-gradient(-45deg,lightblue,lightblue 16.66%,teal 16.66%,teal 33.22%, orange 33.22%, orange 50%)";
+
   constructor(
     private gameStateService: GameStateService,
     private popupService: PopupService
@@ -160,7 +168,12 @@ export class GameBattleComponent {
       }
       for (let coordinates = 0; coordinates < powerZone.length; coordinates++){
         let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[powerZone[coordinates][0]].children[powerZone[coordinates][1]] as HTMLTableElement).style;
-        currentStyle.background = "repeating-radial-gradient(circle, purple, purple 10px, transparent 10px, transparent 20px)";
+        switch (currentStyle.background){
+          case this.overlapBackgroundAlly : currentStyle.background = this.overlapBackgroundSpecialAlly; break;
+          case this.overlapBackgroundEnemy : currentStyle.background = this.overlapBackgroundSpecialEnemy; break;
+          case this.overlapBackgroundAllyEnemy : currentStyle.background = this.overlapBackgroundSpecialAllyEnemy; break;
+          default : currentStyle.background = this.overlapBackgroundSpecial;
+        }
       }
     }
   }
@@ -176,11 +189,15 @@ export class GameBattleComponent {
 
         if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "enemy"){
           if (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "down" && r+1 < this.gameState.grid.length) {
-            (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,lightblue,lightblue 10px,teal 10px,teal 20px)";
+            let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style;
+            if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
+            else currentStyle.background = this.overlapBackgroundEnemy;
           }
         } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
           if (this.gameState.grid[r][c].targetSpot === "top" && r-1 >= 0){
-            (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style.background = "repeating-linear-gradient(-45deg,red,red 10px,orange 10px,orange 20px)";
+            let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style;
+            if (currentStyle.background === this.overlapBackgroundEnemy) currentStyle.background = this.overlapBackgroundAllyEnemy;
+            else currentStyle.background = this.overlapBackgroundAlly;
           }
         }
 
