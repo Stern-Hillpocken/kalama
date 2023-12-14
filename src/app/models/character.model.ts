@@ -4,6 +4,7 @@ export class Character {
         public image: string,
         public life: number,
         public damage: number,
+        public description: string,
         public type: "character"
     ){}
 }

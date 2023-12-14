@@ -4,6 +4,7 @@ export class Building {
         public image: string,
         public life: number,
         public efficiency: number,
+        public description: string,
         public type: "building"
     ){}
 }

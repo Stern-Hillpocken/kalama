@@ -11,6 +11,7 @@ export class Enemy {
 
         public damage: number,
 
+        public description: string,
         public type: "enemy"
     ){}
 }

@@ -2,7 +2,7 @@
     <div>
         <img
             *ngIf="!isCharacterOnTheGrid"
-            src="assets/images/sprites/character/character.png"
+            src="assets/images/sprites/character/{{gameState.koCounter === 0 ? 'character' : 'ko'}}.png"
             alt="character"
             (dragend)="onDragEnd($event)">
         <img
