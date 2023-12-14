@@ -6,15 +6,18 @@ import { Tower } from '../models/tower.model';
 import { Building } from '../models/building.model';
 import { Character } from '../models/character.model';
 import { Enemy } from '../models/enemy.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("battle", 0, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1, type:"resource"},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2, type:"resource"},""],["","","","","",""]])); // tutorial settings
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   _getGameState$(): Observable<GameState> {
     return this._gameState$.asObservable();
@@ -22,6 +25,10 @@ export class GameStateService {
 
   _setGameState$(state: GameState): void {
     this._gameState$.next(state);
+  }
+
+  initialisation(difficulty: number): void {
+    this._setGameState$(new GameState("battle", difficulty, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1, type:"resource"},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2, type:"resource"},""],["","","","","",""]])); 
   }
 
   endTurn(): void {
@@ -211,8 +218,10 @@ export class GameStateService {
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "enemy") return;
       }
     }
+    
     newGameState.display = "map";
-    //this._setGameState$(newGameState);
+
+    if (newGameState.difficulty < 1) this.router.navigateByUrl("");
   }
 
   getCharacterPosition(): number[] {
