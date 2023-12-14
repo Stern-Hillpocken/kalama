@@ -7,6 +7,7 @@ export class Tower {
         public state: string[],
         public step: number,
         public targetSpot: string,
+        public description: string,
         public type: string
     ){}
 }

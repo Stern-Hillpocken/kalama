@@ -7,6 +7,7 @@ import { Building } from '../models/building.model';
 import { Character } from '../models/character.model';
 import { Enemy } from '../models/enemy.model';
 import { Router } from '@angular/router';
+import { Resource } from '../models/resource.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class GameStateService {
   }
 
   initialisation(difficulty: number): void {
-    this._setGameState$(new GameState("battle", difficulty, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",{name: "wood", image:"wood", life:1, type:"resource"},"","","",""],["","","","","",""],["","","","",{name: "stone", image:"stone", life:2, type:"resource"},""],["","","","","",""]])); 
+    this._setGameState$(new GameState("battle", difficulty, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
   }
 
   endTurn(): void {
@@ -151,7 +152,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newGameState.spawnStrip[newGameState.wave], newGameState.spawnStrip[newGameState.wave], 1, 0, ["down"], newGameState.wave, 1, "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newGameState.spawnStrip[newGameState.wave], newGameState.spawnStrip[newGameState.wave], 1, 0, ["down"], newGameState.wave, 1, "Un ennemi qui vous attaque", "enemy");
     this._setGameState$(newGameState);
   }
 
@@ -159,12 +160,12 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "character");
+    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        newGameState.grid[position[0]][position[1]] = new Building(name, name, 1, 1, "building");
+        newGameState.grid[position[0]][position[1]] = new Building(name, name, 1, 1, "Doit être placé à gauche ou droite d'une ressource", "building");
         break;
       }
     }
@@ -182,7 +183,7 @@ export class GameStateService {
         if (characterPosition.length === 0) return;
         if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
           newGameState.towersAvailable.splice(i,1);
-          newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "tower");
+          newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour", "tower");
           this.endTurn();
           break;
         }

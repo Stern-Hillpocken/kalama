@@ -49,7 +49,7 @@ export class GameBattleComponent {
         if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
           // tutorial
           if (this.gameState.difficulty === 0 && this.gameState.buildingsAvailable.length === 0){
-            this.popupService._setMessage$([new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe : donner la séquence d'activation (nos build puis ennemis)", "tutorial")]);
+            this.popupService._setMessage$([new PopupMessage("Prêt", "Clic ready", "tutorial"),new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe : donner la séquence d'activation (nos build puis ennemis)", "tutorial")]);
             this.gameState.difficulty = 0.1;
           }
           return true;
@@ -109,7 +109,7 @@ export class GameBattleComponent {
     this.tilesBackgroundUpdate();
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
-      this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial")])
+      this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial"),new PopupMessage("Zone déplacement", "Look", "tutorial"),new PopupMessage("Si mort", "On a trois tours", "tutorial")])
       this.gameState.difficulty = 0.2;
     }
   }
