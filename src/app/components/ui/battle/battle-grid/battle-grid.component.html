@@ -15,9 +15,25 @@
                 (dragenter)="onDragEnter($event)"
                 (dragleave)="onDragLeave($event)">
                 <img
-                    *ngIf='gameState.grid[r][c] !== "" '
+                    *ngIf="gameState.grid[r][c] !== '' "
                     src='assets/images/sprites/{{gameState.grid[r][c].type}}/{{gameState.grid[r][c].image}}.png'
                     draggable="false">
+            </td>
+        </tr>
+    </table>
+    <table class="life" [ngStyle]="{'visibility': gameState.isBattleLifeDisplayed ? 'visible' : 'hidden'}">
+        <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
+            <td
+                *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index"
+                (click)="onCellClick($event)"
+                (dragenter)="onDragEnter($event)"
+                (dragleave)="onDragLeave($event)">
+                <span *ngIf="gameState.grid[r][c].life">
+                    <img
+                    *ngFor="let times of [].constructor(gameState.grid[r][c].life)"
+                    src='assets/images/icons/heart-1.png'
+                    draggable="false">
+                </span>
             </td>
         </tr>
     </table>

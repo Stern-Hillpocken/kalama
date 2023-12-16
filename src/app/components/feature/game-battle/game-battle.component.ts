@@ -205,4 +205,8 @@ export class GameBattleComponent {
     }
   }
 
+  onChangeLifeDisplayReceive(): void {
+    this.gameState.isBattleLifeDisplayed = !this.gameState.isBattleLifeDisplayed;
+  }
+
 }

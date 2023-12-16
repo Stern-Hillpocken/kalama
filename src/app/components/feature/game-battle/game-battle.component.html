@@ -22,6 +22,7 @@
     [gameState]="gameState"
     [isCharacterOnTheGrid]="isCharacterOnTheGrid"
     [isPowerSelected]="isPowerSelected"
+    (changeLifeDisplayEmitter)="onChangeLifeDisplayReceive()"
     (actionEmitter)="onActionReceive($event)"
     (readyForBattleEmitter)="onReadyForBattleReceive()"
     (usePowerEmitter)="onUsePowerReceive()"

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { GameState } from 'src/app/models/game-state.model';
 
 @Component({

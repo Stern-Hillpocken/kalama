@@ -3,6 +3,7 @@ export class GameState {
         public display: string,
         public difficulty: number,
         public state: string,
+        public isBattleLifeDisplayed: boolean,
 
         public structure: number,
         public koCounter: number,
