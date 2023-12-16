@@ -14,7 +14,7 @@ import { Resource } from '../models/resource.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   constructor(
     private router: Router
@@ -29,7 +29,7 @@ export class GameStateService {
   }
 
   initialisation(difficulty: number): void {
-    this._setGameState$(new GameState("battle", difficulty, "preparation", 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
+    this._setGameState$(new GameState("battle", difficulty, "preparation", false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
   }
 
   endTurn(): void {
@@ -110,7 +110,7 @@ export class GameStateService {
             } else if (newGameState.grid[r+1][c] !== "enemy"){
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0){
-                if (newGameState.grid[r+1][c].type === "character") newGameState.koCounter = 3;
+                if (newGameState.grid[r+1][c].type === "character") newGameState.koCounter = newGameState.maxPowerCoolDown;
                 newGameState.grid[r+1][c] = "";
               }
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);

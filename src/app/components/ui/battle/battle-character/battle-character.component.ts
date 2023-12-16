@@ -26,6 +26,9 @@ export class BattleCharacterComponent {
   @Output()
   usePowerEmitter: EventEmitter<void> = new EventEmitter();
 
+  @Output()
+  changeLifeDisplayEmitter: EventEmitter<void> = new EventEmitter();
+
   wait(): void {
     this.actionEmitter.emit("wait");
   }
@@ -36,6 +39,10 @@ export class BattleCharacterComponent {
 
   usePower(): void {
     this.usePowerEmitter.emit();
+  }
+
+  changeLifeDisplay(): void {
+    this.changeLifeDisplayEmitter.emit();
   }
 
 }

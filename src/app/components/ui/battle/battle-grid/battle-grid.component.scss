@@ -32,3 +32,20 @@ img {
     right: 0;
     z-index: 2;
 }
+
+.life {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    td {
+        text-align: center;
+        vertical-align: bottom;
+    }
+    img {
+        height: calc(5%*(100/16)); // 5 : heart px, 16 : tile px
+        width: calc(5%*(100/16));
+        display: inline-block;
+        margin-right: 1px;
+    }
+}
