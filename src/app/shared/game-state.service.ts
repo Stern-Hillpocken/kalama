@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GameState } from '../models/game-state.model';
-import { PopupService } from './popup.service';
 import { Tower } from '../models/tower.model';
 import { Building } from '../models/building.model';
 import { Character } from '../models/character.model';
@@ -14,7 +13,7 @@ import { Resource } from '../models/resource.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   constructor(
     private router: Router
@@ -29,7 +28,7 @@ export class GameStateService {
   }
 
   initialisation(difficulty: number): void {
-    this._setGameState$(new GameState("battle", difficulty, "preparation", false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
+    this._setGameState$(new GameState("battle", difficulty, "preparation", [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
   }
 
   endTurn(): void {
@@ -54,7 +53,7 @@ export class GameStateService {
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "building"){
-          let building = newGameState.grid[r][c];
+          let building : Building = newGameState.grid[r][c];
 
           if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
             newGameState.wood += building.efficiency;
@@ -72,7 +71,7 @@ export class GameStateService {
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "tower"){
-          let tower = newGameState.grid[r][c];
+          let tower: Tower = newGameState.grid[r][c];
 
           // trigger
           if (tower.state[tower.step] === "attack"){
@@ -110,7 +109,10 @@ export class GameStateService {
             } else if (newGameState.grid[r+1][c] !== "enemy"){
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0){
-                if (newGameState.grid[r+1][c].type === "character") newGameState.koCounter = newGameState.maxPowerCoolDown;
+                if (newGameState.grid[r+1][c].type === "character") {
+                  newGameState.koCounter = newGameState.maxPowerCoolDown;
+                  newGameState.charcaterPosition = [-1,-1];
+                }
                 newGameState.grid[r+1][c] = "";
               }
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
@@ -160,7 +162,10 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
-    if (name === "character" && newGameState.koCounter === 0) newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
+    if (name === "character" && newGameState.koCounter === 0) {
+      newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
+      newGameState.charcaterPosition = [position[0],position[1]];
+    }
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
@@ -183,7 +188,8 @@ export class GameStateService {
         if (characterPosition.length === 0) return;
         if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
           newGameState.towersAvailable.splice(i,1);
-          newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour", "tower");
+          if (name === "ram") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour qui attaque devant elle une fois sur deux.", "tower");
+          else if (name === "wall") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 3,  0, ["wait"], 0, "", "Un tour de défense.", "tower");
           this.endTurn();
           break;
         }
@@ -201,6 +207,7 @@ export class GameStateService {
         if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
           if (newGameState.grid[position[0]][position[1]] === ""){
             newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
+            newGameState.charcaterPosition = [position[0],position[1]];
             newGameState.grid[r][c] = "";
           } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
@@ -227,22 +234,12 @@ export class GameStateService {
     if (newGameState.difficulty < 1) this.router.navigateByUrl("");
   }
 
-  getCharacterPosition(): number[] {
-    let newGameState: GameState = this._gameState$.getValue();
-    for (let r = 0; r < newGameState.grid.length; r++){
-      for (let c = 0; c < newGameState.grid[r].length; c++){
-        if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character") return [r,c];
-      }
-    }
-    return [];
-  }
-
   powerDash(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
-    let charPosition: number[] = this.getCharacterPosition();
     if (newGameState.grid[position[0]][position[1]] === ""){
-      newGameState.grid[position[0]][position[1]] = newGameState.grid[charPosition[0]][charPosition[1]];
-      newGameState.grid[charPosition[0]][charPosition[1]] = "";
+      newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]];
+      newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]] = "";
+      newGameState.charcaterPosition = [position[0],position[1]];
       newGameState.currentPowerCoolDown = 0;
       this.endTurn();
     }

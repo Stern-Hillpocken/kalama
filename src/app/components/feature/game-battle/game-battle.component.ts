@@ -86,20 +86,9 @@ export class GameBattleComponent {
     this.tilesBackgroundUpdate();
   }
 
-  getCharacterPosition(): number[] {
-    for (let r = 0; r < this.gameState.grid.length; r++){
-      for(let c = 0; c < this.gameState.grid[r].length; c++){
-        if (this.gameState.grid[r][c].name && this.gameState.grid[r][c].name === "character"){
-          return [r,c];
-        }
-      }
-    }
-    return [];
-  }
-
   isNearByCharacter(position: number[]): boolean {
-    let characterPosition: number[] = this.getCharacterPosition();
-    if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))) return true;
+    let charPos: number[] = this.gameState.charcaterPosition;
+    if (((position[0] === charPos[0]+1 || position[0] === charPos[0]-1) && position[1] === charPos[1]) || (position[0] === charPos[0] && (position[1] === charPos[1]-1 || position[1] === charPos[1]+1))) return true;
     return false;
   }
 
@@ -107,7 +96,7 @@ export class GameBattleComponent {
     if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
-    } else if (this.isPowerSelected && (position[0] === this.getCharacterPosition()[0] || position[1] === this.getCharacterPosition()[1]) && this.gameState.grid[position[0]][position[1]] === ""){
+    } else if (this.isPowerSelected && (position[0] === this.gameState.charcaterPosition[0] || position[1] === this.gameState.charcaterPosition[1]) && this.gameState.grid[position[0]][position[1]] === ""){
       this.gameStateService.powerDash(position);
       //this.changeTilesBackground([], "");
       this.isPowerSelected = false;
@@ -156,11 +145,11 @@ export class GameBattleComponent {
   addTilesBackground(): void {
     if (this.isPowerSelected) {
       let powerZone: number[][] = [];
-      let charPosition: number[] = this.getCharacterPosition();
+      let charPos: number[] = this.gameState.charcaterPosition;
       if (this.gameState.power === "dash") {
         for (let r = 0; r < this.gameState.grid.length; r++){
           for (let c = 0; c < this.gameState.grid[r].length; c++){
-            if (this.gameState.grid[r][c] === "" && (r === charPosition[0] || c === charPosition[1])){
+            if (this.gameState.grid[r][c] === "" && (r === charPos[0] || c === charPos[1])){
               powerZone.push([r,c]);
             }
           }
