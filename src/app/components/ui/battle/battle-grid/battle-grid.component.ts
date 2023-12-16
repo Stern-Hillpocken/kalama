@@ -75,4 +75,22 @@ export class BattleGridComponent {
     this.clickCellPositionEmitter.emit([row, col]);
   }
 
+  heartTimesDisplay(heartType: number, lifeTotal: number): number {
+    // Special display
+    if(lifeTotal === 3) {
+      if (heartType === 3) return 0;
+      if (heartType === 1) return 3;
+    }
+
+    let count: number = 0;
+    if (heartType === 6) {
+      count = Math.floor(lifeTotal/6);
+    } else if (heartType === 3) {
+      count = Math.floor(lifeTotal%6/3);
+    } else {
+      count = Math.floor(lifeTotal%3);
+    }
+    return count;
+  }
+
 }

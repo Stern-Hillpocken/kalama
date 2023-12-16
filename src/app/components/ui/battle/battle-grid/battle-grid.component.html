@@ -30,7 +30,15 @@
                 (dragleave)="onDragLeave($event)">
                 <span *ngIf="gameState.grid[r][c].life">
                     <img
-                    *ngFor="let times of [].constructor(gameState.grid[r][c].life)"
+                    *ngFor="let times of [].constructor(heartTimesDisplay(6, gameState.grid[r][c].life))"
+                    src='assets/images/icons/heart-6.png'
+                    draggable="false">
+                    <img
+                    *ngFor="let times of [].constructor(heartTimesDisplay(3, gameState.grid[r][c].life))"
+                    src='assets/images/icons/heart-3.png'
+                    draggable="false">
+                    <img
+                    *ngFor="let times of [].constructor(heartTimesDisplay(1, gameState.grid[r][c].life))"
                     src='assets/images/icons/heart-1.png'
                     draggable="false">
                 </span>
