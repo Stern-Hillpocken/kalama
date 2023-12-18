@@ -12,19 +12,22 @@
             <td>Efficiency</td><td>{{informationFrame.efficiency}}</td>
         </tr>
         <tr *ngIf="informationFrame.type === 'tower'">
-            <td>State</td><td>{{informationFrame.state}}</td>
-        </tr>
-        <tr *ngIf="informationFrame.type === 'tower'">
-            <td>Step</td><td>{{informationFrame.step}}</td>
+            <td>Séquence</td><td>
+                <span *ngFor="let s of [].constructor(informationFrame.state.length); let i = index" [ngStyle]="{'color': i === informationFrame.step ? 'red' : ''}">
+                    {{informationFrame.state[i]}}
+                </span>
+            </td>
         </tr>
         <tr *ngIf="informationFrame.type === 'tower'">
             <td>Spot</td><td>{{informationFrame.targetSpot}}</td>
         </tr>
         <tr *ngIf="informationFrame.type === 'enemy'">
-            <td>CurrentMoveStep</td><td>{{informationFrame.currentMoveStep}}</td>
-        </tr>
-        <tr *ngIf="informationFrame.type === 'enemy'">
-            <td>Moves</td><td>{{informationFrame.moves}}</td>
+            <td>Moves</td>
+            <td>
+                <span *ngFor="let move of [].constructor(informationFrame.moves.length); let i = index" [ngStyle]="{'color': i === informationFrame.currentMoveStep ? 'red' : ''}">
+                    {{informationFrame.moves[i]}}
+                </span>
+            </td>
         </tr>
         <tr>
             <td>Description</td><td>{{informationFrame.description}}</td>

@@ -55,7 +55,10 @@ export class BattleGridComponent {
       col = event.target.parentNode.cellIndex;
     }
 
-    if (this.gameState.grid[row][col] === "") event.target.style.backgroundColor = "green";
+    if (this.gameState.grid[row][col] === "") {
+      if(this.gameState.state === "preparation" || this.isNearByCharacter([row,col])) event.target.style.backgroundColor = "green";
+      else event.target.style.backgroundColor = "red";
+    }
     else if (event.target.tagName === "TD") event.target.style.backgroundColor = "red";
     else if (event.target.tagName === "IMG") event.target.parentNode.style.backgroundColor = "red";
     this.dragPositionEmitter.emit([row, col]);
@@ -91,6 +94,11 @@ export class BattleGridComponent {
       count = Math.floor(lifeTotal%3);
     }
     return count;
+  }
+
+  isNearByCharacter(position: number[]): boolean {
+    if (Math.abs(position[0] - this.gameState.charcaterPosition[0]) <= 1 && Math.abs(position[1] - this.gameState.charcaterPosition[1]) <= 1) return true;
+    return false;
   }
 
 }
