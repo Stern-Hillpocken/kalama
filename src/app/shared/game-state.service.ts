@@ -175,18 +175,9 @@ export class GameStateService {
       }
     }
 
-    let characterPosition: number[] = [];
-    for (let r = 0; r < newGameState.grid.length; r++){
-      for(let c = 0; c < newGameState.grid[r].length; c++){
-        if (newGameState.grid[r][c].image && newGameState.grid[r][c].image === "character"){
-          characterPosition = [r,c];
-        }
-      }
-    }
     for (let i = 0; i < newGameState.towersAvailable.length; i++){
       if (newGameState.towersAvailable[i] === name){
-        if (characterPosition.length === 0) return;
-        if (((position[0] === characterPosition[0]+1 || position[0] === characterPosition[0]-1) && position[1] === characterPosition[1]) || (position[0] === characterPosition[0] && (position[1] === characterPosition[1]-1 || position[1] === characterPosition[1]+1))){
+        if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           if (name === "ram") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour qui attaque devant elle une fois sur deux.", "tower");
           else if (name === "wall") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 3,  0, ["wait"], 0, "", "Un tour de défense.", "tower");
@@ -195,7 +186,12 @@ export class GameStateService {
         }
       }
     }
-    //this._setGameState$(newGameState);
+  }
+
+  isDiagonallyNearByCharacter(position: number[]): boolean {
+    let charPos: number[] = this._gameState$.getValue().charcaterPosition;
+    if (Math.abs(position[0] - charPos[0]) <= 1 && Math.abs(position[1] - charPos[1]) <= 1) return true;
+    return false;
   }
 
   moveCharacter(position: number[]): void {
