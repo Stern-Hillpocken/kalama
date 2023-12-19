@@ -20,6 +20,8 @@ import { BattleGridComponent } from './components/ui/battle/battle-grid/battle-g
 import { BattleCharacterComponent } from './components/ui/battle/battle-character/battle-character.component';
 import { PopupComponent } from './components/ui/popup/popup.component';
 import { InformationFrameComponent } from './components/ui/battle/information-frame/information-frame.component';
+import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices.component';
+import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { InformationFrameComponent } from './components/ui/battle/information-fr
     BattleGridComponent,
     BattleCharacterComponent,
     PopupComponent,
-    InformationFrameComponent
+    InformationFrameComponent,
+    MapChoicesComponent,
+    MapHudComponent
   ],
   imports: [
     BrowserModule,

@@ -4,10 +4,10 @@
     <p>Stone&nbsp;: {{ gameState.stone }}</p>
     <button (click)="changeLifeDisplay()">Life ?</button>
     <button
-        *ngIf="isCharacterOnTheGrid && gameState.state !== 'ready'"
+        *ngIf="isCharacterOnTheGrid && gameState.status !== 'ready'"
         (click)="readyForBattle();"
         >Ready for battle</button>
-    <div *ngIf="gameState.state === 'ready'">
+    <div *ngIf="gameState.status === 'ready'">
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
         <button (click)="wait()">Wait</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.maxPowerCoolDown }}</p>
