@@ -3,6 +3,7 @@ export class MapState {
         public battleCount: number,
         public campCount: number,
         public eliteCount: number,
-        public sellerCount: number
+        public sellerCount: number,
+        public startingEventsCount: number
     ){}
 }

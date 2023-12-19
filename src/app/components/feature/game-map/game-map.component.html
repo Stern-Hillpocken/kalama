@@ -1,5 +1,7 @@
+<app-map-header></app-map-header>
 <app-map-choices
     [gameState]="gameState"
+    (goToEventEmitter)="onGoToEventReceive($event)"
 ></app-map-choices>
 <app-map-hud
     [gameState]="gameState"

@@ -1,1 +1,6 @@
-<p>map-choices works!</p>
+<div>
+    <button (click)="goToEvent('battle')" [disabled]="gameState.mapState.battleCount === 0">Battle count x{{gameState.mapState.battleCount}}</button>
+    <button (click)="goToEvent('camp')" [disabled]="gameState.mapState.campCount === 0">Camp count x{{gameState.mapState.campCount}}</button>
+    <button (click)="goToEvent('elite')" [disabled]="gameState.mapState.eliteCount === 0">Elite count x{{gameState.mapState.eliteCount}}</button>
+    <button (click)="goToEvent('seller')" [disabled]="gameState.mapState.sellerCount === 0">Seller count x{{gameState.mapState.sellerCount}}</button>
+</div>

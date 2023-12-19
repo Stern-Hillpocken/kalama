@@ -22,6 +22,7 @@ import { PopupComponent } from './components/ui/popup/popup.component';
 import { InformationFrameComponent } from './components/ui/battle/information-frame/information-frame.component';
 import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices.component';
 import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
+import { MapHeaderComponent } from './components/ui/map/map-header/map-header.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
     PopupComponent,
     InformationFrameComponent,
     MapChoicesComponent,
-    MapHudComponent
+    MapHudComponent,
+    MapHeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -19,4 +19,8 @@ export class GameMapComponent {
     this.gameStateService._getGameState$().subscribe(state => this.gameState = state);
   }
 
+  onGoToEventReceive(typeOfEvent: string): void {
+    console.log(typeOfEvent)
+  }
+
 }
