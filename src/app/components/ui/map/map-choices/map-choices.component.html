@@ -1,0 +1,7 @@
+<div class="map-choices">
+    <button (click)="goToEvent('boss')" *ngIf="gameState.mapState.battleCount + gameState.mapState.eliteCount === 0">BOSS</button>
+    <button (click)="goToEvent('battle')" *ngIf="gameState.mapState.battleCount !== 0">Battle count x{{gameState.mapState.battleCount}}</button>
+    <button (click)="goToEvent('camp')" *ngIf="gameState.mapState.campCount !== 0">Camp count x{{gameState.mapState.campCount}}</button>
+    <button (click)="goToEvent('elite')" *ngIf="gameState.mapState.eliteCount !== 0">Elite count x{{gameState.mapState.eliteCount}}</button>
+    <button (click)="goToEvent('seller')" *ngIf="gameState.mapState.sellerCount !== 0">Seller count x{{gameState.mapState.sellerCount}}</button>
+</div>

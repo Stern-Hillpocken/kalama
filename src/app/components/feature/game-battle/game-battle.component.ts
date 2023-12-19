@@ -126,7 +126,7 @@ export class GameBattleComponent {
   onReadyForBattleReceive(): void {
     if (this.checkIfCharacterIsOnTheGrid()){
       this.gameState.buildingsAvailable = [];
-      this.gameState.state = "ready";
+      this.gameState.status = "ready";
     }
   }
 

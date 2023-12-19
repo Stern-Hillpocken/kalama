@@ -28,4 +28,9 @@ export class HomeDisplayComponent {
     this.isLoadout = false;
   }
 
+  onLaunchGameReceive(): void {
+    this.gameStateService.initialisation(1);
+    this.router.navigateByUrl("game");
+  }
+
 }

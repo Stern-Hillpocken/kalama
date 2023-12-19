@@ -7,4 +7,5 @@
 <app-home-loadout
     *ngIf="isLoadout"
     (closeLoadoutEmitter)="onCloseLoadoutReceive()"
-    ></app-home-loadout>
+    (launchGameEmitter)="onLaunchGameReceive()"
+></app-home-loadout>

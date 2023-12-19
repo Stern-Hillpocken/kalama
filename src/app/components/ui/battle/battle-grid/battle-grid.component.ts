@@ -56,7 +56,7 @@ export class BattleGridComponent {
     }
 
     if (this.gameState.grid[row][col] === "") {
-      if(this.gameState.state === "preparation" || this.isNearByCharacter([row,col])) event.target.style.backgroundColor = "green";
+      if(this.gameState.status === "preparation" || this.isNearByCharacter([row,col])) event.target.style.backgroundColor = "green";
       else event.target.style.backgroundColor = "red";
     }
     else if (event.target.tagName === "TD") event.target.style.backgroundColor = "red";

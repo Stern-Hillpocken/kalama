@@ -7,13 +7,14 @@ import { Character } from '../models/character.model';
 import { Enemy } from '../models/enemy.model';
 import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
+import { MapState } from '../models/map-state.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   constructor(
     private router: Router
@@ -28,7 +29,8 @@ export class GameStateService {
   }
 
   initialisation(difficulty: number): void {
-    this._setGameState$(new GameState("battle", difficulty, "preparation", [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]])); 
+    if (difficulty === 0) this._setGameState$(new GameState("battle", difficulty, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    else this._setGameState$(new GameState("map", difficulty, "preparation", new MapState(12,3,2,2,20), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, [], []));
   }
 
   endTurn(): void {
@@ -196,7 +198,7 @@ export class GameStateService {
 
   moveCharacter(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
-    if (newGameState.state === "preparation") return;
+    if (newGameState.status === "preparation") return;
 
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){

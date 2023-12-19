@@ -10,8 +10,15 @@ export class HomeLoadoutComponent {
   @Output()
   closeLoadoutEmitter: EventEmitter<void> = new EventEmitter();
 
+  @Output()
+  launchGameEmitter: EventEmitter<void> = new EventEmitter();
+
   closeLoadout(): void {
     this.closeLoadoutEmitter.emit();
+  }
+
+  launchGame(): void {
+    this.launchGameEmitter.emit();
   }
 
 }
