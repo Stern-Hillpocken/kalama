@@ -38,6 +38,10 @@ export class GameStateService {
     this._gameState$.next(state);
   }
 
+  getTowers(): Tower[] {
+    return this.towers;
+  }
+
   initialisation(difficulty: number): void {
     if (difficulty === 0) this._setGameState$(new GameState("battle", difficulty, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
     else this._setGameState$(new GameState("map", difficulty, "preparation", new MapState(12,3,2,2,20), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, [], []));
