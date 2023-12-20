@@ -191,8 +191,12 @@ export class GameStateService {
       if (newGameState.towersAvailable[i] === name){
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
-          if (name === "ram") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour qui attaque devant elle une fois sur deux.", "tower");
-          else if (name === "wall") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 3,  0, ["wait"], 0, "", "Une tour de défense.", "tower");
+          for (let j = 0; j < this.towers.length; j++) {
+            if (this.towers[j].name === name) {
+              newGameState.grid[position[0]][position[1]] = this.towers[j];
+              break;
+            }
+          }
           this.endTurn();
           break;
         }

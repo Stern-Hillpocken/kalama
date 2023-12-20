@@ -181,8 +181,8 @@ export class GameBattleComponent {
             if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
             else currentStyle.background = this.overlapBackgroundEnemy;
           }
-        } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].state[this.gameState.grid[r][c].step] === "attack"){
-          if (this.gameState.grid[r][c].targetSpot === "top" && r-1 >= 0){
+        } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].sequence[this.gameState.grid[r][c].step] === "attack"){
+          if (this.gameState.grid[r][c].tileTargeted === "top" && r-1 >= 0){
             let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r-1].children[c] as HTMLTableElement).style;
             if (currentStyle.background === this.overlapBackgroundEnemy) currentStyle.background = this.overlapBackgroundAllyEnemy;
             else currentStyle.background = this.overlapBackgroundAlly;
