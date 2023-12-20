@@ -8,6 +8,7 @@ import { Enemy } from '../models/enemy.model';
 import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,18 @@ export class GameStateService {
 
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
+  private towers: Tower[] = [];
+
   constructor(
-    private router: Router
-  ) {}
+    private router: Router,
+    private http: HttpClient
+  ) {
+    this.http.get('assets/json/towers.json').subscribe((json: any) => {
+      for (let i = 0; i < json.length; i++){
+        this.towers.push(new Tower(json[i].name, json[i].name, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, "tower"));
+      }
+    });
+  }
 
   _getGameState$(): Observable<GameState> {
     return this._gameState$.asObservable();
@@ -76,17 +86,17 @@ export class GameStateService {
           let tower: Tower = newGameState.grid[r][c];
 
           // trigger
-          if (tower.state[tower.step] === "attack"){
-            if (tower.targetSpot.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
+          if (tower.sequence[tower.step] === "attack"){
+            if (tower.tileTargeted.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
               newGameState.grid[r-1][c].life -= tower.damage;
               if (newGameState.grid[r-1][c].life <= 0) newGameState.grid[r-1][c] = "";
             }
           }
           // add step
           tower.step ++;
-          if (tower.step >= tower.state.length) tower.step = 0;
+          if (tower.step >= tower.sequence.length) tower.step = 0;
           // change visual
-          if(tower.state[tower.step] === "attack") tower.image = tower.name + "-engaged";
+          if(tower.sequence[tower.step] === "attack") tower.image = tower.name + "-engaged";
           else tower.image = tower.name;
 
         }
@@ -182,7 +192,7 @@ export class GameStateService {
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           if (name === "ram") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 1,  1, ["wait", "attack"], 0, "top", "Une petite tour qui attaque devant elle une fois sur deux.", "tower");
-          else if (name === "wall") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 3,  0, ["wait"], 0, "", "Un tour de défense.", "tower");
+          else if (name === "wall") newGameState.grid[position[0]][position[1]] = new Tower(name, name, 3,  0, ["wait"], 0, "", "Une tour de défense.", "tower");
           this.endTurn();
           break;
         }

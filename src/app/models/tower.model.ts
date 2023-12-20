@@ -4,9 +4,9 @@ export class Tower {
         public image: string,
         public life: number,
         public damage: number,
-        public state: string[],
+        public sequence: string[],
         public step: number,
-        public targetSpot: string,
+        public tileTargeted: string,
         public description: string,
         public type: string
     ){}
