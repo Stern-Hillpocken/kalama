@@ -21,10 +21,13 @@ export class HomeLoadoutComponent {
 
   gameStateChoice!: GameState;
 
+  towerSelected!: Tower;
+
   lastTowerSlot: number = -1;
 
   ngOnInit(): void {
     this.setGameStateToDifficulty(1);
+    this.towerSelected = this.towers[0];
   }
 
   closeLoadout(): void {
@@ -58,6 +61,19 @@ export class HomeLoadoutComponent {
     }
   }
 
+  towerStatDisplay(name: string): void {
+    for (let i = 0; i < this.towers.length; i++) {
+      if (this.towers[i].name === name) {
+        this.towerSelected = this.towers[i];
+        break;
+      }
+    }
+  }
+
+  onDragStart(event: any): void {
+    this.towerStatDisplay(event.target.alt);
+  }
+
   onDragEnter(divId: number): void {
     this.lastTowerSlot = divId;
   }
@@ -68,8 +84,13 @@ export class HomeLoadoutComponent {
 
   onDragEnd(event: any): void {
     if (this.lastTowerSlot === -1) return;
+    while (this.lastTowerSlot > this.gameStateChoice.towersUnlocked.length) this.lastTowerSlot --;
     this.gameStateChoice.towersUnlocked[this.lastTowerSlot] = event.target.alt;
     this.lastTowerSlot = -1;
+  }
+
+  removeTower(index: number): void {
+    this.gameStateChoice.towersUnlocked.splice(index, 1);
   }
 
 }

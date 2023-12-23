@@ -18,11 +18,10 @@ th{
 
 .towers-selected {
     display: flex;
-    justify-content: center;
-    gap: 1em;
+    justify-content: space-around;
     div {
-        height: 68px;
         width: 68px;
+        min-height: 68px;
         border: 2px solid black;
     }
 }
