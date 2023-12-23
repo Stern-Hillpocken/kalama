@@ -1,0 +1,27 @@
+img {
+    height: 64px;
+    width: 64px;
+    image-rendering: pixelated;
+}
+
+.towers-carousel {
+    display: flex;
+}
+
+.game-state table{
+    margin: auto;
+}
+
+th{
+    text-align: center;
+}
+
+.towers-selected {
+    display: flex;
+    justify-content: space-around;
+    div {
+        width: 68px;
+        min-height: 68px;
+        border: 2px solid black;
+    }
+}

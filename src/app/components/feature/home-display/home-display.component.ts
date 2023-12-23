@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { GameState } from 'src/app/models/game-state.model';
+import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
 
 @Component({
@@ -11,10 +13,16 @@ export class HomeDisplayComponent {
 
   isLoadout: boolean = false;
 
+  towers!: Tower[];
+
   constructor(
     private router: Router,
     private gameStateService: GameStateService
   ){}
+
+  ngOnInit(): void {
+    this.towers = this.gameStateService.getTowers();
+  }
 
   onButtonSelectionReceive(value: string): void {
     if (value === "tutorial") {
@@ -28,8 +36,8 @@ export class HomeDisplayComponent {
     this.isLoadout = false;
   }
 
-  onLaunchGameReceive(): void {
-    this.gameStateService.initialisation(1);
+  onLaunchGameReceive(game: GameState): void {
+    this.gameStateService._setGameState$(game);
     this.router.navigateByUrl("game");
   }
 

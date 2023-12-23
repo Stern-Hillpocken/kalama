@@ -6,6 +6,7 @@
 
 <app-home-loadout
     *ngIf="isLoadout"
+    [towers]="towers"
     (closeLoadoutEmitter)="onCloseLoadoutReceive()"
-    (launchGameEmitter)="onLaunchGameReceive()"
+    (launchGameEmitter)="onLaunchGameReceive($event)"
 ></app-home-loadout>

@@ -13,13 +13,13 @@
         </tr>
         <tr *ngIf="informationFrame.type === 'tower'">
             <td>Séquence</td><td>
-                <span *ngFor="let s of [].constructor(informationFrame.state.length); let i = index" [ngStyle]="{'color': i === informationFrame.step ? 'red' : ''}">
-                    {{informationFrame.state[i]}}
+                <span *ngFor="let s of [].constructor(informationFrame.sequence.length); let i = index" [ngStyle]="{'color': i === informationFrame.step ? 'red' : ''}">
+                    {{informationFrame.sequence[i]}}
                 </span>
             </td>
         </tr>
         <tr *ngIf="informationFrame.type === 'tower'">
-            <td>Spot</td><td>{{informationFrame.targetSpot}}</td>
+            <td>Tile Targeted</td><td>{{informationFrame.tileTargeted}}</td>
         </tr>
         <tr *ngIf="informationFrame.type === 'enemy'">
             <td>Moves</td>
