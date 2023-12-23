@@ -21,6 +21,8 @@ export class HomeLoadoutComponent {
 
   gameStateChoice!: GameState;
 
+  lastTowerSlot: number = -1;
+
   ngOnInit(): void {
     this.setGameStateToDifficulty(1);
   }
@@ -54,6 +56,20 @@ export class HomeLoadoutComponent {
     } else if (type === "camp") {
       if (this.gameStateChoice.mapState.campCount + value >= 0) this.gameStateChoice.mapState.campCount += value;
     }
+  }
+
+  onDragEnter(divId: number): void {
+    this.lastTowerSlot = divId;
+  }
+
+  onDragState(): void {
+    this.lastTowerSlot = -1;
+  }
+
+  onDragEnd(event: any): void {
+    if (this.lastTowerSlot === -1) return;
+    this.gameStateChoice.towersUnlocked[this.lastTowerSlot] = event.target.alt;
+    this.lastTowerSlot = -1;
   }
 
 }
