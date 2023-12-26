@@ -324,6 +324,20 @@ export class GameStateService {
 
     // Waves preparation
     newGameState.wave = 0;
+    newGameState.spawnStrip = [];
+    let stripLength: number = this.random(6, 20);
+    for (let i = 0; i < stripLength; i++) {
+      newGameState.spawnStrip.push("");
+    }
+    let enemiesCount: number = Math.floor(stripLength/3);
+    while (enemiesCount !== 0) {
+      let randomSpawnTime = this.random(1,stripLength-1);
+      if (newGameState.spawnStrip[randomSpawnTime] === "") {
+        newGameState.spawnStrip[randomSpawnTime] = "worm";
+        enemiesCount --;
+      }
+    }
+    newGameState.spawnStrip[stripLength-1] = "worm";
 
     newGameState.display = "battle";
   }
