@@ -26,7 +26,7 @@ export class HomeDisplayComponent {
 
   onButtonSelectionReceive(value: string): void {
     if (value === "tutorial") {
-      this.gameStateService.initialisation(0);
+      this.gameStateService.launchTuto();
       this.router.navigateByUrl("game");
     }
     else if (value === "loadout") this.isLoadout = true;

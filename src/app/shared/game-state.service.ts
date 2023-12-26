@@ -42,9 +42,8 @@ export class GameStateService {
     return this.towers;
   }
 
-  initialisation(difficulty: number): void {
-    if (difficulty === 0) this._setGameState$(new GameState("battle", difficulty, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
-    else this._setGameState$(new GameState("map", difficulty, "preparation", new MapState(12,3,2,2,20), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, [], []));
+  launchTuto(): void {
+    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   endTurn(): void {
@@ -268,16 +267,20 @@ export class GameStateService {
     return false;
   }
 
-  generateBattle(type: string): void {
+  generateBattle(type: "boss" | "battle" | "elite"): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.charcaterPosition = [-1,-1];
+    newGameState.status = "preparation";
+    // Decrease event count
+    if (type === "battle") newGameState.mapState.battleCount --;
+    else if (type === "elite") newGameState.mapState.eliteCount --;
     // Building preparation
     newGameState.buildingsAvailable = [];
     for (let i = 0; i < newGameState.buildingsUnlocked.length; i++) {
       newGameState.buildingsAvailable.push(newGameState.buildingsUnlocked[i]);
     }
-    // Tower praparation
-    newGameState.buildingsAvailable = [];
+    // Tower preparation
+    newGameState.towersAvailable = [];
     for (let i = 0; i < newGameState.towersUnlocked.length; i++) {
       newGameState.towersAvailable.push(newGameState.towersUnlocked[i]);
     }
@@ -294,9 +297,9 @@ export class GameStateService {
     let resourceName: string[] = [];
     while (resourceName.length < resourceCount) {
       // Position
-      let randomResourcePosition: number[] = [this.random(0,mapHeight-1), this.random(0,mapWidth-1)];
+      let randomResourcePosition: number[] = [this.random(1,mapHeight-1), this.random(0,mapWidth-1)];
       while (this.isPositionExistIn(randomResourcePosition, resourcePosition)) {
-        randomResourcePosition = [this.random(0,mapHeight-1), this.random(0,mapWidth-1)];
+        randomResourcePosition = [this.random(1,mapHeight-1), this.random(0,mapWidth-1)];
       }
       resourcePosition.push(randomResourcePosition);
       // Name
