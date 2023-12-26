@@ -97,7 +97,7 @@ export class BattleGridComponent {
   }
 
   isNearByCharacter(position: number[]): boolean {
-    if (Math.abs(position[0] - this.gameState.charcaterPosition[0]) <= 1 && Math.abs(position[1] - this.gameState.charcaterPosition[1]) <= 1) return true;
+    if (Math.abs(position[0] - this.gameState.characterPosition[0]) <= 1 && Math.abs(position[1] - this.gameState.characterPosition[1]) <= 1) return true;
     return false;
   }
 

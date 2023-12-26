@@ -126,7 +126,7 @@ export class GameStateService {
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") {
                   newGameState.koCounter = newGameState.maxPowerCoolDown;
-                  newGameState.charcaterPosition = [-1,-1];
+                  newGameState.characterPosition = [-1,-1];
                 }
                 newGameState.grid[r+1][c] = "";
               }
@@ -179,7 +179,7 @@ export class GameStateService {
 
     if (name === "character" && newGameState.koCounter === 0) {
       newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
-      newGameState.charcaterPosition = [position[0],position[1]];
+      newGameState.characterPosition = [position[0],position[1]];
     }
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
@@ -208,7 +208,7 @@ export class GameStateService {
   }
 
   isDiagonallyNearByCharacter(position: number[]): boolean {
-    let charPos: number[] = this._gameState$.getValue().charcaterPosition;
+    let charPos: number[] = this._gameState$.getValue().characterPosition;
     if (Math.abs(position[0] - charPos[0]) <= 1 && Math.abs(position[1] - charPos[1]) <= 1) return true;
     return false;
   }
@@ -222,7 +222,7 @@ export class GameStateService {
         if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
           if (newGameState.grid[position[0]][position[1]] === ""){
             newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
-            newGameState.charcaterPosition = [position[0],position[1]];
+            newGameState.characterPosition = [position[0],position[1]];
             newGameState.grid[r][c] = "";
           } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
@@ -252,9 +252,9 @@ export class GameStateService {
   powerDash(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] === ""){
-      newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]];
-      newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]] = "";
-      newGameState.charcaterPosition = [position[0],position[1]];
+      newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]];
+      newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]] = "";
+      newGameState.characterPosition = [position[0],position[1]];
       newGameState.currentPowerCoolDown = 0;
       this.endTurn();
     }
@@ -269,7 +269,7 @@ export class GameStateService {
 
   generateBattle(type: "boss" | "battle" | "elite"): void {
     let newGameState: GameState = this._gameState$.getValue();
-    newGameState.charcaterPosition = [-1,-1];
+    newGameState.characterPosition = [-1,-1];
     newGameState.status = "preparation";
     newGameState.koCounter = 0;
     newGameState.currentPowerCoolDown = newGameState.maxPowerCoolDown;

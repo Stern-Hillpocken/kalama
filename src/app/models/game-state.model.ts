@@ -7,7 +7,7 @@ export class GameState {
         public status: string,
         public mapState: MapState,
 
-        public charcaterPosition: number[],
+        public characterPosition: number[],
         public isBattleLifeDisplayed: boolean,
 
         public structure: number,

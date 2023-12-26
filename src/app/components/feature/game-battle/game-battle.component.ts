@@ -88,7 +88,7 @@ export class GameBattleComponent {
   }
 
   isOrthogonallyNearByCharacter(position: number[]): boolean {
-    let charPos: number[] = this.gameState.charcaterPosition;
+    let charPos: number[] = this.gameState.characterPosition;
     if (((position[0] === charPos[0]+1 || position[0] === charPos[0]-1) && position[1] === charPos[1]) || (position[0] === charPos[0] && (position[1] === charPos[1]-1 || position[1] === charPos[1]+1))) return true;
     return false;
   }
@@ -97,7 +97,7 @@ export class GameBattleComponent {
     if ((this.gameState.grid[position[0]][position[1]] === "" || (this.gameState.grid[position[0]][position[1]].type && this.gameState.grid[position[0]][position[1]].type === "enemy")) && this.isOrthogonallyNearByCharacter(position) && this.gameState.buildingsAvailable.length === 0){
       this.gameStateService.moveCharacter(position);
       this.isCharacterOnTheGrid = this.checkIfCharacterIsOnTheGrid();
-    } else if (this.isPowerSelected && (position[0] === this.gameState.charcaterPosition[0] || position[1] === this.gameState.charcaterPosition[1]) && this.gameState.grid[position[0]][position[1]] === ""){
+    } else if (this.isPowerSelected && (position[0] === this.gameState.characterPosition[0] || position[1] === this.gameState.characterPosition[1]) && this.gameState.grid[position[0]][position[1]] === ""){
       this.gameStateService.powerDash(position);
       this.isPowerSelected = false;
     } else if (this.gameState.grid[position[0]][position[1]] !== "" && this.gameState.grid[position[0]][position[1]].type) {
@@ -145,7 +145,7 @@ export class GameBattleComponent {
   addTilesBackground(): void {
     if (this.isPowerSelected) {
       let powerZone: number[][] = [];
-      let charPos: number[] = this.gameState.charcaterPosition;
+      let charPos: number[] = this.gameState.characterPosition;
       if (this.gameState.power === "dash") {
         for (let r = 0; r < this.gameState.grid.length; r++){
           for (let c = 0; c < this.gameState.grid[r].length; c++){
