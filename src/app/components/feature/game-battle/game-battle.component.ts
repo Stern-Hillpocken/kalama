@@ -3,6 +3,7 @@ import { Character } from 'src/app/models/character.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { PopupMessage } from 'src/app/models/popup-message.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
+import { InformationOf } from 'src/app/shared/information-of.service';
 import { PopupService } from 'src/app/shared/popup.service';
 
 @Component({
@@ -34,7 +35,8 @@ export class GameBattleComponent {
 
   constructor(
     private gameStateService: GameStateService,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private informationOf: InformationOf
   ){}
 
   ngOnInit(): void {
@@ -196,6 +198,10 @@ export class GameBattleComponent {
 
   onChangeLifeDisplayReceive(): void {
     this.gameState.isBattleLifeDisplayed = !this.gameState.isBattleLifeDisplayed;
+  }
+
+  onClickConstructionReceive(name: string): void {
+    this.fillInformationFrame( this.informationOf.getWithName(name) );
   }
 
 }
