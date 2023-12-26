@@ -1,1 +1,6 @@
-<p>Wave&nbsp;: {{ gameState.wave }}/{{ gameState.spawnStrip.length }}</p>
+<div class="battle-spawn-strip">
+    <div>Wave</div>
+    <div *ngFor="let div of [].constructor(stripDivCount()); let i = index" [ngClass]="i === 0 ? 'current-div' : ''">
+        {{ stripDivContent(i) }}
+    </div>
+</div>
