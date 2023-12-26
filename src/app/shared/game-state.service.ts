@@ -271,6 +271,8 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.charcaterPosition = [-1,-1];
     newGameState.status = "preparation";
+    newGameState.koCounter = 0;
+    newGameState.currentPowerCoolDown = newGameState.maxPowerCoolDown;
     // Decrease event count
     if (type === "battle") newGameState.mapState.battleCount --;
     else if (type === "elite") newGameState.mapState.eliteCount --;
