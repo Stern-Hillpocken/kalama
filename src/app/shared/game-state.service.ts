@@ -261,4 +261,76 @@ export class GameStateService {
     }
   }
 
+  isPositionExistIn(position: number[], array: number[][]): boolean {
+    for (let i = 0; i < array.length; i++) {
+      if (position[0] === array[i][0] && position[1] === array[i][1]) return true;
+    }
+    return false;
+  }
+
+  generateBattle(type: string): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState.charcaterPosition = [-1,-1];
+    // Building preparation
+    newGameState.buildingsAvailable = [];
+    for (let i = 0; i < newGameState.buildingsUnlocked.length; i++) {
+      newGameState.buildingsAvailable.push(newGameState.buildingsUnlocked[i]);
+    }
+    // Tower praparation
+    newGameState.buildingsAvailable = [];
+    for (let i = 0; i < newGameState.towersUnlocked.length; i++) {
+      newGameState.towersAvailable.push(newGameState.towersUnlocked[i]);
+    }
+
+    // Map generation
+    newGameState.grid = [];
+    let mapHeight: number = 6;
+    let mapWidth: number = 6;
+    // Wood and stone
+    let resourceCount = this.random(3,5);
+    if (type === 'elite') resourceCount = 2;
+    else if (type === 'boss') resourceCount = 0;
+    let resourcePosition: number[][] = [];
+    let resourceName: string[] = [];
+    while (resourceName.length < resourceCount) {
+      // Position
+      let randomResourcePosition: number[] = [this.random(0,mapHeight-1), this.random(0,mapWidth-1)];
+      while (this.isPositionExistIn(randomResourcePosition, resourcePosition)) {
+        randomResourcePosition = [this.random(0,mapHeight-1), this.random(0,mapWidth-1)];
+      }
+      resourcePosition.push(randomResourcePosition);
+      // Name
+      if (resourceName.length === 0) resourceName.push("wood");
+      else if (resourceName.length === 1) resourceName.push("stone");
+      else this.random(0,1) === 0 ? resourceName.push("wood") : resourceName.push("stone");
+    }
+
+    // Blank creation
+    for (let r = 0; r < mapHeight; r++) {
+      let row = [];
+      for (let c = 0; c < mapWidth; c++) {
+        row.push("");
+      }
+      newGameState.grid.push(row);
+    }
+    // Resource placement
+    for (let i = 0; i < resourcePosition.length; i++) {
+      if (resourceName[i] === "wood") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("wood", "wood", 1, "Du bois", "resource");
+      else if (resourceName[i] === "stone") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("stone", "stone", 3, "De la pierre", "resource");
+    }
+
+    // Waves preparation
+    newGameState.wave = 0;
+
+    newGameState.display = "battle";
+  }
+
+  generateCamp(): void {
+    //let newGameState: GameState = this._gameState$.getValue();
+  }
+
+  generateSeller(): void {
+    //let newGameState: GameState = this._gameState$.getValue();
+  }
+
 }
