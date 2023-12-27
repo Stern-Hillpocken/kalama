@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
 import { HttpClient } from '@angular/common/http';
+import { InformationOf } from './information-of.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,10 @@ export class GameStateService {
 
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
-  private towers: Tower[] = [];
-
   constructor(
     private router: Router,
-    private http: HttpClient
-  ) {
-    this.http.get('assets/json/towers.json').subscribe((json: any) => {
-      for (let i = 0; i < json.length; i++){
-        this.towers.push(new Tower(json[i].name, json[i].name, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, "tower"));
-      }
-    });
-  }
+    private informationOf: InformationOf
+  ) { }
 
   _getGameState$(): Observable<GameState> {
     return this._gameState$.asObservable();
@@ -36,10 +29,6 @@ export class GameStateService {
 
   _setGameState$(state: GameState): void {
     this._gameState$.next(state);
-  }
-
-  getTowers(): Tower[] {
-    return this.towers;
   }
 
   launchTuto(): void {
@@ -169,7 +158,7 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newGameState.spawnStrip[newGameState.wave], newGameState.spawnStrip[newGameState.wave], 1, 0, ["down"], newGameState.wave, 1, "Un ennemi qui vous attaque", "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
     this._setGameState$(newGameState);
   }
 
@@ -180,13 +169,14 @@ export class GameStateService {
     if (name === "character" && newGameState.koCounter === 0) {
       newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
       newGameState.characterPosition = [position[0],position[1]];
+      return;
     }
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        newGameState.grid[position[0]][position[1]] = new Building(name, name, 1, 1, "Doit être placé à gauche ou droite d'une ressource", "building");
-        break;
+        newGameState.grid[position[0]][position[1]] = this.informationOf.getWithNameType(name, "building");
+        return;
       }
     }
 
@@ -194,14 +184,9 @@ export class GameStateService {
       if (newGameState.towersAvailable[i] === name){
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
-          for (let j = 0; j < this.towers.length; j++) {
-            if (this.towers[j].name === name) {
-              newGameState.grid[position[0]][position[1]] = this.towers[j];
-              break;
-            }
-          }
+          newGameState.grid[position[0]][position[1]] = this.informationOf.getWithNameType(name, "tower");
           this.endTurn();
-          break;
+          return;
         }
       }
     }

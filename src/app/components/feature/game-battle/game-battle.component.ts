@@ -200,8 +200,8 @@ export class GameBattleComponent {
     this.gameState.isBattleLifeDisplayed = !this.gameState.isBattleLifeDisplayed;
   }
 
-  onClickConstructionReceive(name: string): void {
-    this.fillInformationFrame( this.informationOf.getWithName(name) );
+  onClickConstructionReceive(info: string[]): void {
+    this.fillInformationFrame( this.informationOf.getWithNameType(info[0], info[1] as "building" | "tower") );
   }
 
 }

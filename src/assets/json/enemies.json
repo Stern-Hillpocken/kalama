@@ -1,0 +1,10 @@
+[
+    {
+        "name": "worm",
+        "image": "worm",
+        "life": 1,
+        "moves": ["down"],
+        "damage": 1,
+        "description": "Sortant du sable chaud, il avance encore et encore."
+    }
+]
