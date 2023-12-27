@@ -12,6 +12,7 @@
     [gameState]="gameState"
     [isCharacterOnTheGrid]="isCharacterOnTheGrid"
     (dragEndEmitter)="onDragEndReceive($event)"
+    (clickConstructionEmitter)="onClickConstructionReceive($event)"
 ></app-battle-constructions>
 <app-battle-grid
     [gameState]="gameState"

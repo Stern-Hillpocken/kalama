@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
 import { HttpClient } from '@angular/common/http';
+import { InformationOf } from './information-of.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,10 @@ export class GameStateService {
 
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
-  private towers: Tower[] = [];
-
   constructor(
     private router: Router,
-    private http: HttpClient
-  ) {
-    this.http.get('assets/json/towers.json').subscribe((json: any) => {
-      for (let i = 0; i < json.length; i++){
-        this.towers.push(new Tower(json[i].name, json[i].name, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, "tower"));
-      }
-    });
-  }
+    private informationOf: InformationOf
+  ) { }
 
   _getGameState$(): Observable<GameState> {
     return this._gameState$.asObservable();
@@ -36,10 +29,6 @@ export class GameStateService {
 
   _setGameState$(state: GameState): void {
     this._gameState$.next(state);
-  }
-
-  getTowers(): Tower[] {
-    return this.towers;
   }
 
   launchTuto(): void {
@@ -126,7 +115,7 @@ export class GameStateService {
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") {
                   newGameState.koCounter = newGameState.maxPowerCoolDown;
-                  newGameState.charcaterPosition = [-1,-1];
+                  newGameState.characterPosition = [-1,-1];
                 }
                 newGameState.grid[r+1][c] = "";
               }
@@ -169,7 +158,9 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newGameState.spawnStrip[newGameState.wave], newGameState.spawnStrip[newGameState.wave], 1, 0, ["down"], newGameState.wave, 1, "Un ennemi qui vous attaque", "enemy");
+    let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
   }
 
@@ -179,14 +170,16 @@ export class GameStateService {
 
     if (name === "character" && newGameState.koCounter === 0) {
       newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
-      newGameState.charcaterPosition = [position[0],position[1]];
+      newGameState.characterPosition = [position[0],position[1]];
+      return;
     }
 
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        newGameState.grid[position[0]][position[1]] = new Building(name, name, 1, 1, "Doit être placé à gauche ou droite d'une ressource", "building");
-        break;
+        let newBuilding: Building = this.informationOf.getWithNameType(name, "building");
+        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, "building");
+        return;
       }
     }
 
@@ -194,21 +187,17 @@ export class GameStateService {
       if (newGameState.towersAvailable[i] === name){
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
-          for (let j = 0; j < this.towers.length; j++) {
-            if (this.towers[j].name === name) {
-              newGameState.grid[position[0]][position[1]] = this.towers[j];
-              break;
-            }
-          }
+          let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
+          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, "tower");
           this.endTurn();
-          break;
+          return;
         }
       }
     }
   }
 
   isDiagonallyNearByCharacter(position: number[]): boolean {
-    let charPos: number[] = this._gameState$.getValue().charcaterPosition;
+    let charPos: number[] = this._gameState$.getValue().characterPosition;
     if (Math.abs(position[0] - charPos[0]) <= 1 && Math.abs(position[1] - charPos[1]) <= 1) return true;
     return false;
   }
@@ -222,7 +211,7 @@ export class GameStateService {
         if (newGameState.grid[r][c].name && newGameState.grid[r][c].name === "character"){
           if (newGameState.grid[position[0]][position[1]] === ""){
             newGameState.grid[position[0]][position[1]] = newGameState.grid[r][c];
-            newGameState.charcaterPosition = [position[0],position[1]];
+            newGameState.characterPosition = [position[0],position[1]];
             newGameState.grid[r][c] = "";
           } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
@@ -245,16 +234,16 @@ export class GameStateService {
     }
     
     newGameState.display = "map";
-
+    // End of tuto
     if (newGameState.difficulty < 1) this.router.navigateByUrl("");
   }
 
   powerDash(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.grid[position[0]][position[1]] === ""){
-      newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]];
-      newGameState.grid[newGameState.charcaterPosition[0]][newGameState.charcaterPosition[1]] = "";
-      newGameState.charcaterPosition = [position[0],position[1]];
+      newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]];
+      newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]] = "";
+      newGameState.characterPosition = [position[0],position[1]];
       newGameState.currentPowerCoolDown = 0;
       this.endTurn();
     }
@@ -269,7 +258,7 @@ export class GameStateService {
 
   generateBattle(type: "boss" | "battle" | "elite"): void {
     let newGameState: GameState = this._gameState$.getValue();
-    newGameState.charcaterPosition = [-1,-1];
+    newGameState.characterPosition = [-1,-1];
     newGameState.status = "preparation";
     newGameState.koCounter = 0;
     newGameState.currentPowerCoolDown = newGameState.maxPowerCoolDown;

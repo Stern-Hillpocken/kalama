@@ -1,0 +1,15 @@
+[
+    {
+        "name": "stone-cutter",
+        "image": "stone-cutter",
+        "life": 1,
+        "efficiency": 1,
+        "description": "Cette machine doit être placée à gauche ou à droite d'une pierre pour pouvoir la miner à chaque tour."
+    },{
+        "name": "wood-cutter",
+        "image": "wood-cutter",
+        "life": 1,
+        "efficiency": 1,
+        "description": "Cette machine doit être placée à gauche ou à droite d'un arbre pour pouvoir le scier à chaque tour."
+    }
+]
