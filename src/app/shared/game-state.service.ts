@@ -158,7 +158,9 @@ export class GameStateService {
 
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
+    let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
   }
 
@@ -175,7 +177,8 @@ export class GameStateService {
     for (let i = 0; i < newGameState.buildingsAvailable.length; i++){
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
-        newGameState.grid[position[0]][position[1]] = this.informationOf.getWithNameType(name, "building");
+        let newBuilding: Building = this.informationOf.getWithNameType(name, "building");
+        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, "building");
         return;
       }
     }
@@ -184,7 +187,8 @@ export class GameStateService {
       if (newGameState.towersAvailable[i] === name){
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
-          newGameState.grid[position[0]][position[1]] = this.informationOf.getWithNameType(name, "tower");
+          let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
+          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, "tower");
           this.endTurn();
           return;
         }
@@ -230,7 +234,7 @@ export class GameStateService {
     }
     
     newGameState.display = "map";
-
+    // End of tuto
     if (newGameState.difficulty < 1) this.router.navigateByUrl("");
   }
 
