@@ -1,3 +1,3 @@
-<button (click)="loadout()">Nouvelle partie</button>
-<br>
-<button (click)="tutorial()">Tuto</button>
+<button (click)="buttonSelect('loadout')" [ngClass]="localStorage === 'play' ? 'highlighted' : 'lowlighted'">Nouvelle partie</button>
+<button (click)="buttonSelect('tutorial')" [ngClass]="localStorage === 'tutorial' ? 'highlighted' : localStorage === 'background' ? 'lowlighted' : ''">Tutoriel</button>
+<button (click)="buttonSelect('background')" [ngClass]="localStorage === 'background' ? 'highlighted' : localStorage === 'tutorial' ? 'lowlighted' : ''">Background</button>

@@ -51,7 +51,7 @@ export class GameBattleComponent {
 
   ngAfterContentInit(): void {
     // tutorial
-    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Blabla de bienvenue","tutorial"),new PopupMessage("Les vagues","Victoire et défaite de la partie battle","tutorial"),new PopupMessage("Placement","Perso et constructions","tutorial")])
+    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Le jeu est divisé en deux phases qui s’alternent : une phase sur une carte, pour choisir vers quel évènement vous rendre, et l’autre phase représentant la résolution de cet évènement. Il y a plusieurs types d’évènements mais le principal est celui du combat. Ce tutoriel explique succinctement son déroulé.","tutorial"),new PopupMessage("Victoire et défaite","Durant un combat, des vagues de monstres arrivent du nord et se déplacent vers le sud. Le jeu est structuré en plusieurs tours, et il est affiché en haut de l’écran à quel tour vous en êtes et si les tours suivants vont faire apparaître des monstres. Vous gagnez le combat si toutes les vagues sont passées sur vous et qu’il ne reste plus de monstre, mais vous perdez si les monstres détruisent votre char-à-voile (en bas de l’écran).","tutorial"),new PopupMessage("Premiers placements","Commencez par placer votre personnage puis les deux constructions à votre disposition en les glissant sur la grille de combat. Vous pouvez observer les caractéristiques de ces dernières en cliquant dessus. Même si vos constructions sont détruites durant un combat, elles seront réparées automatiquement avant le prochain combat.","tutorial")])
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {
@@ -60,7 +60,7 @@ export class GameBattleComponent {
         if (this.gameState.grid[r][c].image && this.gameState.grid[r][c].image === "character"){
           // tutorial
           if (this.gameState.difficulty === 0 && this.gameState.buildingsAvailable.length === 0){
-            this.popupService._setMessage$([new PopupMessage("Prêt", "Clic ready", "tutorial"),new PopupMessage("Tours", "Placement tours", "tutorial"),new PopupMessage("Déplacement", "Clic sur tuile adjacente, un tour passe : donner la séquence d'activation (nos build puis ennemis)", "tutorial")]);
+            this.popupService._setMessage$([new PopupMessage("Prêt·e ?", "Une fois que c’est fait (ou que vous ne souhaitez pas poser plus de constructions), vous pouvez <Lancer le combat> et vous préparer à faire face aux vagues de monstres.", "tutorial"),new PopupMessage("Le déplacement", "À partir de ce moment vous pourrez vous déplacer sur la grille de combat en cliquant sur la case orthogonalement adjacente à votre personnage. Le déplacement en diagonale n’est pas autorisé, et la case de destination doit être libre pour s’y rendre. Se déplacer compte comme l’action de votre tour.", "tutorial"),new PopupMessage("Les tours", "Pour vous défendre vous aurez accès à des tours. Pour les placer, glissez les depuis leur réserve vers la grille de combat de manière adjacente à vous. Cette fois-ci la diagonale est autorisée. Placer une tour compte comme l’action de votre tour.", "tutorial"), new PopupMessage("Séquence d’activation", "Une fois après avoir agit (déplacement, construction, pouvoir), le jeu déclenche les autres éléments de la zone de combat. D’abord les constructions alliées, puis les monstres (qui vont soit apparaître, soit se déplacer, soit attaquer).", "tutorial")]);
             this.gameState.difficulty = 0.1;
           }
           return true;
@@ -109,7 +109,7 @@ export class GameBattleComponent {
     this.addTilesBackground();
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
-      this.popupService._setMessage$([new PopupMessage("Premier ennemi", "Move on it to kill, avoid to be hit", "tutorial"),new PopupMessage("Zone déplacement", "Look", "tutorial"),new PopupMessage("Si mort", "On a trois tours", "tutorial")])
+      this.popupService._setMessage$([new PopupMessage("À l’attaque", "Voici le premier monstre qui vient vers vous ! Vous pouvez vous déplacer sur sa case pour l’attaquer. Si vous le laissez faire, il descendra jusqu’à endommager ce qu’il a devant lui, et donc à un moment : votre char-à-voile.", "tutorial"),new PopupMessage("Zones d’interaction", "Vous avez vu apparaître, devant certaines de vos tours, une zone, c’est leur zone d’attaque. Vous allez retrouver la même chose avec les monstres qui ont leur zone de déplacement. Si un monstre ne peut pas se déplacer dans la zone indiquée, car bloquée par un obstacle, il va à la place attaquer cet obstacle.", "tutorial"),new PopupMessage("Assommé", "Si votre personnage subit trop d’attaque de monstres, il devient assommé. Il vous faut donc <Attendre> pendant trois tours avant de pouvoir revenir dans la zone de combat.", "tutorial")])
       this.gameState.difficulty = 0.2;
     }
   }

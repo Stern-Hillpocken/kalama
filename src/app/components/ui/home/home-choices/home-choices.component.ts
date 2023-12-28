@@ -8,14 +8,19 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HomeChoicesComponent {
 
   @Output()
-  buttonSelectionEmitter: EventEmitter<"loadout" | "tutorial"> = new EventEmitter();
+  buttonSelectionEmitter: EventEmitter<"loadout" | "tutorial" | "background"> = new EventEmitter();
 
-  loadout(): void {
-    this.buttonSelectionEmitter.emit("loadout");
+  localStorage: string = "";
+
+  ngOnInit(): void {
+    if (!window.localStorage.getItem("kalama")) window.localStorage.setItem("kalama", "background");
+    this.localStorage = window.localStorage.getItem("kalama") as string;
   }
 
-  tutorial(): void {
-    this.buttonSelectionEmitter.emit("tutorial");
+  buttonSelect(name: "loadout" | "tutorial" | "background"): void {
+    this.buttonSelectionEmitter.emit(name);
+    if (name === "background") window.localStorage.setItem("kalama", "tutorial");
+    else if (name === "tutorial") window.localStorage.setItem("kalama", "play")
   }
 
 }

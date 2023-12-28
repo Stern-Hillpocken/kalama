@@ -93,4 +93,8 @@ export class HomeLoadoutComponent {
     this.gameStateChoice.towersUnlocked.splice(index, 1);
   }
 
+  estimatedPlayTime(): number {
+    return 5 + this.gameStateChoice.mapState.battleCount * 2 + this.gameStateChoice.mapState.eliteCount * 3;
+  }
+
 }

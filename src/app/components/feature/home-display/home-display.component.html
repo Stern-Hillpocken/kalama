@@ -1,12 +1,22 @@
-<div *ngIf="!isLoadout">
+<div *ngIf="display === ''">
     <app-home-title></app-home-title>
     <app-home-choices (buttonSelectionEmitter)="onButtonSelectionReceive($event)"></app-home-choices>
+    <p style="text-align: center;">
+        Séquence d’activation&nbsp;:
+        <br>
+        Vous > constructions > monstres.
+    </p>
     <app-home-settings></app-home-settings>
 </div>
 
 <app-home-loadout
-    *ngIf="isLoadout"
+    *ngIf="display === 'loadout'"
     [towers]="towers"
-    (closeLoadoutEmitter)="onCloseLoadoutReceive()"
+    (closeLoadoutEmitter)="onCloseReceive()"
     (launchGameEmitter)="onLaunchGameReceive($event)"
 ></app-home-loadout>
+
+<app-home-background
+    *ngIf="display === 'background'"
+    (closeBackgroundEmitter)="onCloseReceive()"
+></app-home-background>

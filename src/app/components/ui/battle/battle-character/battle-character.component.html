@@ -6,10 +6,10 @@
     <button
         *ngIf="isCharacterOnTheGrid && gameState.status !== 'ready'"
         (click)="readyForBattle();"
-        >Ready for battle</button>
+        >Lancer le combat</button>
     <div *ngIf="gameState.status === 'ready'">
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
-        <button (click)="wait()">Wait</button>
+        <button (click)="wait()">Attendre</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.maxPowerCoolDown }}</p>
         <button
             *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown && gameState.koCounter === 0"
