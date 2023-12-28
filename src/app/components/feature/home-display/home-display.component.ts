@@ -12,7 +12,7 @@ import { InformationOf } from 'src/app/shared/information-of.service';
 })
 export class HomeDisplayComponent {
 
-  isLoadout: boolean = false;
+  display: string = "";
 
   towers!: Tower[];
 
@@ -30,12 +30,13 @@ export class HomeDisplayComponent {
     if (value === "tutorial") {
       this.gameStateService.launchTuto();
       this.router.navigateByUrl("game");
+    } else {
+      this.display = value;
     }
-    else if (value === "loadout") this.isLoadout = true;
   }
 
-  onCloseLoadoutReceive(): void {
-    this.isLoadout = false;
+  onCloseReceive(): void {
+    this.display = "";
   }
 
   onLaunchGameReceive(game: GameState): void {
