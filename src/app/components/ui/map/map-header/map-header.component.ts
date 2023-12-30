@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class MapHeaderComponent {
 
+  ngOnInit(): void {
+    console.log("map init")
+  }
+
 }
