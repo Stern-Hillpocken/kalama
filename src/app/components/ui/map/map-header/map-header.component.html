@@ -1,4 +1,25 @@
 <div class="map-header">
     <h2>Carte de la région</h2>
-    <div class="map-plan"></div>
+    <div class="map-plan">
+        <img
+            *ngFor="let img of [].constructor(gameState.mapState.campCount); let i = index"
+            src="assets/images/icons/camp.gif"
+            [ngStyle]="{'top': 'abs(calc('+allPins.campPosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.campPosition[i][1]+'% - 16px))'}"
+            >
+        <img
+            *ngFor="let img of [].constructor(gameState.mapState.sellerCount); let i = index"
+            src="assets/images/icons/seller.gif"
+            [ngStyle]="{'top': 'abs(calc('+allPins.sellerPosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.sellerPosition[i][1]+'% - 16px))'}"
+            >
+        <img
+            *ngFor="let img of [].constructor(gameState.mapState.eliteCount); let i = index"
+            src="assets/images/icons/elite.gif"
+            [ngStyle]="{'top': 'abs(calc('+allPins.elitePosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.elitePosition[i][1]+'% - 16px))'}"
+            >
+        <img
+            *ngFor="let img of [].constructor(gameState.mapState.battleCount); let i = index"
+            src="assets/images/icons/battle.gif"
+            [ngStyle]="{'top': 'abs(calc('+allPins.battlePosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.battlePosition[i][1]+'% - 16px))'}"
+            >
+    </div>
 </div>

@@ -1,7 +1,18 @@
 h2 {
     position: absolute;
+    z-index: 2;
     width: 100%;
 }
+
+img {
+    position: absolute;
+    z-index: 1;
+}
+
+.map-header {
+    position: relative;
+}
+
 .map-plan {
     background-image: url("../../../../../assets/images/map/map.jpg");
     background-size: 96px;

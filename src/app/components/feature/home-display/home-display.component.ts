@@ -4,6 +4,7 @@ import { GameState } from 'src/app/models/game-state.model';
 import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
+import { MapPinService } from 'src/app/shared/map-pin.service';
 
 @Component({
   selector: 'app-home-display',
@@ -19,7 +20,8 @@ export class HomeDisplayComponent {
   constructor(
     private router: Router,
     private gameStateService: GameStateService,
-    private informationOf: InformationOf
+    private informationOf: InformationOf,
+    private mapPinService: MapPinService
   ){}
 
   ngOnInit(): void {
@@ -41,6 +43,7 @@ export class HomeDisplayComponent {
 
   onLaunchGameReceive(game: GameState): void {
     this.gameStateService._setGameState$(game);
+    this.mapPinService.initAllPins(game.mapState);
     this.router.navigateByUrl("game");
   }
 
