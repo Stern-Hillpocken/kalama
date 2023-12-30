@@ -1,12 +1,19 @@
 h2 {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
 }
 
 img {
     position: absolute;
+    z-index: 2;
+}
+
+p {
+    position: absolute;
     z-index: 1;
+    font-size: 0.5em;
+    //white-space: nowrap;
 }
 
 .map-header {

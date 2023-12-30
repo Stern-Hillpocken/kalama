@@ -13,7 +13,7 @@ export class MapHeaderComponent {
   @Input()
   gameState!: GameState;
 
-  allPins: MapPin = new MapPin([],[],[],[]);
+  allPins: MapPin = new MapPin([],[],[],[],[],[]);
 
   constructor(
     private mapPinService: MapPinService
