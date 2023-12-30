@@ -1,4 +1,4 @@
-:root{
+:root {
     --color-dominant: #a87e54;
     --color-complement: #55b8ce;
     --color-accent: #eb3c27;
@@ -17,7 +17,7 @@
     src: url("assets/fonts/Kenney_Pixel.ttf");
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -25,6 +25,15 @@
     font-size: 32px;
 }
 
-body{
+body {
     background-color: var(--color-dominant);
+}
+
+button {
+    background-color: transparent;
+    border: 16px solid transparent;
+    border-image: url("assets/images/frame/button.png") 6 repeat;
+    image-rendering: pixelated;
+    min-width: 56px;
+    background-color: #d3bf8f;
 }
