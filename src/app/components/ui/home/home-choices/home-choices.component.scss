@@ -9,9 +9,9 @@ button {
 }
 
 .highlighted {
-    background-color: red;
+    filter: hue-rotate(90deg);
 }
 
 .lowlighted {
-    background-color: darkblue;
+    filter: brightness(0.2);
 }

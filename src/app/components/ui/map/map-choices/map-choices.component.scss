@@ -1,3 +1,28 @@
 button {
-    width: 100%;
+    display: block;
+    width: 80%;
+    margin: auto;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
+
+h3 {
+    background-color: #b1a077;
+    border-top: 2px solid #d9cdaf;
+    border-bottom: 2px solid #d9cdaf;
+}
+
+img {
+    height: 32px;
+    width: 32px;
+    image-rendering: pixelated;
+}
+
+.x {
+    font-size: 0.75em;
+}
+
+ .count {
+    font-weight: bold;
+    font-size: 1.25em;
+ }

@@ -1,7 +1,23 @@
 <div class="map-choices">
-    <button (click)="goToEvent('boss')" *ngIf="gameState.mapState.battleCount + gameState.mapState.eliteCount === 0">BOSS</button>
-    <button (click)="goToEvent('battle')" *ngIf="gameState.mapState.battleCount !== 0">Battle count x{{gameState.mapState.battleCount}}</button>
-    <button (click)="goToEvent('camp')" *ngIf="gameState.mapState.campCount !== 0">Camp count x{{gameState.mapState.campCount}}</button>
-    <button (click)="goToEvent('elite')" *ngIf="gameState.mapState.eliteCount !== 0">Elite count x{{gameState.mapState.eliteCount}}</button>
-    <button (click)="goToEvent('seller')" *ngIf="gameState.mapState.sellerCount !== 0">Seller count x{{gameState.mapState.sellerCount}}</button>
+    <h3>Évènements obligatoires</h3>
+    <button (click)="goToEvent('boss')" *ngIf="gameState.mapState.battleCount + gameState.mapState.eliteCount === 0">
+        Dernier camp
+    </button>
+    <button (click)="goToEvent('battle')" *ngIf="gameState.mapState.battleCount !== 0">
+        <img src="assets/images/icons/battle.gif">
+        Camp de monstres <span class="x">x</span><span class="count">{{gameState.mapState.battleCount}}</span>
+    </button>
+    <button (click)="goToEvent('elite')" *ngIf="gameState.mapState.eliteCount !== 0">
+        <img src="assets/images/icons/elite.gif">
+        Camp d’élites <span class="x">x</span><span class="count">{{gameState.mapState.eliteCount}}</span>
+    </button>
+    <h3>Évènements facultatifs</h3>
+    <button (click)="goToEvent('camp')" *ngIf="gameState.mapState.campCount !== 0">
+        <img src="assets/images/icons/camp.gif">
+        Abris <span class="x">x</span><span class="count">{{gameState.mapState.campCount}}</span>
+    </button>
+    <button (click)="goToEvent('seller')" *ngIf="gameState.mapState.sellerCount !== 0">
+        <img src="assets/images/icons/seller.gif">
+        Marchand <span class="x">x</span><span class="count">{{gameState.mapState.sellerCount}}</span>
+    </button>
 </div>
