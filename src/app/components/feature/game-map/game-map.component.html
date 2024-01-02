@@ -1,10 +1,19 @@
+<app-information-frame
+    [informationFrame]="informationFrame"
+    (closeInformationFrame)="onCloseInformationFrameReceive()"
+></app-information-frame>
 <app-map-header
+    *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
 ></app-map-header>
 <app-map-choices
+    *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
     (goToEventEmitter)="onGoToEventReceive($event)"
 ></app-map-choices>
 <app-map-hud
     [gameState]="gameState"
+    [isLoadoutDisplayed]="isLoadoutDisplayed"
+    (loadoutEmitter)="onLoadoutReceive()"
+    (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
 ></app-map-hud>

@@ -20,7 +20,7 @@ import { BattleConstructionsComponent } from './components/ui/battle/battle-cons
 import { BattleGridComponent } from './components/ui/battle/battle-grid/battle-grid.component';
 import { BattleCharacterComponent } from './components/ui/battle/battle-character/battle-character.component';
 import { PopupComponent } from './components/ui/popup/popup.component';
-import { InformationFrameComponent } from './components/ui/battle/information-frame/information-frame.component';
+import { InformationFrameComponent } from './components/ui/information-frame/information-frame.component';
 import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices.component';
 import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
 import { MapHeaderComponent } from './components/ui/map/map-header/map-header.component';

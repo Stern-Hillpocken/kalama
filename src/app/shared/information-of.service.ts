@@ -37,7 +37,7 @@ export class InformationOf {
     return this.allTowers;
   }
 
-  getWithNameType(name: string, type: "enemy" | "building" | "tower"): any {
+  getWithNameType(name: string, type: "enemy" | "building" | "tower" | "relic"): any {
     if (type === "enemy") {
       for (let i = 0; i < this.allEnemies.length; i++) {
         if (this.allEnemies[i].name === name) return this.allEnemies[i];
