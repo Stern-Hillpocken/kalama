@@ -1,1 +1,41 @@
-<p>map-hud works!</p>
+<div>
+    <p>
+        S:{{ gameState.stone }}
+        /
+        W:{{ gameState.wood }}
+        /
+        G:{{ gameState.gem }}
+        /
+        Strctr:{{ gameState.structure }}
+    </p>
+    <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'hide' : 'show' }}</button>
+</div>
+<div *ngIf="isLoadoutDisplayed" class="loadout">
+    <h2>Buildings</h2>
+    <div>
+        <div
+            *ngFor="let build of gameState.buildingsUnlocked"
+            (click)="displayInfo(build, 'building')"
+            >
+            <img src="assets/images/sprites/building/{{build}}.png">
+        </div>
+    </div>
+    <h2>Towers</h2>
+    <div>
+        <div
+            *ngFor="let tower of gameState.towersUnlocked"
+            (click)="displayInfo(tower, 'tower')"
+            >
+            <img src="assets/images/sprites/tower/{{tower}}.png">
+        </div>
+    </div>
+    <h2>Relics</h2>
+    <div>
+        <div
+            *ngFor="let relic of gameState.relics"
+            (click)="displayInfo(relic, 'relic')"
+        >
+            <img src="assets/images/sprites/relic/{{relic}}.png">
+        </div>
+    </div>
+</div>

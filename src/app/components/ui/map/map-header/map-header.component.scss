@@ -1,7 +1,9 @@
-h2 {
+h1 {
     position: absolute;
     z-index: 3;
     width: 100%;
+    text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+    1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
 }
 
 img {
@@ -13,11 +15,12 @@ p {
     position: absolute;
     z-index: 1;
     font-size: 0.5em;
-    //white-space: nowrap;
+    white-space: nowrap;
 }
 
 .map-header {
     position: relative;
+    overflow: hidden;
 }
 
 .map-plan {
