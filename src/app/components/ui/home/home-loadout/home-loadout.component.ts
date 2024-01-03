@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { MapState } from 'src/app/models/map-state.model';
 import { Tower } from 'src/app/models/tower.model';
@@ -11,6 +12,9 @@ import { Tower } from 'src/app/models/tower.model';
 export class HomeLoadoutComponent {
 
   @Input()
+  buildings!: Building[];
+
+  @Input()
   towers!: Tower[];
 
   @Output()
@@ -19,15 +23,20 @@ export class HomeLoadoutComponent {
   @Output()
   launchGameEmitter: EventEmitter<GameState> = new EventEmitter();
 
+  @Output()
+  towerDisplayEmitter: EventEmitter<string> = new EventEmitter();
+
   gameStateChoice!: GameState;
 
-  towerSelected!: Tower;
+  startingResourcesDisplayed: boolean = false;
+  availableEventsDisplayed: boolean = false;
+  blueprintsDisplayed: boolean = false;
+  towersSelectionDisplayed: boolean = false;
 
   lastTowerSlot: number = -1;
 
   ngOnInit(): void {
     this.setGameStateToDifficulty(1);
-    this.towerSelected = this.towers[0];
   }
 
   closeLoadout(): void {
@@ -62,16 +71,7 @@ export class HomeLoadoutComponent {
   }
 
   towerStatDisplay(name: string): void {
-    for (let i = 0; i < this.towers.length; i++) {
-      if (this.towers[i].name === name) {
-        this.towerSelected = this.towers[i];
-        break;
-      }
-    }
-  }
-
-  onDragStart(event: any): void {
-    this.towerStatDisplay(event.target.alt);
+    this.towerDisplayEmitter.emit(name);
   }
 
   onDragEnter(divId: number): void {
@@ -95,6 +95,13 @@ export class HomeLoadoutComponent {
 
   estimatedPlayTime(): number {
     return 5 + this.gameStateChoice.mapState.battleCount * 2 + this.gameStateChoice.mapState.eliteCount * 3;
+  }
+
+  buildingListMove(type: "blueprint-list" | "tower-list", side: string): void {
+    let gap: number = 64+8;
+    if (side === "left" && (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft >= gap) (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft -= gap;
+    else if (side === "left") (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft = 0;
+    else (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft += gap;
   }
 
 }

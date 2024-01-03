@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
@@ -15,7 +16,11 @@ export class HomeDisplayComponent {
 
   display: string = "";
 
+  buildings!: Building[];
+
   towers!: Tower[];
+
+  informationFrame: any = {};
 
   constructor(
     private router: Router,
@@ -26,6 +31,7 @@ export class HomeDisplayComponent {
 
   ngOnInit(): void {
     this.towers = this.informationOf.getAllTowers();
+    this.buildings = this.informationOf.getAllBuildings();
   }
 
   onButtonSelectionReceive(value: string): void {
@@ -45,6 +51,10 @@ export class HomeDisplayComponent {
     this.gameStateService._setGameState$(game);
     this.mapPinService.initAllPins(game.mapState);
     this.router.navigateByUrl("game");
+  }
+
+  onTowerDisplayReceive(towerName: string): void {
+    this.informationFrame = this.informationOf.getWithNameType(towerName, "tower");
   }
 
 }

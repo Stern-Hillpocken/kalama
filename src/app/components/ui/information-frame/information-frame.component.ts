@@ -10,11 +10,8 @@ export class InformationFrameComponent {
   @Input()
   informationFrame!: any;
 
-  @Output()
-  closeInformationFrame: EventEmitter<void> = new EventEmitter();
-
   close(): void {
-    this.closeInformationFrame.emit();
+    this.informationFrame = {};
   }
 
 }

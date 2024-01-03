@@ -40,8 +40,4 @@ export class GameMapComponent {
     this.informationFrame = this.informationOf.getWithNameType(event[0], event[1] as "enemy" | "building" | "tower" | "relic");
   }
 
-  onCloseInformationFrameReceive(): void {
-    this.informationFrame = {};
-  }
-
 }

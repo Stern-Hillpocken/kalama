@@ -33,6 +33,10 @@ export class InformationOf {
     });
   }
 
+  getAllBuildings(): Building[] {
+    return this.allBuildings;
+  }
+
   getAllTowers(): Tower[] {
     return this.allTowers;
   }

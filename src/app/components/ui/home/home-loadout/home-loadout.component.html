@@ -4,73 +4,99 @@
     <p>
         Choisissez les caractéristiques de votre partie&nbsp;:
     </p>
+    <h2>Difficulté</h2>
     <div class="game-difficulty">
         <button (click)="setGameStateToDifficulty(1)">Normal</button>
         <button (click)="setGameStateToDifficulty(2)">Difficile</button>
     </div>
-    <div class="game-state">
-        <table>
-            <thead><tr><th colspan="4">Ressources de départ</th></tr></thead>
-            <tbody>
-                <tr>
-                    <td>Structure</td><td><button (click)="changeGameState('structure',-1)">-</button></td><td>{{gameStateChoice.structure}}</td><td><button (click)="changeGameState('structure',+1)">+</button></td>
-                </tr>
-                <tr>
-                    <td>Pierre</td><td><button (click)="changeGameState('stone',-1)">-</button></td><td>{{gameStateChoice.stone}}</td><td><button (click)="changeGameState('stone',+1)">+</button></td>
-                </tr>
-                <tr>
-                    <td>Bois</td><td><button (click)="changeGameState('wood',-1)">-</button></td><td>{{gameStateChoice.wood}}</td><td><button (click)="changeGameState('wood',+1)">+</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <table>
-            <thead><tr><th colspan="4">Évènements disponibles</th></tr></thead>
-            <tbody>
-                <tr>
-                    <td>Bataille</td><td><button (click)="changeGameState('battle',-1)">-</button></td><td>{{ gameStateChoice.mapState.battleCount }}</td><td><button (click)="changeGameState('battle',+1)">+</button></td>
-                </tr>
-                <tr>
-                    <td>Camp</td><td><button (click)="changeGameState('camp',-1)">-</button></td><td>{{ gameStateChoice.mapState.campCount }}</td><td><button (click)="changeGameState('camp',+1)">+</button></td>
-                </tr>
-                <tr>
-                    <td>Elite</td><td><button (click)="changeGameState('elite',-1)">-</button></td><td>{{ gameStateChoice.mapState.eliteCount }}</td><td><button (click)="changeGameState('elite',+1)">+</button></td>
-                </tr>
-                <tr>
-                    <td>Marcand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td>{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="towers-carousel">
-        <img src="assets/images/icons/left-arrow.png">
-        <div class="tower-list">
+
+    <h2>Règlages précis</h2>
+
+    <button (click)="startingResourcesDisplayed = !startingResourcesDisplayed" class="detail-button">Ressources de départ</button>
+    <table *ngIf="startingResourcesDisplayed">
+        <tbody>
+            <tr>
+                <td>Structure</td><td><button (click)="changeGameState('structure',-1)">-</button></td><td>{{gameStateChoice.structure}}</td><td><button (click)="changeGameState('structure',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td>Pierre</td><td><button (click)="changeGameState('stone',-1)">-</button></td><td>{{gameStateChoice.stone}}</td><td><button (click)="changeGameState('stone',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td>Bois</td><td><button (click)="changeGameState('wood',-1)">-</button></td><td>{{gameStateChoice.wood}}</td><td><button (click)="changeGameState('wood',+1)">+</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button (click)="availableEventsDisplayed = !availableEventsDisplayed" class="detail-button">Évènements disponibles</button>
+    <table *ngIf="availableEventsDisplayed">
+        <tbody>
+            <tr>
+                <td>Bataille</td><td><button (click)="changeGameState('battle',-1)">-</button></td><td>{{ gameStateChoice.mapState.battleCount }}</td><td><button (click)="changeGameState('battle',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td>Camp</td><td><button (click)="changeGameState('camp',-1)">-</button></td><td>{{ gameStateChoice.mapState.campCount }}</td><td><button (click)="changeGameState('camp',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td>Elite</td><td><button (click)="changeGameState('elite',-1)">-</button></td><td>{{ gameStateChoice.mapState.eliteCount }}</td><td><button (click)="changeGameState('elite',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td>Marcand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td>{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button (click)="blueprintsDisplayed = !blueprintsDisplayed" class="detail-button">Schémas de construction</button>
+    <div *ngIf="blueprintsDisplayed" class="blueprints-carousel">
+        <img (click)="buildingListMove('blueprint-list', 'left')" src="assets/images/icons/left-arrow.png">
+        <div class="blueprint-list">
+            <img
+                *ngFor="let build of buildings"
+                src="assets/images/sprites/building/{{build.image}}-blueprint.png"
+                [alt]="build.image"
+                (click)="towerStatDisplay(build.image)"
+                (dragend)="onDragEnd($event)"
+                >
             <img
                 *ngFor="let tower of towers"
-                src="assets/images/sprites/tower/{{tower.image}}.png"
+                src="assets/images/sprites/tower/{{tower.image}}-blueprint.png"
                 [alt]="tower.image"
                 (click)="towerStatDisplay(tower.image)"
-                (dragstart)="onDragStart($event)"
                 (dragend)="onDragEnd($event)"
                 >
         </div>
-        <img src="assets/images/icons/right-arrow.png">
+        <img (click)="buildingListMove('blueprint-list', 'right')" src="assets/images/icons/right-arrow.png">
     </div>
-    <div class="tower-stat" (dragenter)="onDragState()">
-        {{ towerSelected.name }}
-        <br>
-        {{ towerSelected.description }}
-    </div>
-    <div class="towers-selected">
-        <div
-            *ngFor="let div of [].constructor(3); let i = index"
-            (dragenter)="onDragEnter(i)"
-            >
-            <img *ngIf="gameStateChoice.towersUnlocked.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersUnlocked[i]}}.png">
-            <br>
-            <button *ngIf="gameStateChoice.towersUnlocked.length > i" (click)="removeTower(i)">Remove</button>
+
+    <button (click)="towersSelectionDisplayed = !towersSelectionDisplayed" class="detail-button">Tours de départ</button>    
+    <div *ngIf="towersSelectionDisplayed">
+        <div class="towers-carousel">
+            <img (click)="buildingListMove('tower-list', 'left')" src="assets/images/icons/left-arrow.png">
+            <div class="tower-list">
+                <img
+                    *ngFor="let tower of towers"
+                    src="assets/images/sprites/tower/{{tower.image}}.png"
+                    [alt]="tower.image"
+                    (click)="towerStatDisplay(tower.image)"
+                    (dragend)="onDragEnd($event)"
+                    >
+            </div>
+            <img (click)="buildingListMove('tower-list', 'left')" src="assets/images/icons/right-arrow.png">
         </div>
+        <div class="remove-selection" (dragenter)="onDragState()"></div>
+        <div class="towers-selected">
+            <div
+                *ngFor="let div of [].constructor(3); let i = index"
+                (dragenter)="onDragEnter(i)"
+                >
+                <img *ngIf="gameStateChoice.towersUnlocked.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersUnlocked[i]}}.png">
+                <br>
+                <button *ngIf="gameStateChoice.towersUnlocked.length > i" (click)="removeTower(i)">Remove</button>
+            </div>
+        </div>
+        <div class="remove-selection" (dragenter)="onDragState()"></div>
     </div>
-    <div>
+
+    <div style="text-align: center;">
         <p>Temps de jeu approximatif&nbsp;: {{ estimatedPlayTime() }} min.</p>
         <button (click)="launchGame()">Launch game</button>
     </div>

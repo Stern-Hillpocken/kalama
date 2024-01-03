@@ -118,10 +118,6 @@ export class GameBattleComponent {
     this.informationFrame = obj;
   }
 
-  onCloseInformationFrameReceive(): void {
-    this.informationFrame = {};
-  }
-
   onClosePopupReceive(): void {
     this.popupService.remove();
   }
