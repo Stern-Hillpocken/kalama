@@ -4,12 +4,18 @@
         "image": "stone-cutter",
         "life": 1,
         "efficiency": 1,
-        "description": "Cette machine doit être placée à gauche ou à droite d'une pierre pour pouvoir la miner à chaque tour."
+        "description": "Cette machine doit être placée à gauche ou à droite d'une pierre pour pouvoir la miner à chaque tour.",
+        "gemCost": 12,
+        "stoneCost": 4,
+        "woodCost": 8
     },{
         "name": "wood-cutter",
         "image": "wood-cutter",
         "life": 1,
         "efficiency": 1,
-        "description": "Cette machine doit être placée à gauche ou à droite d'un arbre pour pouvoir le scier à chaque tour."
+        "description": "Cette machine doit être placée à gauche ou à droite d'un arbre pour pouvoir le scier à chaque tour.",
+        "gemCost": 14,
+        "stoneCost": 8,
+        "woodCost": 4
     }
 ]
