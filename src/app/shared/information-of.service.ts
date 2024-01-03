@@ -23,12 +23,12 @@ export class InformationOf {
     });
     this.http.get('assets/json/buildings.json').subscribe((json: any) => {
       for (let i = 0; i < json.length; i++){
-          this.allBuildings.push(new Building(json[i].name, json[i].image, json[i].life, json[i].efficiency, json[i].description, "building"));
+          this.allBuildings.push(new Building(json[i].name, json[i].image, json[i].life, json[i].efficiency, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "building"));
       }
     });
     this.http.get('assets/json/towers.json').subscribe((json: any) => {
       for (let i = 0; i < json.length; i++){
-          this.allTowers.push(new Tower(json[i].name, json[i].image, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, "tower"));
+          this.allTowers.push(new Tower(json[i].name, json[i].image, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "tower"));
       }
     });
   }

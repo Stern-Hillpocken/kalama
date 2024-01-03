@@ -8,6 +8,9 @@ export class Tower {
         public step: number,
         public tileTargeted: string,
         public description: string,
+        public gemCost: number,
+        public stoneCost: number,
+        public woodCost: number,
         public type: string
     ){}
 }

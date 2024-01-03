@@ -16,7 +16,7 @@ import { InformationOf } from './information-of.service';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   constructor(
     private router: Router,
@@ -32,7 +32,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   endTurn(): void {
@@ -178,7 +178,7 @@ export class GameStateService {
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
         let newBuilding: Building = this.informationOf.getWithNameType(name, "building");
-        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, "building");
+        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, newBuilding.gemCost, newBuilding.stoneCost, newBuilding.woodCost, "building");
         return;
       }
     }
@@ -188,7 +188,7 @@ export class GameStateService {
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
-          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, "tower");
+          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, newTower.gemCost, newTower.stoneCost, newTower.woodCost, "tower");
           this.endTurn();
           return;
         }

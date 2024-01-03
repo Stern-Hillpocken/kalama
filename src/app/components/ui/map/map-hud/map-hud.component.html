@@ -38,4 +38,19 @@
             <img src="assets/images/sprites/relic/{{relic}}.png">
         </div>
     </div>
+    <h2>Schémas</h2>
+    <div>
+        <div
+            *ngFor="let bb of gameState.buildingsBlueprints"
+            (click)="displayInfo(bb, 'building')"
+        >
+            <img src="assets/images/sprites/relic/{{bb}}-blueprint.png">
+        </div>
+        <div
+            *ngFor="let tb of gameState.towersBlueprints"
+            (click)="displayInfo(tb, 'tower')"
+        >
+            <img src="assets/images/sprites/relic/{{tb}}-blueprint.png">
+        </div>
+    </div>
 </div>
