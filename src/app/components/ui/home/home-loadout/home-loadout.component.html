@@ -6,8 +6,8 @@
     </p>
     <h2>Difficulté</h2>
     <div class="game-difficulty">
-        <button (click)="setGameStateToDifficulty(1)">Normal</button>
-        <button (click)="setGameStateToDifficulty(2)">Difficile</button>
+        <button (click)="setGameStateToDifficulty(1)" [ngStyle]="{'filter' : gameStateChoice.difficulty === 1 ? 'hue-rotate(90deg)' : ''}">Normal</button>
+        <button (click)="setGameStateToDifficulty(2)" [ngStyle]="{'filter' : gameStateChoice.difficulty === 2 ? 'hue-rotate(90deg)' : ''}">Difficile</button>
     </div>
 
     <h2>Règlages précis</h2>
