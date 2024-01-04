@@ -20,8 +20,10 @@ export class GameState {
         public maxPowerCoolDown: number,
         public relics: string[],
 
+        public buildingsBlueprints: string[],
         public buildingsAvailable: string[],
         public buildingsUnlocked: string[],
+        public towersBlueprints: string[],
         public towersAvailable: string[],
         public towersUnlocked: string[],
 

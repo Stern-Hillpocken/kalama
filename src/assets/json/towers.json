@@ -6,7 +6,10 @@
         "damage": 1,
         "sequence": ["wait", "attack"],
         "tileTargeted": "top",
-        "description": "Une petite tour qui attaque devant elle une fois sur deux."
+        "description": "Une petite tour qui attaque devant elle une fois sur deux.",
+        "gemCost": 7,
+        "stoneCost": 5,
+        "woodCost": 4
     },{
         "name": "wall",
         "image": "wall",
@@ -14,6 +17,9 @@
         "damage": 0,
         "sequence": ["wait"],
         "tileTargeted": "",
-        "description": "Une tour de défense."
+        "description": "Une tour de défense.",
+        "gemCost": 6,
+        "stoneCost": 4,
+        "woodCost": 5
     }
 ]

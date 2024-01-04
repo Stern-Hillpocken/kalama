@@ -4,11 +4,7 @@ img {
     image-rendering: pixelated;
 }
 
-.towers-carousel {
-    display: flex;
-}
-
-.game-state table{
+table{
     margin: auto;
 }
 
@@ -16,12 +12,55 @@ th{
     text-align: center;
 }
 
-.towers-selected {
+.detail-button {
+    display: block;
+    margin: auto;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+.blueprints-carousel, .towers-carousel {
     display: flex;
-    justify-content: space-around;
+}
+
+.blueprint-list, .tower-list {
+    height: 64px;
+    width: calc(100vw - 64px - 64px);
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5em;
+    overflow: scroll;
+}
+
+.blueprints-selected, .towers-selected {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
     div {
-        width: 68px;
+        min-width: 68px;
         min-height: 68px;
         border: 2px solid black;
+        p {
+            text-align: center;
+            padding: 0.5em;
+        }
+        img {
+            display: block;
+            margin: auto;
+        }
     }
+}
+
+.game-difficulty {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.remove-selection {
+    height: 0.5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    background: repeating-linear-gradient(-45deg,black,black 12px,yellow 12px,yellow 24px);
 }

@@ -5,6 +5,9 @@ export class Building {
         public life: number,
         public efficiency: number,
         public description: string,
+        public gemCost: number,
+        public stoneCost: number,
+        public woodCost: number,
         public type: "building"
     ){}
 }

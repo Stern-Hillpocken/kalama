@@ -9,11 +9,17 @@
     <app-home-settings></app-home-settings>
 </div>
 
+<app-information-frame
+    [informationFrame]="informationFrame"
+></app-information-frame>
+
 <app-home-loadout
     *ngIf="display === 'loadout'"
+    [buildings]="buildings"
     [towers]="towers"
     (closeLoadoutEmitter)="onCloseReceive()"
     (launchGameEmitter)="onLaunchGameReceive($event)"
+    (buildDisplayEmitter)="onBuildDisplayReceive($event)"
 ></app-home-loadout>
 
 <app-home-background
