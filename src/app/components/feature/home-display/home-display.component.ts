@@ -53,8 +53,8 @@ export class HomeDisplayComponent {
     this.router.navigateByUrl("game");
   }
 
-  onTowerDisplayReceive(towerName: string): void {
-    this.informationFrame = this.informationOf.getWithNameType(towerName, "tower");
+  onBuildDisplayReceive(build: string[]): void {
+    this.informationFrame = this.informationOf.getWithNameType(build[0], build[1] as "building" | "tower");
   }
 
 }

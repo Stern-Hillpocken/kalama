@@ -24,7 +24,7 @@ export class HomeLoadoutComponent {
   launchGameEmitter: EventEmitter<GameState> = new EventEmitter();
 
   @Output()
-  towerDisplayEmitter: EventEmitter<string> = new EventEmitter();
+  buildDisplayEmitter: EventEmitter<string[]> = new EventEmitter();
 
   gameStateChoice!: GameState;
 
@@ -34,6 +34,7 @@ export class HomeLoadoutComponent {
   towersSelectionDisplayed: boolean = false;
 
   lastTowerSlot: number = -1;
+  isBlueprintCellHover: boolean = false;
 
   ngOnInit(): void {
     this.setGameStateToDifficulty(1);
@@ -48,7 +49,7 @@ export class HomeLoadoutComponent {
   }
 
   setGameStateToDifficulty(value: number): void {
-    if (value === 1) this.gameStateChoice = new GameState("map", 1, "", new MapState(8,3,3,3,11), [], false, 15, 0, 0, 0, 0, "dash", 3, 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "ram", "ram"], 0, [], []);
+    if (value === 1) this.gameStateChoice = new GameState("map", 1, "", new MapState(8,3,3,3,11), [], false, 15, 0, 0, 0, 0, "dash", 3, 3, [], [], [], ["stone-cutter", "wood-cutter"], ["wall"], [], ["wall", "ram", "ram"], 0, [], []);
     else this.gameStateChoice = new GameState("map", 2, "", new MapState(12,3,4,3,15), [], false, 12, 0, 0, 0, 0, "dash", 3, 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "wall"], 0, [], []);
   }
 
@@ -70,16 +71,17 @@ export class HomeLoadoutComponent {
     }
   }
 
-  towerStatDisplay(name: string): void {
-    this.towerDisplayEmitter.emit(name);
+  buildStatDisplay(name: string, type: "building" | "tower"): void {
+    this.buildDisplayEmitter.emit([name, type]);
   }
 
   onDragEnter(divId: number): void {
     this.lastTowerSlot = divId;
   }
 
-  onDragState(): void {
+  onDragRemoveSelection(): void {
     this.lastTowerSlot = -1;
+    this.isBlueprintCellHover = false;
   }
 
   onDragEnd(event: any): void {
@@ -87,6 +89,28 @@ export class HomeLoadoutComponent {
     while (this.lastTowerSlot > this.gameStateChoice.towersUnlocked.length) this.lastTowerSlot --;
     this.gameStateChoice.towersUnlocked[this.lastTowerSlot] = event.target.alt;
     this.lastTowerSlot = -1;
+  }
+
+  onBlueprintDragEnd(event: any): void {
+    if (this.isBlueprintCellHover) {
+      for (let i = 0; i < this.buildings.length; i++) {
+        if (this.buildings[i].name === event.target.alt) {
+          if (this.gameStateChoice.buildingsBlueprints.indexOf(event.target.alt) === -1) this.gameStateChoice.buildingsBlueprints.push(event.target.alt);
+          return;
+        }
+      }
+      for (let i = 0; i < this.towers.length; i++) {
+        if (this.towers[i].name === event.target.alt) {
+          if (this.gameStateChoice.towersBlueprints.indexOf(event.target.alt) === -1) this.gameStateChoice.towersBlueprints.push(event.target.alt);
+          return;
+        }
+      }
+    }
+  }
+
+  removeBlueprint(type: "building" | "tower", index: number): void {
+    if (type === "building") this.gameStateChoice.buildingsBlueprints.splice(index, 1);
+    if (type === "tower") this.gameStateChoice.towersBlueprints.splice(index, 1);
   }
 
   removeTower(index: number): void {
@@ -102,6 +126,10 @@ export class HomeLoadoutComponent {
     if (side === "left" && (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft >= gap) (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft -= gap;
     else if (side === "left") (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft = 0;
     else (document.getElementsByClassName(type)[0] as HTMLDivElement).scrollLeft += gap;
+  }
+
+  onBlueprintCellEnter(): void {
+    this.isBlueprintCellHover = true;
   }
 
 }

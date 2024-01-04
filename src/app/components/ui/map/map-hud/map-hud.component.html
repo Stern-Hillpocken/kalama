@@ -44,13 +44,13 @@
             *ngFor="let bb of gameState.buildingsBlueprints"
             (click)="displayInfo(bb, 'building')"
         >
-            <img src="assets/images/sprites/relic/{{bb}}-blueprint.png">
+            <img src="assets/images/sprites/building/{{bb}}-blueprint.png">
         </div>
         <div
             *ngFor="let tb of gameState.towersBlueprints"
             (click)="displayInfo(tb, 'tower')"
         >
-            <img src="assets/images/sprites/relic/{{tb}}-blueprint.png">
+            <img src="assets/images/sprites/tower/{{tb}}-blueprint.png">
         </div>
     </div>
 </div>

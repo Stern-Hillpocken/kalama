@@ -46,25 +46,50 @@
     </table>
 
     <button (click)="blueprintsDisplayed = !blueprintsDisplayed" class="detail-button">Schémas de construction</button>
-    <div *ngIf="blueprintsDisplayed" class="blueprints-carousel">
-        <img (click)="buildingListMove('blueprint-list', 'left')" src="assets/images/icons/left-arrow.png">
-        <div class="blueprint-list">
-            <img
-                *ngFor="let build of buildings"
-                src="assets/images/sprites/building/{{build.image}}-blueprint.png"
-                [alt]="build.image"
-                (click)="towerStatDisplay(build.image)"
-                (dragend)="onDragEnd($event)"
-                >
-            <img
-                *ngFor="let tower of towers"
-                src="assets/images/sprites/tower/{{tower.image}}-blueprint.png"
-                [alt]="tower.image"
-                (click)="towerStatDisplay(tower.image)"
-                (dragend)="onDragEnd($event)"
-                >
+    <div *ngIf="blueprintsDisplayed">
+        <div class="blueprints-carousel">
+            <img (click)="buildingListMove('blueprint-list', 'left')" src="assets/images/icons/left-arrow.png">
+            <div class="blueprint-list">
+                <img
+                    *ngFor="let build of buildings"
+                    src="assets/images/sprites/building/{{build.image}}-blueprint.png"
+                    [alt]="build.image"
+                    (click)="buildStatDisplay(build.image, 'building')"
+                    (dragend)="onBlueprintDragEnd($event)"
+                    >
+                <img
+                    *ngFor="let tower of towers"
+                    src="assets/images/sprites/tower/{{tower.image}}-blueprint.png"
+                    [alt]="tower.image"
+                    (click)="buildStatDisplay(tower.image, 'building')"
+                    (dragend)="onBlueprintDragEnd($event)"
+                    >
+            </div>
+            <img (click)="buildingListMove('blueprint-list', 'right')" src="assets/images/icons/right-arrow.png">
         </div>
-        <img (click)="buildingListMove('blueprint-list', 'right')" src="assets/images/icons/right-arrow.png">
+        <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
+        <div class="blueprints-selected">
+            <div
+                *ngFor="let div of [].constructor(gameStateChoice.buildingsBlueprints.length); let i = index"
+                (dragenter)="onDragEnter(i)"
+                >
+                <img *ngIf="gameStateChoice.buildingsBlueprints.length > i" src="assets/images/sprites/building/{{gameStateChoice.buildingsBlueprints[i]}}-blueprint.png">
+                <br>
+                <button *ngIf="gameStateChoice.buildingsBlueprints.length > i" (click)="removeBlueprint('building',i)">Remove</button>
+            </div>
+            <div
+                *ngFor="let div of [].constructor(gameStateChoice.towersBlueprints.length); let i = index"
+                (dragenter)="onDragEnter(i)"
+                >
+                <img *ngIf="gameStateChoice.towersBlueprints.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersBlueprints[i]}}-blueprint.png">
+                <br>
+                <button *ngIf="gameStateChoice.towersBlueprints.length > i" (click)="removeBlueprint('tower',i)">Remove</button>
+            </div>
+            <div (dragenter)="onBlueprintCellEnter()">
+                <p>Drag<br>here !</p>
+            </div>
+        </div>
+        <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
     </div>
 
     <button (click)="towersSelectionDisplayed = !towersSelectionDisplayed" class="detail-button">Tours de départ</button>    
@@ -76,24 +101,25 @@
                     *ngFor="let tower of towers"
                     src="assets/images/sprites/tower/{{tower.image}}.png"
                     [alt]="tower.image"
-                    (click)="towerStatDisplay(tower.image)"
+                    (click)="buildStatDisplay(tower.image, 'tower')"
                     (dragend)="onDragEnd($event)"
                     >
             </div>
             <img (click)="buildingListMove('tower-list', 'left')" src="assets/images/icons/right-arrow.png">
         </div>
-        <div class="remove-selection" (dragenter)="onDragState()"></div>
+        <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
         <div class="towers-selected">
             <div
-                *ngFor="let div of [].constructor(3); let i = index"
+                *ngFor="let div of [].constructor(gameStateChoice.towersUnlocked.length+1); let i = index"
                 (dragenter)="onDragEnter(i)"
                 >
+                <p *ngIf="gameStateChoice.towersUnlocked.length <= i">Drag<br>here !</p>
                 <img *ngIf="gameStateChoice.towersUnlocked.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersUnlocked[i]}}.png">
                 <br>
                 <button *ngIf="gameStateChoice.towersUnlocked.length > i" (click)="removeTower(i)">Remove</button>
             </div>
         </div>
-        <div class="remove-selection" (dragenter)="onDragState()"></div>
+        <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
     </div>
 
     <div style="text-align: center;">
