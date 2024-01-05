@@ -25,8 +25,8 @@ export class MapPinService {
     for (let i = 0; i < mapState.battleCount; i++) {
         this.allPins.battlePosition.push([this.rand(),this.rand()]);
     }
-    for (let i = 0; i < mapState.campCount; i++) {
-        this.allPins.campPosition.push([this.rand(),this.rand()]);
+    for (let i = 0; i < mapState.shelterCount; i++) {
+        this.allPins.shelterPosition.push([this.rand(),this.rand()]);
     }
     for (let i = 0; i < mapState.eliteCount; i++) {
         this.allPins.elitePosition.push([this.rand(),this.rand()]);

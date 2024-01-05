@@ -25,7 +25,10 @@ import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices
 import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
 import { MapHeaderComponent } from './components/ui/map/map-header/map-header.component';
 import { HomeBackgroundComponent } from './components/ui/home/home-background/home-background.component';
-import { GameCampComponent } from './components/feature/game-camp/game-camp.component';
+import { GameShelterComponent } from './components/feature/game-shelter/game-shelter.component';
+import { ShelterSacrificeComponent } from './components/ui/shelter/shelter-sacrifice/shelter-sacrifice.component';
+import { ShelterBuildComponent } from './components/ui/shelter/shelter-build/shelter-build.component';
+import { ShelterHudComponent } from './components/ui/shelter/shelter-hud/shelter-hud.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { GameCampComponent } from './components/feature/game-camp/game-camp.comp
     MapHudComponent,
     MapHeaderComponent,
     HomeBackgroundComponent,
-    GameCampComponent
+    GameShelterComponent,
+    ShelterSacrificeComponent,
+    ShelterBuildComponent,
+    ShelterHudComponent
   ],
   imports: [
     BrowserModule,

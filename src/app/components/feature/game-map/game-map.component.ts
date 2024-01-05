@@ -27,7 +27,7 @@ export class GameMapComponent {
 
   onGoToEventReceive(typeOfEvent: string): void {
     if (typeOfEvent === 'battle' || typeOfEvent === 'boss' || typeOfEvent === 'elite') this.gameStateService.generateBattle(typeOfEvent);
-    else if (typeOfEvent === 'camp') this.gameStateService.generateCamp();
+    else if (typeOfEvent === 'shelter') this.gameStateService.generateShelter();
     else if (typeOfEvent === 'seller') this.gameStateService.generateSeller();
   }
 

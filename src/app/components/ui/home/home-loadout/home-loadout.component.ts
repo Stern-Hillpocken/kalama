@@ -66,8 +66,8 @@ export class HomeLoadoutComponent {
       if (this.gameStateChoice.mapState.eliteCount + value >= 0) this.gameStateChoice.mapState.eliteCount += value;
     } else if (type === "seller") {
       if (this.gameStateChoice.mapState.sellerCount + value >= 0) this.gameStateChoice.mapState.sellerCount += value;
-    } else if (type === "camp") {
-      if (this.gameStateChoice.mapState.campCount + value >= 0) this.gameStateChoice.mapState.campCount += value;
+    } else if (type === "shelter") {
+      if (this.gameStateChoice.mapState.shelterCount + value >= 0) this.gameStateChoice.mapState.shelterCount += value;
     }
   }
 

@@ -2,9 +2,9 @@
     <h1>Carte de la région</h1>
     <div class="map-plan">
         <img
-            *ngFor="let img of [].constructor(gameState.mapState.campCount); let i = index"
-            src="assets/images/icons/camp.gif"
-            [ngStyle]="{'top': 'abs(calc('+allPins.campPosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.campPosition[i][1]+'% - 16px))'}"
+            *ngFor="let img of [].constructor(gameState.mapState.shelterCount); let i = index"
+            src="assets/images/icons/shelter.gif"
+            [ngStyle]="{'top': 'abs(calc('+allPins.shelterPosition[i][0]+'% - 16px))', 'left': 'abs(calc('+allPins.shelterPosition[i][1]+'% - 16px))'}"
             >
         <img
             *ngFor="let img of [].constructor(gameState.mapState.sellerCount); let i = index"

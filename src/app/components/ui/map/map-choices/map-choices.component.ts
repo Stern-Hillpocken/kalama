@@ -14,7 +14,7 @@ export class MapChoicesComponent {
   @Output()
   goToEventEmitter: EventEmitter<string> = new EventEmitter();
 
-  goToEvent(typeOfEvent: string): void {
+  goToEvent(typeOfEvent: "battle" | "boss" | "elite" | "shelter" | "seller"): void {
     this.goToEventEmitter.emit(typeOfEvent);
   }
 

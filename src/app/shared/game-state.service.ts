@@ -333,9 +333,10 @@ export class GameStateService {
     newGameState.display = "battle";
   }
 
-  generateCamp(): void {
+  generateShelter(): void {
     let newGameState: GameState = this._gameState$.getValue();
-    newGameState.display = "camp";
+    newGameState.display = "shelter";
+    newGameState.mapState.shelterCount --;
   }
 
   generateSeller(): void {
