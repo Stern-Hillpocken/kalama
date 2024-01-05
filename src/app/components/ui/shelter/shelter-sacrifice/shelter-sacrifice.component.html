@@ -1,1 +1,9 @@
-<p>shelter-sacrifice works!</p>
+<div>
+    <h2>Sacrifice</h2>
+    <button (click)="sacrifice('stone')">
+        <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/stone.png">x{{ sacrificeStoneGain }}
+    </button>
+    <button (click)="sacrifice('wood')">
+        <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/wood.png">x{{ sacrificeWoodGain }}
+    </button>
+</div>

@@ -18,6 +18,8 @@ export class GameStateService {
 
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
+  private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
+
   constructor(
     private router: Router,
     private informationOf: InformationOf
@@ -341,6 +343,15 @@ export class GameStateService {
 
   generateSeller(): void {
     //let newGameState: GameState = this._gameState$.getValue();
+  }
+
+  getSacrificeResourceGain(resource: "gem" | "stone" | "wood"): number {
+    return this.sacrificeResourceGain[resource];
+  }
+
+  sacrificeFor(resource: "gem" | "stone" | "wood"): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState[resource] -= this.sacrificeResourceGain[resource];
   }
 
 }

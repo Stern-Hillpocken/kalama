@@ -1,1 +1,7 @@
-<p>game-sh works!</p>
+<app-shelter-build></app-shelter-build>
+<app-shelter-sacrifice
+    [sacrificeStoneGain]="sacrificeStoneGain"
+    [sacrificeWoodGain]="sacrificeWoodGain"
+    (sacrificeEmitter)="onSacrificeReceive($event)"
+></app-shelter-sacrifice>
+<app-shelter-hud></app-shelter-hud>
