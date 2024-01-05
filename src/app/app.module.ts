@@ -25,6 +25,7 @@ import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices
 import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
 import { MapHeaderComponent } from './components/ui/map/map-header/map-header.component';
 import { HomeBackgroundComponent } from './components/ui/home/home-background/home-background.component';
+import { GameCampComponent } from './components/feature/game-camp/game-camp.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { HomeBackgroundComponent } from './components/ui/home/home-background/ho
     MapChoicesComponent,
     MapHudComponent,
     MapHeaderComponent,
-    HomeBackgroundComponent
+    HomeBackgroundComponent,
+    GameCampComponent
   ],
   imports: [
     BrowserModule,

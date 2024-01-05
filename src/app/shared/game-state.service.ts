@@ -334,7 +334,8 @@ export class GameStateService {
   }
 
   generateCamp(): void {
-    //let newGameState: GameState = this._gameState$.getValue();
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState.display = "camp";
   }
 
   generateSeller(): void {
