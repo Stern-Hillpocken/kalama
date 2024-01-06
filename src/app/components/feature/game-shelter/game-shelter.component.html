@@ -1,5 +1,6 @@
 <app-shelter-build></app-shelter-build>
 <app-shelter-sacrifice
+    [gameState]="gameState"
     [sacrificeStoneGain]="sacrificeStoneGain"
     [sacrificeWoodGain]="sacrificeWoodGain"
     (sacrificeEmitter)="onSacrificeReceive($event)"

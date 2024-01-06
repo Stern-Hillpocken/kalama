@@ -351,7 +351,10 @@ export class GameStateService {
 
   sacrificeFor(resource: "gem" | "stone" | "wood"): void {
     let newGameState: GameState = this._gameState$.getValue();
-    newGameState[resource] -= this.sacrificeResourceGain[resource];
+    if (newGameState.structure > 1) {
+      newGameState.structure --;
+      newGameState[resource] += this.sacrificeResourceGain[resource];
+    }
   }
 
 }

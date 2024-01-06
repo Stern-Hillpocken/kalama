@@ -1,9 +1,11 @@
 <div>
     <h2>Sacrifice</h2>
-    <button (click)="sacrifice('stone')">
-        <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/stone.png">x{{ sacrificeStoneGain }}
-    </button>
-    <button (click)="sacrifice('wood')">
-        <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/wood.png">x{{ sacrificeWoodGain }}
-    </button>
+    <div class="sacrifice-buttons">
+        <button (click)="sacrifice('stone')" [ngClass]="gameState.structure === 1 ? 'disabled' : ''" [disabled]="gameState.structure === 1">
+            <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/stone.png"><span class="x">x</span><span class="count">{{ sacrificeStoneGain }}</span>
+        </button>
+        <button (click)="sacrifice('wood')" [ngClass]="gameState.structure === 1 ? 'disabled' : ''" [disabled]="gameState.structure === 1">
+            <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/wood.png"><span class="x">x</span><span class="count">{{ sacrificeWoodGain }}</span>
+        </button>
+    </div>
 </div>
