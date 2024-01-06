@@ -11,7 +11,7 @@
     <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'hide' : 'show' }}</button>
 </div>
 <div *ngIf="isLoadoutDisplayed" class="loadout">
-    <h2>Buildings</h2>
+    <h2 *ngIf="gameState.buildingsUnlocked.length > 0">Buildings</h2>
     <div>
         <div
             *ngFor="let build of gameState.buildingsUnlocked"
@@ -20,7 +20,7 @@
             <img src="assets/images/sprites/building/{{build}}.png">
         </div>
     </div>
-    <h2>Towers</h2>
+    <h2 *ngIf="gameState.towersUnlocked.length > 0">Towers</h2>
     <div>
         <div
             *ngFor="let tower of gameState.towersUnlocked"
@@ -29,7 +29,7 @@
             <img src="assets/images/sprites/tower/{{tower}}.png">
         </div>
     </div>
-    <h2>Relics</h2>
+    <h2 *ngIf="gameState.relics.length > 0">Relics</h2>
     <div>
         <div
             *ngFor="let relic of gameState.relics"
@@ -38,7 +38,7 @@
             <img src="assets/images/sprites/relic/{{relic}}.png">
         </div>
     </div>
-    <h2>Schémas</h2>
+    <h2 *ngIf="gameState.buildingsBlueprints.length + gameState.towersBlueprints.length > 0">Schémas</h2>
     <div>
         <div
             *ngFor="let bb of gameState.buildingsBlueprints"

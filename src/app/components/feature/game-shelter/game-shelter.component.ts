@@ -20,6 +20,10 @@ export class GameShelterComponent {
   sacrificeStoneGain!: number;
   sacrificeWoodGain!: number;
 
+  isLoadoutDisplayed: boolean = false;
+
+  informationFrame: any = {};
+
   constructor(
     private gameStateService: GameStateService,
     private informationOf: InformationOf
@@ -41,6 +45,15 @@ export class GameShelterComponent {
 
   onBuildReceive(event: string[]): void {
     this.gameStateService.shelterBuild(event[0] as "building" | "tower", event[1]);
+  }
+
+  onLoadoutReceive(): void {
+    this.isLoadoutDisplayed = !this.isLoadoutDisplayed;
+    this.informationFrame = {};
+  }
+
+  onInformationOfObjectReceive(event: string[]): void {
+    this.informationFrame = this.informationOf.getWithNameType(event[0], event[1] as "enemy" | "building" | "tower" | "relic");
   }
 
 }

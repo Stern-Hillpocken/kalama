@@ -8,7 +8,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { HomeSettingsComponent } from './components/ui/home/home-settings/home-settings.component';
 import { HomeChoicesComponent } from './components/ui/home/home-choices/home-choices.component';
 import { HomeTitleComponent } from './components/ui/home/home-title/home-title.component';
-import { LoadoutConfirmComponent } from './components/ui/loadout/loadout-confirm/loadout-confirm.component';
 import { GameComponent } from './pages/game/game.component';
 import { GameMapComponent } from './components/feature/game-map/game-map.component';
 import { GameBattleComponent } from './components/feature/game-battle/game-battle.component';
@@ -22,13 +21,12 @@ import { BattleCharacterComponent } from './components/ui/battle/battle-characte
 import { PopupComponent } from './components/ui/popup/popup.component';
 import { InformationFrameComponent } from './components/ui/information-frame/information-frame.component';
 import { MapChoicesComponent } from './components/ui/map/map-choices/map-choices.component';
-import { MapHudComponent } from './components/ui/map/map-hud/map-hud.component';
 import { MapHeaderComponent } from './components/ui/map/map-header/map-header.component';
 import { HomeBackgroundComponent } from './components/ui/home/home-background/home-background.component';
 import { GameShelterComponent } from './components/feature/game-shelter/game-shelter.component';
 import { ShelterSacrificeComponent } from './components/ui/shelter/shelter-sacrifice/shelter-sacrifice.component';
 import { ShelterBuildComponent } from './components/ui/shelter/shelter-build/shelter-build.component';
-import { ShelterHudComponent } from './components/ui/shelter/shelter-hud/shelter-hud.component';
+import { LoadoutDisplayComponent } from './components/ui/loadout-display/loadout-display.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +35,6 @@ import { ShelterHudComponent } from './components/ui/shelter/shelter-hud/shelter
     HomeSettingsComponent,
     HomeChoicesComponent,
     HomeTitleComponent,
-    LoadoutConfirmComponent,
     GameComponent,
     GameMapComponent,
     GameBattleComponent,
@@ -51,13 +48,12 @@ import { ShelterHudComponent } from './components/ui/shelter/shelter-hud/shelter
     PopupComponent,
     InformationFrameComponent,
     MapChoicesComponent,
-    MapHudComponent,
     MapHeaderComponent,
     HomeBackgroundComponent,
     GameShelterComponent,
     ShelterSacrificeComponent,
     ShelterBuildComponent,
-    ShelterHudComponent
+    LoadoutDisplayComponent
   ],
   imports: [
     BrowserModule,

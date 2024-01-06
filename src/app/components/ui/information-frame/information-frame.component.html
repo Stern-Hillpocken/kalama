@@ -32,6 +32,15 @@
         <tr>
             <td>Description</td><td>{{informationFrame.description}}</td>
         </tr>
+        <tr *ngIf="isCostDisplayed">
+            <td>Coût en gemmes</td><td>{{informationFrame.gemCost}}</td>
+        </tr>
+        <tr *ngIf="isCostDisplayed">
+            <td>Coût en stone</td><td>{{informationFrame.stoneCost}}</td>
+        </tr>
+        <tr *ngIf="isCostDisplayed">
+            <td>Coût en wood</td><td>{{informationFrame.woodCost}}</td>
+        </tr>
         <tr>
             <td>Type</td><td>{{informationFrame.type}}</td>
         </tr>

@@ -1,13 +1,25 @@
+<app-information-frame
+    [informationFrame]="informationFrame"
+    [isCostDisplayed]="true"
+></app-information-frame>
 <app-shelter-build
+    *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
     [buildings]="buildings"
     [towers]="towers"
     (buildEmitter)="onBuildReceive($event)"
+    (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
 ></app-shelter-build>
 <app-shelter-sacrifice
+    *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
     [sacrificeStoneGain]="sacrificeStoneGain"
     [sacrificeWoodGain]="sacrificeWoodGain"
     (sacrificeEmitter)="onSacrificeReceive($event)"
 ></app-shelter-sacrifice>
-<app-shelter-hud></app-shelter-hud>
+<app-loadout-display
+    [gameState]="gameState"
+    [isLoadoutDisplayed]="isLoadoutDisplayed"
+    (loadoutEmitter)="onLoadoutReceive()"
+    (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
+></app-loadout-display>
