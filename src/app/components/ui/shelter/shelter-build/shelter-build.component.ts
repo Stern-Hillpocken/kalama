@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { Tower } from 'src/app/models/tower.model';
@@ -19,6 +19,9 @@ export class ShelterBuildComponent {
   @Input()
   towers!: Tower[];
 
+  @Output()
+  buildEmitter: EventEmitter<string[]> = new EventEmitter();
+
   costDisplay(type: "building" | "tower", name: string, resource: "stone" | "wood"): number {
     let resourceCost = resource+"Cost" as "stoneCost" | "woodCost";
     if (type === "building") {
@@ -34,7 +37,7 @@ export class ShelterBuildComponent {
   }
 
   buildTypeName(type: "building" | "tower", name: string): void {
-    console.log(name)
+    this.buildEmitter.emit([type, name]);
   }
 
 }

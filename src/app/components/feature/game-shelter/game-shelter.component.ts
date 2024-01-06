@@ -39,4 +39,8 @@ export class GameShelterComponent {
     this.gameStateService.sacrificeFor(resource);
   }
 
+  onBuildReceive(event: string[]): void {
+    this.gameStateService.shelterBuild(event[0] as "building" | "tower", event[1]);
+  }
+
 }

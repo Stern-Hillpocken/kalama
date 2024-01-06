@@ -2,6 +2,7 @@
     [gameState]="gameState"
     [buildings]="buildings"
     [towers]="towers"
+    (buildEmitter)="onBuildReceive($event)"
 ></app-shelter-build>
 <app-shelter-sacrifice
     [gameState]="gameState"

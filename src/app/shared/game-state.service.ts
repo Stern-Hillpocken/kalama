@@ -8,7 +8,6 @@ import { Enemy } from '../models/enemy.model';
 import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
-import { HttpClient } from '@angular/common/http';
 import { InformationOf } from './information-of.service';
 
 @Injectable({
@@ -355,6 +354,17 @@ export class GameStateService {
       newGameState.structure --;
       newGameState[resource] += this.sacrificeResourceGain[resource];
     }
+  }
+
+  shelterBuild(type: "building" | "tower", name: string): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let typeUnlocked = type+"sUnlocked" as "buildingsUnlocked" | "towersUnlocked";
+    if (this.informationOf.getWithNameType(name, type).stoneCost > newGameState.stone || this.informationOf.getWithNameType(name, type).woodCost > newGameState.wood) return;
+
+    newGameState.stone -= this.informationOf.getWithNameType(name, type).stoneCost;
+    newGameState.wood -= this.informationOf.getWithNameType(name, type).woodCost;
+    newGameState[typeUnlocked].push(name);
+    newGameState[typeUnlocked] = newGameState[typeUnlocked].sort();
   }
 
 }
