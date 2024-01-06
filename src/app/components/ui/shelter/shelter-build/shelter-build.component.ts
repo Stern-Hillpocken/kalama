@@ -22,6 +22,9 @@ export class ShelterBuildComponent {
   @Output()
   buildEmitter: EventEmitter<string[]> = new EventEmitter();
 
+  @Output()
+  informationOfObjectEmitter: EventEmitter<string[]> = new EventEmitter();
+
   costDisplay(type: "building" | "tower", name: string, resource: "stone" | "wood"): number {
     let resourceCost = resource+"Cost" as "stoneCost" | "woodCost";
     if (type === "building") {
@@ -38,6 +41,10 @@ export class ShelterBuildComponent {
 
   buildTypeName(type: "building" | "tower", name: string): void {
     this.buildEmitter.emit([type, name]);
+  }
+
+  displayInformationOf(name: string, type: "building" | "tower"): void {
+    this.informationOfObjectEmitter.emit([name, type]);
   }
 
 }

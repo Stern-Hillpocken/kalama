@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameState } from 'src/app/models/game-state.model';
-import { InformationOf } from 'src/app/shared/information-of.service';
 
 @Component({
-  selector: 'app-map-hud',
-  templateUrl: './map-hud.component.html',
-  styleUrls: ['./map-hud.component.scss']
+  selector: 'app-loadout-display',
+  templateUrl: './loadout-display.component.html',
+  styleUrls: ['./loadout-display.component.scss']
 })
-export class MapHudComponent {
+export class LoadoutDisplayComponent {
 
   @Input()
   gameState!: GameState;
@@ -25,7 +24,7 @@ export class MapHudComponent {
     this.loadoutEmitter.emit();
   }
 
-  displayInfo(name: string, type: "enemy" | "building" | "tower" | "relic"): void {
+  displayInfo(name: string, type: "building" | "tower" | "relic"): void {
     this.informationOfObjectEmitter.emit([name, type]);
   }
 

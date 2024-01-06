@@ -1,5 +1,15 @@
 img {
-    width: 32px;
+    display: block;
+    margin: auto;
+    width: 64px;
+    image-rendering: pixelated;
+}
+p {
+    text-align: center;
+    img {
+        display: inline;
+        width: 32px;
+    }
 }
 
 .builds {

@@ -1,5 +1,6 @@
 <app-information-frame
     [informationFrame]="informationFrame"
+    [isCostDisplayed]="true"
 ></app-information-frame>
 <app-map-header
     *ngIf="!isLoadoutDisplayed"
@@ -10,9 +11,9 @@
     [gameState]="gameState"
     (goToEventEmitter)="onGoToEventReceive($event)"
 ></app-map-choices>
-<app-map-hud
+<app-loadout-display
     [gameState]="gameState"
     [isLoadoutDisplayed]="isLoadoutDisplayed"
     (loadoutEmitter)="onLoadoutReceive()"
     (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
-></app-map-hud>
+></app-loadout-display>
