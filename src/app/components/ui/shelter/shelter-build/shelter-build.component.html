@@ -1,1 +1,16 @@
-<p>shelter-build works!</p>
+<div class="builds">
+    <div *ngFor="let build of gameState.buildingsBlueprints">
+        <img src="assets/images/sprites/building/{{build}}-blueprint.png">
+        <p>
+            <img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ costDisplay('building', build, 'stone') }}</span> + <img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ costDisplay('building', build, 'wood') }}</span>
+        </p>
+        <button (click)="buildTypeName('building', build)" [ngClass]="costDisplay('building', build, 'stone') > gameState.stone || costDisplay('building', build, 'stone') > gameState.stone ? 'disabled' : ''">Construire</button>
+    </div>
+    <div *ngFor="let tower of gameState.towersBlueprints">
+        <img src="assets/images/sprites/tower/{{tower}}-blueprint.png">
+        <p>
+            <img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ costDisplay('tower', tower, 'stone') }}</span> + <img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ costDisplay('tower', tower, 'wood') }}</span>
+        </p>
+        <button (click)="buildTypeName('tower', tower)" [ngClass]="costDisplay('tower', tower, 'stone') > gameState.stone || costDisplay('tower', tower, 'stone') > gameState.stone ? 'disabled' : ''">Construire</button>
+    </div>
+</div>

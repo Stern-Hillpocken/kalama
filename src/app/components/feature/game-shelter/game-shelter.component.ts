@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
+import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
+import { InformationOf } from 'src/app/shared/information-of.service';
 
 @Component({
   selector: 'app-game-shelter',
@@ -11,17 +14,23 @@ export class GameShelterComponent {
 
   gameState!: GameState;
 
+  buildings!: Building[];
+  towers!: Tower[];
+
   sacrificeStoneGain!: number;
   sacrificeWoodGain!: number;
 
   constructor(
-    private gameStateService: GameStateService
+    private gameStateService: GameStateService,
+    private informationOf: InformationOf
   ){}
 
   ngOnInit(): void {
     this.gameStateService._getGameState$().subscribe(game => {
       this.gameState = game;
     });
+    this.buildings = this.informationOf.getAllBuildings();
+    this.towers = this.informationOf.getAllTowers();
     this.sacrificeStoneGain = this.gameStateService.getSacrificeResourceGain("stone");
     this.sacrificeWoodGain = this.gameStateService.getSacrificeResourceGain("wood");
   }

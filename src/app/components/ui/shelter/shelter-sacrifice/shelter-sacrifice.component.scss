@@ -3,21 +3,8 @@ img {
     width: 32px;
 }
 
-.disabled {
-    filter: grayscale(1);
-}
-
-.x {
-    font-size: 0.75em;
-}
-
-.count {
-    font-weight: bold;
-    font-size: 1.25em;
- }
-
- .sacrifice-buttons {
+.sacrifice-buttons {
     display: flex;
     justify-content: center;
     gap: 0.5em;
- }
+}

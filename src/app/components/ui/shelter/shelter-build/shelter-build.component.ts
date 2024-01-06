@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Building } from 'src/app/models/building.model';
+import { GameState } from 'src/app/models/game-state.model';
+import { Tower } from 'src/app/models/tower.model';
 
 @Component({
   selector: 'app-shelter-build',
@@ -6,5 +9,32 @@ import { Component } from '@angular/core';
   styleUrls: ['./shelter-build.component.scss']
 })
 export class ShelterBuildComponent {
+
+  @Input()
+  gameState!: GameState;
+
+  @Input()
+  buildings!: Building[];
+
+  @Input()
+  towers!: Tower[];
+
+  costDisplay(type: "building" | "tower", name: string, resource: "stone" | "wood"): number {
+    let resourceCost = resource+"Cost" as "stoneCost" | "woodCost";
+    if (type === "building") {
+      for (let i = 0; i < this.buildings.length; i++) {
+        if (this.buildings[i].name === name) return this.buildings[i][resourceCost];
+      }
+    } else {
+      for (let i = 0; i < this.towers.length; i++) {
+        if (this.towers[i].name === name) return this.towers[i][resourceCost];
+      }
+    }
+    return -1;
+  }
+
+  buildTypeName(type: "building" | "tower", name: string): void {
+    console.log(name)
+  }
 
 }
