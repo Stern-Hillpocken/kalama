@@ -1,5 +1,5 @@
 <div class="map-choices">
-    <h3>Évènements obligatoires</h3>
+    <h2>Évènements obligatoires</h2>
     <button (click)="goToEvent('boss')" *ngIf="gameState.mapState.battleCount + gameState.mapState.eliteCount === 0">
         Dernier camp
     </button>
@@ -11,7 +11,7 @@
         <img src="assets/images/icons/elite.gif">
         Camp d’élites <span class="x">x</span><span class="count">{{gameState.mapState.eliteCount}}</span>
     </button>
-    <h3>Évènements facultatifs</h3>
+    <h2>Évènements facultatifs</h2>
     <button (click)="goToEvent('shelter')" *ngIf="gameState.mapState.shelterCount !== 0">
         <img src="assets/images/icons/shelter.gif">
         Abris <span class="x">x</span><span class="count">{{gameState.mapState.shelterCount}}</span>
