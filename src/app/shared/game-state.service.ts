@@ -341,7 +341,9 @@ export class GameStateService {
   }
 
   generateSeller(): void {
-    //let newGameState: GameState = this._gameState$.getValue();
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState.display = "seller";
+    newGameState.mapState.sellerCount --;
   }
 
   getSacrificeResourceGain(resource: "gem" | "stone" | "wood"): number {

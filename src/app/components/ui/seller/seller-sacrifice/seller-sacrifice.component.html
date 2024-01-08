@@ -1,0 +1,8 @@
+<div>
+    <h2>Sacrifice</h2>
+    <div class="sacrifice-buttons">
+        <button (click)="sacrifice()" [ngClass]="gameState.structure === 1 ? 'disabled' : ''" [disabled]="gameState.structure === 1">
+            <img src="assets/images/icons/heart-1.png"> --> <img src="assets/images/icons/gem.png"><span class="x">x</span><span class="x-count">{{ sacrificeGemGain }}</span>
+        </button>
+    </div>
+</div>

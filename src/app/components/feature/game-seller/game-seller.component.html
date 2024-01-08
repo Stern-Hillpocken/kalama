@@ -1,0 +1,24 @@
+<app-information-frame
+    [informationFrame]="informationFrame"
+    [isCostDisplayed]="true"
+></app-information-frame>
+<button (click)="backToMap()">Retour à la carte</button>
+<app-seller-products
+    *ngIf="!isLoadoutDisplayed"
+    [gameState]="gameState"
+    [buildings]="buildings"
+    [towers]="towers"
+    (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
+></app-seller-products>
+<app-seller-sacrifice
+    *ngIf="!isLoadoutDisplayed"
+    [gameState]="gameState"
+    [sacrificeGemGain]="sacrificeGemGain"
+    (sacrificeEmitter)="onSacrificeReceive()"
+></app-seller-sacrifice>
+<app-loadout-display
+    [gameState]="gameState"
+    [isLoadoutDisplayed]="isLoadoutDisplayed"
+    (loadoutEmitter)="onLoadoutReceive()"
+    (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
+></app-loadout-display>
