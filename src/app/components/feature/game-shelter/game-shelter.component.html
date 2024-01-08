@@ -2,6 +2,7 @@
     [informationFrame]="informationFrame"
     [isCostDisplayed]="true"
 ></app-information-frame>
+<button (click)="backToMap()">Retour à la carte</button>
 <app-shelter-build
     *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"

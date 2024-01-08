@@ -367,4 +367,9 @@ export class GameStateService {
     newGameState[typeUnlocked] = newGameState[typeUnlocked].sort();
   }
 
+  backToMap(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState.display = "map";
+  }
+
 }

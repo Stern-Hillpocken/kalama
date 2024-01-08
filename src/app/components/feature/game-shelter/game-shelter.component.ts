@@ -56,4 +56,8 @@ export class GameShelterComponent {
     this.informationFrame = this.informationOf.getWithNameType(event[0], event[1] as "enemy" | "building" | "tower" | "relic");
   }
 
+  backToMap(): void {
+    this.gameStateService.backToMap();
+  }
+
 }
