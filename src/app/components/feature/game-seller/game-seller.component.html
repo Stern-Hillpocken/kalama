@@ -2,7 +2,7 @@
     [informationFrame]="informationFrame"
     [isCostDisplayed]="true"
 ></app-information-frame>
-<button (click)="backToMap()">Retour à la carte</button>
+<button *ngIf="!isLoadoutDisplayed" (click)="backToMap()">Retour à la carte</button>
 <app-seller-products
     *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
