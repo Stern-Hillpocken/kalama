@@ -23,6 +23,9 @@ export class GameSellerComponent {
 
   informationFrame: any = {};
 
+  buildingsToSell!: Building[];
+  towersToSell!: Tower[];
+
   constructor(
     private gameStateService: GameStateService,
     private informationOf: InformationOf
@@ -35,6 +38,8 @@ export class GameSellerComponent {
     this.buildings = this.informationOf.getAllBuildings();
     this.towers = this.informationOf.getAllTowers();
     this.sacrificeGemGain = this.gameStateService.getSacrificeResourceGain("gem");
+    this.buildingsToSell = this.gameStateService.getBuildingsToSell();
+    this.towersToSell = this.gameStateService.getTowersToSell();
   }
 
   onSacrificeReceive(): void {

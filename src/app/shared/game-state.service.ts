@@ -374,4 +374,31 @@ export class GameStateService {
     newGameState.display = "map";
   }
 
+  getBuildingsToSell(): Building[] {
+    let count: number = this.random(0,1);
+    if (count === 0) return [];
+    let buildings: Building[] = [];
+    let allBuildings: Building[] = this.informationOf.getAllBuildings();
+
+    for (let i = 0; i < count; i++) {
+      let randomIndex: number = this.random(0, allBuildings.length-1);
+      buildings.push(allBuildings[randomIndex]);
+    }
+
+    return buildings;
+  }
+
+  getTowersToSell(): Tower[] {
+    let count: number = this.random(1,2);
+    let towers: Tower[] = [];
+    let allTowers = this.informationOf.getAllTowers();
+
+    while (towers.length < count) {
+      let randomIndex: number = this.random(0, allTowers.length-1);
+      if (!towers.includes(allTowers[randomIndex])) towers.push(allTowers[randomIndex]);
+    }
+
+    return towers;    
+  }
+
 }

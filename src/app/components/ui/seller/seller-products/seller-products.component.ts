@@ -19,6 +19,12 @@ export class SellerProductsComponent {
   @Input()
   towers!: Tower[];
 
+  @Input()
+  buildingsToSell!: Building[];
+
+  @Input()
+  towersToSell!: Tower[];
+
   @Output()
   informationOfObjectEmitter: EventEmitter<string[]> = new EventEmitter();
 

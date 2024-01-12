@@ -1,1 +1,13 @@
-<p>seller-products works!</p>
+<div class="seller-products">
+    <div class="seller-builds">
+        <div *ngFor="let tower of towersToSell">
+            {{ tower.name }}
+        </div>
+        <div *ngFor="let build of buildingsToSell">
+            {{ build.name }}
+        </div>
+    </div>
+    <div class="seller-relics">
+        Relics
+    </div>
+</div>
