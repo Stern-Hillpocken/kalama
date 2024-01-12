@@ -6,23 +6,25 @@ import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
 
 @Component({
-  selector: 'app-game-shelter',
-  templateUrl: './game-shelter.component.html',
-  styleUrls: ['./game-shelter.component.scss']
+  selector: 'app-game-seller',
+  templateUrl: './game-seller.component.html',
+  styleUrls: ['./game-seller.component.scss']
 })
-export class GameShelterComponent {
+export class GameSellerComponent {
 
   gameState!: GameState;
 
   buildings!: Building[];
   towers!: Tower[];
 
-  sacrificeStoneGain!: number;
-  sacrificeWoodGain!: number;
+  sacrificeGemGain!: number;
 
   isLoadoutDisplayed: boolean = false;
 
   informationFrame: any = {};
+
+  buildingsToSell!: Building[];
+  towersToSell!: Tower[];
 
   constructor(
     private gameStateService: GameStateService,
@@ -35,16 +37,13 @@ export class GameShelterComponent {
     });
     this.buildings = this.informationOf.getAllBuildings();
     this.towers = this.informationOf.getAllTowers();
-    this.sacrificeStoneGain = this.gameStateService.getSacrificeResourceGain("stone");
-    this.sacrificeWoodGain = this.gameStateService.getSacrificeResourceGain("wood");
+    this.sacrificeGemGain = this.gameStateService.getSacrificeResourceGain("gem");
+    this.buildingsToSell = this.gameStateService.getBuildingsToSell();
+    this.towersToSell = this.gameStateService.getTowersToSell();
   }
 
-  onSacrificeReceive(resource: "gem" | "stone" | "wood"): void {
-    this.gameStateService.sacrificeFor(resource);
-  }
-
-  onBuildReceive(event: string[]): void {
-    this.gameStateService.shelterBuild(event[0] as "building" | "tower", event[1]);
+  onSacrificeReceive(): void {
+    this.gameStateService.sacrificeFor("gem");
   }
 
   onLoadoutReceive(): void {

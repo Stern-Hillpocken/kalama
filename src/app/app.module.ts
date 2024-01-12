@@ -27,6 +27,9 @@ import { GameShelterComponent } from './components/feature/game-shelter/game-she
 import { ShelterSacrificeComponent } from './components/ui/shelter/shelter-sacrifice/shelter-sacrifice.component';
 import { ShelterBuildComponent } from './components/ui/shelter/shelter-build/shelter-build.component';
 import { LoadoutDisplayComponent } from './components/ui/loadout-display/loadout-display.component';
+import { GameSellerComponent } from './components/feature/game-seller/game-seller.component';
+import { SellerSacrificeComponent } from './components/ui/seller/seller-sacrifice/seller-sacrifice.component';
+import { SellerProductsComponent } from './components/ui/seller/seller-products/seller-products.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,10 @@ import { LoadoutDisplayComponent } from './components/ui/loadout-display/loadout
     GameShelterComponent,
     ShelterSacrificeComponent,
     ShelterBuildComponent,
-    LoadoutDisplayComponent
+    LoadoutDisplayComponent,
+    GameSellerComponent,
+    SellerSacrificeComponent,
+    SellerProductsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,21 +3,21 @@
     [isCostDisplayed]="true"
 ></app-information-frame>
 <button *ngIf="!isLoadoutDisplayed" (click)="backToMap()">Retour à la carte</button>
-<app-shelter-build
+<app-seller-products
     *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
     [buildings]="buildings"
     [towers]="towers"
-    (buildEmitter)="onBuildReceive($event)"
+    [buildingsToSell]="buildingsToSell"
+    [towersToSell]="towersToSell"
     (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
-></app-shelter-build>
-<app-shelter-sacrifice
+></app-seller-products>
+<app-seller-sacrifice
     *ngIf="!isLoadoutDisplayed"
     [gameState]="gameState"
-    [sacrificeStoneGain]="sacrificeStoneGain"
-    [sacrificeWoodGain]="sacrificeWoodGain"
-    (sacrificeEmitter)="onSacrificeReceive($event)"
-></app-shelter-sacrifice>
+    [sacrificeGemGain]="sacrificeGemGain"
+    (sacrificeEmitter)="onSacrificeReceive()"
+></app-seller-sacrifice>
 <app-loadout-display
     [gameState]="gameState"
     [isLoadoutDisplayed]="isLoadoutDisplayed"
