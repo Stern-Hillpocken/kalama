@@ -1,10 +1,14 @@
 <div class="seller-products">
     <div class="seller-builds">
-        <div *ngFor="let tower of towersToSell">
-            {{ tower.name }}
+        <div *ngFor="let tower of towersToSell" class="product">
+            <img (click)="information(tower.name, 'tower')" src="assets/images/sprites/tower/{{tower.name}}-blueprint.png">
+            <p>Coût&nbsp;: <span class="x-count">{{ tower.gemCost }}</span> <img src="assets/images/icons/gem.png"></p>
+            <button (click)="learn(tower.name, 'tower')" [disabled]="hasBlueprint(tower.name, 'tower')">Apprendre</button>
         </div>
-        <div *ngFor="let build of buildingsToSell">
-            {{ build.name }}
+        <div *ngFor="let build of buildingsToSell" class="product">
+            <img (click)="information(build.name, 'building')" src="assets/images/sprites/building/{{build.name}}-blueprint.png">
+            <p>Coût&nbsp;: <span class="x-count">{{ build.gemCost }}</span> <img src="assets/images/icons/gem.png"></p>
+            <button (click)="learn(build.name, 'building')" [disabled]="hasBlueprint(build.name, 'building')">Apprendre</button>
         </div>
     </div>
     <div class="seller-relics">

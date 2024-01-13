@@ -1,0 +1,20 @@
+.seller-builds {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+
+.product {
+    border: 2px solid black;
+    text-align: center;
+    img {
+        image-rendering: pixelated;
+        width: 64px;
+    }
+    p {
+        img {
+            width: 32px;
+        }
+    }
+}

@@ -401,4 +401,45 @@ export class GameStateService {
     return towers;    
   }
 
+  learnBlueprint(name: string, type: "building" | "tower"): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    if (type === "building") {
+      let allBuildings: Building[] = this.informationOf.getAllBuildings();
+      let nameExist: boolean = false;
+      let price: number | undefined;
+      for (let i = 0; i < allBuildings.length; i++) {
+        if (allBuildings[i].name === name) {
+          nameExist = true;
+          price = allBuildings[i].gemCost;
+          break;
+        }
+      }
+      if (!nameExist) return;
+      if (typeof price == 'undefined' || price > newGameState.gem) return;
+      for (let i = 0; i < newGameState.buildingsBlueprints.length; i++) {
+        if (newGameState.buildingsBlueprints[i] === name) return;
+      }
+      newGameState.buildingsBlueprints.push(name);
+      newGameState.gem -= price;
+    } else {
+      let allTowers: Tower[] = this.informationOf.getAllTowers();
+      let nameExist: boolean = false;
+      let price: number | undefined = undefined;
+      for (let i = 0; i < allTowers.length; i++) {
+        if (allTowers[i].name === name) {
+          nameExist = true;
+          price = allTowers[i].gemCost;
+          break;
+        }
+      }
+      if (!nameExist) return;
+      if (typeof price == 'undefined' || price > newGameState.gem) return;
+      for (let i = 0; i < newGameState.towersBlueprints.length; i++) {
+        if (newGameState.towersBlueprints[i] === name) return;
+      }
+      newGameState.towersBlueprints.push(name);
+      newGameState.gem -= price;
+    }
+  }
+
 }

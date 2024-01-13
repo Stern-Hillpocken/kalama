@@ -11,6 +11,7 @@
     [buildingsToSell]="buildingsToSell"
     [towersToSell]="towersToSell"
     (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
+    (learnEmitter)="onLearnReceive($event)"
 ></app-seller-products>
 <app-seller-sacrifice
     *ngIf="!isLoadoutDisplayed"
