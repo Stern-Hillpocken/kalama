@@ -1,0 +1,38 @@
+[
+    {
+        "name": "anti-worm",
+        "title": "Aura répulsive à verres",
+        "gemCost": 6,
+        "description": "Éloigne les verres et empêche leur rencontre."
+    },{
+        "name": "gem-extractor",
+        "title": "Extracteur spécialisé",
+        "gemCost": 8,
+        "description": "Permet d’augmenter les chances d’extraire plus de gemme."
+    },{
+        "name": "stone-extractor",
+        "title": "Piston à répétition",
+        "gemCost": 7,
+        "description": "Permet d’augmenter les chances d’extraire plus de pierre."
+    },{
+        "name": "wood-extractor",
+        "title": "Pierre d’affutage",
+        "gemCost": 7,
+        "description": "Permet d’augmenter les chances d’extraire plus de bois."
+    },{
+        "name": "reinforced-wall",
+        "title": "Renforcement",
+        "gemCost": 5,
+        "description": "Renforce la structure de la construction, lui allouant un point de résitance en plus."
+    },{
+        "name": "repair-cost-reduction",
+        "title": "Outils performants",
+        "gemCost": 7,
+        "description": "Réduit le coût de la réparation de la structure."
+    },{
+        "name": "seller-cost-reduction",
+        "title": "Adhésion de soutien à la guilde",
+        "gemCost": 8,
+        "description": "Réduit le coût d’achat chez le marchand."
+    }
+]
