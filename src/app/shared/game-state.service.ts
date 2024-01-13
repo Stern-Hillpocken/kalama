@@ -19,6 +19,7 @@ export class GameStateService {
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
+  private repairResourceCost = {stone: 4, wood: 5};
 
   constructor(
     private router: Router,
@@ -351,6 +352,10 @@ export class GameStateService {
     return this.sacrificeResourceGain[resource];
   }
 
+  getRepairResourceCost(resource: "stone" | "wood"): number {
+    return this.repairResourceCost[resource];
+  }
+
   sacrificeFor(resource: "gem" | "stone" | "wood"): void {
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.structure > 1) {
@@ -462,6 +467,15 @@ export class GameStateService {
         newGameState.relics.push(allRelics[i]);
         newGameState.gem -= allRelics[i].gemCost;
       }
+    }
+  }
+
+  repair(): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.stone >= this.repairResourceCost["stone"] && newGameState.wood >= this.repairResourceCost["wood"]){
+      newGameState.stone -= this.repairResourceCost["stone"];
+      newGameState.wood -= this.repairResourceCost["wood"];
+      newGameState.structure ++;
     }
   }
 

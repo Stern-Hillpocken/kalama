@@ -20,6 +20,9 @@ export class GameShelterComponent {
   sacrificeStoneGain!: number;
   sacrificeWoodGain!: number;
 
+  repairStoneCost!: number;
+  repairWoodCost!: number;
+
   isLoadoutDisplayed: boolean = false;
 
   informationFrame: any = {};
@@ -37,6 +40,8 @@ export class GameShelterComponent {
     this.towers = this.informationOf.getAllTowers();
     this.sacrificeStoneGain = this.gameStateService.getSacrificeResourceGain("stone");
     this.sacrificeWoodGain = this.gameStateService.getSacrificeResourceGain("wood");
+    this.repairStoneCost = this.gameStateService.getRepairResourceCost("stone");
+    this.repairWoodCost = this.gameStateService.getRepairResourceCost("wood");
   }
 
   onSacrificeReceive(resource: "gem" | "stone" | "wood"): void {
@@ -58,6 +63,10 @@ export class GameShelterComponent {
 
   backToMap(): void {
     this.gameStateService.backToMap();
+  }
+
+  onRepairReceive(): void {
+    this.gameStateService.repair();
   }
 
 }
