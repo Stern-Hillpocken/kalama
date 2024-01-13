@@ -1,6 +1,7 @@
 export class Tower {
     constructor(
         public name: string,
+        public title: string,
         public image: string,
         public life: number,
         public damage: number,

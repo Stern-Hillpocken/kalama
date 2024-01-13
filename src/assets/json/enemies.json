@@ -1,6 +1,7 @@
 [
     {
         "name": "worm",
+        "title": "Ver des sables",
         "image": "worm",
         "life": 1,
         "moves": ["down"],

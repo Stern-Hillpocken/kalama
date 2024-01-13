@@ -17,7 +17,7 @@
             *ngFor="let build of gameState.buildingsUnlocked"
             (click)="displayInfo(build, 'building')"
             >
-            <img src="assets/images/sprites/building/{{build}}.png">
+            <img src="assets/images/sprites/buildings/{{build}}.png">
         </div>
     </div>
     <h2 *ngIf="gameState.towersUnlocked.length > 0">Towers</h2>
@@ -26,16 +26,16 @@
             *ngFor="let tower of gameState.towersUnlocked"
             (click)="displayInfo(tower, 'tower')"
             >
-            <img src="assets/images/sprites/tower/{{tower}}.png">
+            <img src="assets/images/sprites/towers/{{tower}}.png">
         </div>
     </div>
     <h2 *ngIf="gameState.relics.length > 0">Relics</h2>
     <div>
         <div
             *ngFor="let relic of gameState.relics"
-            (click)="displayInfo(relic, 'relic')"
+            (click)="displayInfo(relic.name, 'relic')"
         >
-            <img src="assets/images/sprites/relic/{{relic}}.png">
+            <img src="assets/images/sprites/relics/{{relic.name}}.png">
         </div>
     </div>
     <h2 *ngIf="gameState.buildingsBlueprints.length + gameState.towersBlueprints.length > 0">Schémas</h2>
@@ -44,13 +44,13 @@
             *ngFor="let bb of gameState.buildingsBlueprints"
             (click)="displayInfo(bb, 'building')"
         >
-            <img src="assets/images/sprites/building/{{bb}}-blueprint.png">
+            <img src="assets/images/sprites/buildings/{{bb}}-blueprint.png">
         </div>
         <div
             *ngFor="let tb of gameState.towersBlueprints"
             (click)="displayInfo(tb, 'tower')"
         >
-            <img src="assets/images/sprites/tower/{{tb}}-blueprint.png">
+            <img src="assets/images/sprites/towers/{{tb}}-blueprint.png">
         </div>
     </div>
 </div>

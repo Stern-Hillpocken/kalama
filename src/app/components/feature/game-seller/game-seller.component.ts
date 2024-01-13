@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
+import { Relic } from 'src/app/models/relic.model';
 import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
@@ -16,6 +17,7 @@ export class GameSellerComponent {
 
   buildings!: Building[];
   towers!: Tower[];
+  relics!: Relic[];
 
   sacrificeGemGain!: number;
 
@@ -25,6 +27,7 @@ export class GameSellerComponent {
 
   buildingsToSell!: Building[];
   towersToSell!: Tower[];
+  relicsToSell!: Relic[];
 
   constructor(
     private gameStateService: GameStateService,
@@ -37,9 +40,11 @@ export class GameSellerComponent {
     });
     this.buildings = this.informationOf.getAllBuildings();
     this.towers = this.informationOf.getAllTowers();
+    this.relics = this.informationOf.getAllRelics();
     this.sacrificeGemGain = this.gameStateService.getSacrificeResourceGain("gem");
     this.buildingsToSell = this.gameStateService.getBuildingsToSell();
     this.towersToSell = this.gameStateService.getTowersToSell();
+    this.relicsToSell = this.gameStateService.getRelicsToSell();
   }
 
   onSacrificeReceive(): void {
@@ -61,6 +66,18 @@ export class GameSellerComponent {
 
   onLearnReceive(nameType: string[]): void {
     this.gameStateService.learnBlueprint(nameType[0], nameType[1] as "building" | "tower");
+  }
+
+  onBuyRelicReceive(name: string): void {
+    // Remove relic from stock
+    for (let i = 0; i < this.relicsToSell.length; i++) {
+      if (this.relicsToSell[i].name === name && this.relicsToSell[i].gemCost <= this.gameState.gem) {
+        this.relicsToSell.splice(i,1);
+        break;
+      }
+    }
+    // Add
+    this.gameStateService.buyRelic(name);
   }
 
 }

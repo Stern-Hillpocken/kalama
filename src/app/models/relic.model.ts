@@ -1,10 +1,9 @@
-export class Resource {
+export class Relic {
     constructor(
         public name: string,
         public title: string,
-        public image: string,
-        public life: number,
+        public gemCost: number,
         public description: string,
-        public type: "resource"
+        public quantity: number
     ){}
 }

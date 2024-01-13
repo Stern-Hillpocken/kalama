@@ -2,12 +2,12 @@
     <div>
         <img
             *ngIf="!isCharacterOnTheGrid"
-            src="assets/images/sprites/character/{{gameState.koCounter === 0 ? 'character' : 'ko'}}.png"
+            src="assets/images/sprites/characters/{{gameState.koCounter === 0 ? 'character' : 'ko'}}.png"
             alt="character"
             (dragend)="onDragEnd($event)">
         <img
             *ngFor="let img of gameState.buildingsAvailable"
-            src="assets/images/sprites/building/{{img}}.png"
+            src="assets/images/sprites/buildings/{{img}}.png"
             alt="{{img}}"
             (click)="onClick($event, 'building')"
             (dragend)="onDragEnd($event)">
@@ -15,7 +15,7 @@
     <div *ngIf="isCharacterOnTheGrid && gameState.status === 'ready'">
         <img
             *ngFor="let img of gameState.towersAvailable"
-            src="assets/images/sprites/tower/{{img}}.png"
+            src="assets/images/sprites/towers/{{img}}.png"
             alt="{{img}}"
             (click)="onClick($event, 'tower')"
             (dragend)="onDragEnd($event)">

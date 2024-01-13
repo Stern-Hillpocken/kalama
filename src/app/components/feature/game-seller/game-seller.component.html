@@ -8,10 +8,13 @@
     [gameState]="gameState"
     [buildings]="buildings"
     [towers]="towers"
+    [relics]="relics"
     [buildingsToSell]="buildingsToSell"
     [towersToSell]="towersToSell"
+    [relicsToSell]="relicsToSell"
     (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"
     (learnEmitter)="onLearnReceive($event)"
+    (buyRelicEmitter)="onBuyRelicReceive($event)"
 ></app-seller-products>
 <app-seller-sacrifice
     *ngIf="!isLoadoutDisplayed"

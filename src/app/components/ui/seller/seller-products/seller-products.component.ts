@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
+import { Relic } from 'src/app/models/relic.model';
 import { Tower } from 'src/app/models/tower.model';
 
 @Component({
@@ -20,10 +21,16 @@ export class SellerProductsComponent {
   towers!: Tower[];
 
   @Input()
+  relics!: Relic[];
+
+  @Input()
   buildingsToSell!: Building[];
 
   @Input()
   towersToSell!: Tower[];
+
+  @Input()
+  relicsToSell!: Relic[];
 
   @Output()
   informationOfObjectEmitter: EventEmitter<string[]> = new EventEmitter();
@@ -31,7 +38,10 @@ export class SellerProductsComponent {
   @Output()
   learnEmitter: EventEmitter<string[]> = new EventEmitter();
 
-  information(name: string, type: "building" | "tower"): void {
+  @Output()
+  buyRelicEmitter: EventEmitter<string> = new EventEmitter();
+
+  information(name: string, type: "building" | "relic" | "tower"): void {
     this.informationOfObjectEmitter.emit([name, type]);
   }
 
@@ -47,6 +57,10 @@ export class SellerProductsComponent {
       if (allElements[i] === name) return true;
     }
     return false;
+  }
+
+  buyRelic(name: string): void {
+    this.buyRelicEmitter.emit(name);
   }
 
 }

@@ -1,6 +1,7 @@
 [
     {
         "name": "stone-cutter",
+        "title": "Concasseuse",
         "image": "stone-cutter",
         "life": 1,
         "efficiency": 1,
@@ -10,6 +11,7 @@
         "woodCost": 8
     },{
         "name": "wood-cutter",
+        "title": "Scie",
         "image": "wood-cutter",
         "life": 1,
         "efficiency": 1,

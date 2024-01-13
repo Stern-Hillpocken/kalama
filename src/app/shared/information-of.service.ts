@@ -3,6 +3,7 @@ import { Tower } from '../models/tower.model';
 import { Building } from '../models/building.model';
 import { HttpClient } from '@angular/common/http';
 import { Enemy } from '../models/enemy.model';
+import { Relic } from '../models/relic.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +13,29 @@ export class InformationOf {
   private allEnemies: Enemy[] = [];
   private allBuildings: Building[] = [];
   private allTowers: Tower[] = [];
+  private allRelics: Relic[] = [];
 
   constructor(
     private http: HttpClient
   ) {
     this.http.get('assets/json/enemies.json').subscribe((json: any) => {
         for (let i = 0; i < json.length; i++){
-            this.allEnemies.push(new Enemy(json[i].name, json[i].image, json[i].life, 0, json[i].moves, 0, json[i].damage, json[i].description, "enemy"));
+            this.allEnemies.push(new Enemy(json[i].name, json[i].title, json[i].image, json[i].life, 0, json[i].moves, 0, json[i].damage, json[i].description, "enemy"));
         }
     });
     this.http.get('assets/json/buildings.json').subscribe((json: any) => {
       for (let i = 0; i < json.length; i++){
-          this.allBuildings.push(new Building(json[i].name, json[i].image, json[i].life, json[i].efficiency, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "building"));
+          this.allBuildings.push(new Building(json[i].name, json[i].title, json[i].image, json[i].life, json[i].efficiency, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "building"));
       }
     });
     this.http.get('assets/json/towers.json').subscribe((json: any) => {
       for (let i = 0; i < json.length; i++){
-          this.allTowers.push(new Tower(json[i].name, json[i].image, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "tower"));
+          this.allTowers.push(new Tower(json[i].name, json[i].title, json[i].image, json[i].life, json[i].damage, json[i].sequence, 0, json[i].tileTargeted, json[i].description, json[i].gemCost, json[i].stoneCost, json[i].woodCost, "tower"));
+      }
+    });
+    this.http.get('assets/json/relics.json').subscribe((json: any) => {
+      for (let i = 0; i < json.length; i++){
+          this.allRelics.push(new Relic(json[i].name, json[i].title, json[i].gemCost, json[i].description, 0));
       }
     });
   }
@@ -39,6 +46,10 @@ export class InformationOf {
 
   getAllTowers(): Tower[] {
     return this.allTowers;
+  }
+
+  getAllRelics(): Relic[] {
+    return this.allRelics;
   }
 
   getWithNameType(name: string, type: "enemy" | "building" | "tower" | "relic"): any {
@@ -53,6 +64,10 @@ export class InformationOf {
     } else if (type === "tower") {
       for (let i = 0; i < this.allTowers.length; i++) {
         if (this.allTowers[i].name === name) return this.allTowers[i];
+      }
+    } else if (type === "relic") {
+      for (let i = 0; i < this.allRelics.length; i++) {
+        if (this.allRelics[i].name === name) return this.allRelics[i];
       }
     }
     return {name:"error"};

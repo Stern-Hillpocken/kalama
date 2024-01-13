@@ -3,7 +3,7 @@
         <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
             <td
                 *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index">
-                <img src='assets/images/sprites/carpet/{{gameState.grid[r][c].type ? 0 : carpetTiles[r][c]}}.png'>
+                <img src='assets/images/sprites/carpets/{{gameState.grid[r][c].type ? 0 : carpetTiles[r][c]}}.png'>
             </td>
         </tr>
     </table>
@@ -16,7 +16,7 @@
                 (dragleave)="onDragLeave($event)">
                 <img
                     *ngIf="gameState.grid[r][c] !== '' "
-                    src="assets/images/sprites/{{gameState.grid[r][c].type}}/{{gameState.grid[r][c].image}}.png"
+                    src="assets/images/sprites/{{gameState.grid[r][c].type}}s/{{gameState.grid[r][c].image}}.png"
                     draggable="false">
             </td>
         </tr>
@@ -49,7 +49,7 @@
         <tr *ngFor="let line of [].constructor(gameState.grid.length); let r = index">
             <td
                 *ngFor="let cell of [].constructor(gameState.grid[r].length); let c = index">
-                <img src='assets/images/sprites/floor/{{floorTiles[r][c]}}.png'>
+                <img src='assets/images/sprites/floors/{{floorTiles[r][c]}}.png'>
             </td>
         </tr>
     </table>

@@ -52,14 +52,14 @@
             <div class="blueprint-list">
                 <img
                     *ngFor="let build of buildings"
-                    src="assets/images/sprites/building/{{build.image}}-blueprint.png"
+                    src="assets/images/sprites/buildings/{{build.image}}-blueprint.png"
                     [alt]="build.image"
                     (click)="buildStatDisplay(build.image, 'building')"
                     (dragend)="onBlueprintDragEnd($event)"
                     >
                 <img
                     *ngFor="let tower of towers"
-                    src="assets/images/sprites/tower/{{tower.image}}-blueprint.png"
+                    src="assets/images/sprites/towers/{{tower.image}}-blueprint.png"
                     [alt]="tower.image"
                     (click)="buildStatDisplay(tower.image, 'building')"
                     (dragend)="onBlueprintDragEnd($event)"
@@ -73,7 +73,7 @@
                 *ngFor="let div of [].constructor(gameStateChoice.buildingsBlueprints.length); let i = index"
                 (dragenter)="onDragEnter(i)"
                 >
-                <img *ngIf="gameStateChoice.buildingsBlueprints.length > i" src="assets/images/sprites/building/{{gameStateChoice.buildingsBlueprints[i]}}-blueprint.png">
+                <img *ngIf="gameStateChoice.buildingsBlueprints.length > i" src="assets/images/sprites/buildings/{{gameStateChoice.buildingsBlueprints[i]}}-blueprint.png">
                 <br>
                 <button *ngIf="gameStateChoice.buildingsBlueprints.length > i" (click)="removeBlueprint('building',i)">Remove</button>
             </div>
@@ -81,7 +81,7 @@
                 *ngFor="let div of [].constructor(gameStateChoice.towersBlueprints.length); let i = index"
                 (dragenter)="onDragEnter(i)"
                 >
-                <img *ngIf="gameStateChoice.towersBlueprints.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersBlueprints[i]}}-blueprint.png">
+                <img *ngIf="gameStateChoice.towersBlueprints.length > i" src="assets/images/sprites/towers/{{gameStateChoice.towersBlueprints[i]}}-blueprint.png">
                 <br>
                 <button *ngIf="gameStateChoice.towersBlueprints.length > i" (click)="removeBlueprint('tower',i)">Remove</button>
             </div>
@@ -99,7 +99,7 @@
             <div class="tower-list">
                 <img
                     *ngFor="let tower of towers"
-                    src="assets/images/sprites/tower/{{tower.image}}.png"
+                    src="assets/images/sprites/towers/{{tower.image}}.png"
                     [alt]="tower.image"
                     (click)="buildStatDisplay(tower.image, 'tower')"
                     (dragend)="onDragEnd($event)"
@@ -114,7 +114,7 @@
                 (dragenter)="onDragEnter(i)"
                 >
                 <p *ngIf="gameStateChoice.towersUnlocked.length <= i">Drag<br>here !</p>
-                <img *ngIf="gameStateChoice.towersUnlocked.length > i" src="assets/images/sprites/tower/{{gameStateChoice.towersUnlocked[i]}}.png">
+                <img *ngIf="gameStateChoice.towersUnlocked.length > i" src="assets/images/sprites/towers/{{gameStateChoice.towersUnlocked[i]}}.png">
                 <br>
                 <button *ngIf="gameStateChoice.towersUnlocked.length > i" (click)="removeTower(i)">Remove</button>
             </div>
