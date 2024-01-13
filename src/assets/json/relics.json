@@ -1,9 +1,9 @@
 [
     {
         "name": "anti-worm",
-        "title": "Aura répulsive à verres",
+        "title": "Aura répulsive à vers",
         "gemCost": 6,
-        "description": "Éloigne les verres et empêche leur rencontre."
+        "description": "Éloigne les vers et empêche leur rencontre."
     },{
         "name": "gem-extractor",
         "title": "Extracteur spécialisé",
