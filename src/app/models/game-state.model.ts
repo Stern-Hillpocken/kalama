@@ -1,4 +1,5 @@
 import { MapState } from "./map-state.model";
+import { Relic } from "./relic.model";
 
 export class GameState {
     constructor(
@@ -18,7 +19,7 @@ export class GameState {
         public power: string,
         public currentPowerCoolDown: number,
         public maxPowerCoolDown: number,
-        public relics: string[],
+        public relics: Relic[],
 
         public buildingsBlueprints: string[],
         public buildingsAvailable: string[],

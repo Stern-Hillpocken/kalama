@@ -7,7 +7,7 @@
             (dragend)="onDragEnd($event)">
         <img
             *ngFor="let img of gameState.buildingsAvailable"
-            src="assets/images/sprites/building/{{img}}.png"
+            src="assets/images/sprites/buildings/{{img}}.png"
             alt="{{img}}"
             (click)="onClick($event, 'building')"
             (dragend)="onDragEnd($event)">
@@ -15,7 +15,7 @@
     <div *ngIf="isCharacterOnTheGrid && gameState.status === 'ready'">
         <img
             *ngFor="let img of gameState.towersAvailable"
-            src="assets/images/sprites/tower/{{img}}.png"
+            src="assets/images/sprites/towers/{{img}}.png"
             alt="{{img}}"
             (click)="onClick($event, 'tower')"
             (dragend)="onDragEnd($event)">
