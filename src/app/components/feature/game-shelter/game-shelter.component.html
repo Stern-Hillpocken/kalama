@@ -18,6 +18,13 @@
     [sacrificeWoodGain]="sacrificeWoodGain"
     (sacrificeEmitter)="onSacrificeReceive($event)"
 ></app-shelter-sacrifice>
+<app-shelter-repair
+    *ngIf="!isLoadoutDisplayed"
+    [gameState]="gameState"
+    [repairStoneCost]="repairStoneCost"
+    [repairWoodCost]="repairWoodCost"
+    (repairEmitter)="onRepairReceive()"
+></app-shelter-repair>
 <app-loadout-display
     [gameState]="gameState"
     [isLoadoutDisplayed]="isLoadoutDisplayed"

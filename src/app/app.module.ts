@@ -30,6 +30,7 @@ import { LoadoutDisplayComponent } from './components/ui/loadout-display/loadout
 import { GameSellerComponent } from './components/feature/game-seller/game-seller.component';
 import { SellerSacrificeComponent } from './components/ui/seller/seller-sacrifice/seller-sacrifice.component';
 import { SellerProductsComponent } from './components/ui/seller/seller-products/seller-products.component';
+import { ShelterRepairComponent } from './components/ui/shelter/shelter-repair/shelter-repair.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { SellerProductsComponent } from './components/ui/seller/seller-products/
     LoadoutDisplayComponent,
     GameSellerComponent,
     SellerSacrificeComponent,
-    SellerProductsComponent
+    SellerProductsComponent,
+    ShelterRepairComponent
   ],
   imports: [
     BrowserModule,
