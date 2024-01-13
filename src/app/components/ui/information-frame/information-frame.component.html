@@ -1,4 +1,4 @@
-<div *ngIf="informationFrame.type" class="information-frame">
+<div *ngIf="informationFrame.name" class="information-frame">
     <h2>{{ informationFrame.title }}</h2>
     <p><img src="assets/images/sprites/{{informationFrame.type}}s/{{informationFrame.image}}.png"></p>
     <table>
@@ -32,17 +32,14 @@
         <tr>
             <td>Description</td><td>{{informationFrame.description}}</td>
         </tr>
-        <tr *ngIf="isCostDisplayed">
+        <tr *ngIf="informationFrame.gemCostisCostDisplayed">
             <td>Coût en gemmes</td><td>{{informationFrame.gemCost}}</td>
         </tr>
-        <tr *ngIf="isCostDisplayed">
+        <tr *ngIf="informationFrame.stoneCost isCostDisplayed">
             <td>Coût en stone</td><td>{{informationFrame.stoneCost}}</td>
         </tr>
-        <tr *ngIf="isCostDisplayed">
+        <tr *ngIf="informationFrame.woodCost && isCostDisplayed">
             <td>Coût en wood</td><td>{{informationFrame.woodCost}}</td>
-        </tr>
-        <tr>
-            <td>Type</td><td>{{informationFrame.type}}</td>
         </tr>
     </table>
     <p><button (click)="close()">Close frame</button></p>

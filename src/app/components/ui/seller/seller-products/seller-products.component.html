@@ -12,6 +12,10 @@
         </div>
     </div>
     <div class="seller-relics">
-        Relics
+        <div *ngFor="let relic of relicsToSell" class="product">
+            <img (click)="information(relic.name, 'relic')" src="assets/images/sprites/relics/{{relic.name}}.png">
+            <p>Coût&nbsp;: <span class="x-count">{{ relic.gemCost }}</span> <img src="assets/images/icons/gem.png"></p>
+            <button (click)="buyRelic(relic.name)">Acheter</button>
+        </div>
     </div>
 </div>

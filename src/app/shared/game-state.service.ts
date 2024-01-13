@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
 import { InformationOf } from './information-of.service';
+import { Relic } from '../models/relic.model';
 
 @Injectable({
   providedIn: 'root'
@@ -440,6 +441,17 @@ export class GameStateService {
       newGameState.towersBlueprints.push(name);
       newGameState.gem -= price;
     }
+  }
+
+  getRelicsToSell(): Relic[] {
+    let quantity: number = this.random(1,3);
+    let relicsToSell: Relic[] = [];
+    let allRelics: Relic[] = this.informationOf.getAllRelics();
+    for (let i = 0; i < quantity; i++) {
+      let randomIndex: number = this.random(0, allRelics.length-1);
+      relicsToSell.push(allRelics[randomIndex]);
+    }
+    return relicsToSell;
   }
 
 }
