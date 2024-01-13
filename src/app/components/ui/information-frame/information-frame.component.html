@@ -1,8 +1,9 @@
 <div *ngIf="informationFrame.name" class="information-frame">
     <h2>{{ informationFrame.title }}</h2>
-    <p><img src="assets/images/sprites/{{informationFrame.type}}s/{{informationFrame.image}}.png"></p>
+    <p *ngIf="informationFrame.type"><img src="assets/images/sprites/{{informationFrame.type}}s/{{informationFrame.image}}.png"></p>
+    <p *ngIf="!informationFrame.type"><img src="assets/images/sprites/relics/{{informationFrame.name}}.png"></p>
     <table>
-        <tr>
+        <tr *ngIf="informationFrame.life">
             <td>Life</td><td>{{informationFrame.life}}</td>
         </tr>
         <tr *ngIf="informationFrame.damage">
@@ -32,10 +33,10 @@
         <tr>
             <td>Description</td><td>{{informationFrame.description}}</td>
         </tr>
-        <tr *ngIf="informationFrame.gemCostisCostDisplayed">
+        <tr *ngIf="informationFrame.gemCost && isCostDisplayed">
             <td>Coût en gemmes</td><td>{{informationFrame.gemCost}}</td>
         </tr>
-        <tr *ngIf="informationFrame.stoneCost isCostDisplayed">
+        <tr *ngIf="informationFrame.stoneCost && isCostDisplayed">
             <td>Coût en stone</td><td>{{informationFrame.stoneCost}}</td>
         </tr>
         <tr *ngIf="informationFrame.woodCost && isCostDisplayed">

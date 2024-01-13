@@ -34,7 +34,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   endTurn(): void {
@@ -161,7 +161,7 @@ export class GameStateService {
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
     let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
   }
@@ -171,7 +171,7 @@ export class GameStateService {
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
     if (name === "character" && newGameState.koCounter === 0) {
-      newGameState.grid[position[0]][position[1]] = new Character("character", "character", 1, 1, "C'est vous !", "character");
+      newGameState.grid[position[0]][position[1]] = new Character("character", "Votre personnage", "character", 1, 1, "C'est vous !", "character");
       newGameState.characterPosition = [position[0],position[1]];
       return;
     }
@@ -180,7 +180,7 @@ export class GameStateService {
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
         let newBuilding: Building = this.informationOf.getWithNameType(name, "building");
-        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, newBuilding.gemCost, newBuilding.stoneCost, newBuilding.woodCost, "building");
+        newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.title, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, newBuilding.gemCost, newBuilding.stoneCost, newBuilding.woodCost, "building");
         return;
       }
     }
@@ -190,7 +190,7 @@ export class GameStateService {
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
-          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, newTower.gemCost, newTower.stoneCost, newTower.woodCost, "tower");
+          newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.title, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, newTower.gemCost, newTower.stoneCost, newTower.woodCost, "tower");
           this.endTurn();
           return;
         }
@@ -311,8 +311,8 @@ export class GameStateService {
     }
     // Resource placement
     for (let i = 0; i < resourcePosition.length; i++) {
-      if (resourceName[i] === "wood") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("wood", "wood", 1, "Du bois", "resource");
-      else if (resourceName[i] === "stone") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("stone", "stone", 3, "De la pierre", "resource");
+      if (resourceName[i] === "wood") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("wood", "Arbre", "wood", 1, "Du bois", "resource");
+      else if (resourceName[i] === "stone") newGameState.grid[resourcePosition[i][0]][resourcePosition[i][1]] = new Resource("stone", "Roche", "stone", 3, "De la pierre", "resource");
     }
 
     // Waves preparation

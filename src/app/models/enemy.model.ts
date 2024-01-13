@@ -1,6 +1,7 @@
 export class Enemy {
     constructor(
         public name: string,
+        public title: string,
         public image: string,
         public life: number,
 
