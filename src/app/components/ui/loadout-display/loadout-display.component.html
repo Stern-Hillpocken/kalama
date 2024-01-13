@@ -35,7 +35,7 @@
             *ngFor="let relic of gameState.relics"
             (click)="displayInfo(relic.name, 'relic')"
         >
-            <img src="assets/images/sprites/relics/{{relic}}.png">
+            <img src="assets/images/sprites/relics/{{relic.name}}.png">
         </div>
     </div>
     <h2 *ngIf="gameState.buildingsBlueprints.length + gameState.towersBlueprints.length > 0">Schémas</h2>

@@ -454,4 +454,15 @@ export class GameStateService {
     return relicsToSell;
   }
 
+  buyRelic(name: string): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let allRelics: Relic[] = this.informationOf.getAllRelics();
+    for (let i = 0; i < allRelics.length; i++) {
+      if (allRelics[i].name === name && allRelics[i].gemCost <= newGameState.gem) {
+        newGameState.relics.push(allRelics[i]);
+        newGameState.gem -= allRelics[i].gemCost;
+      }
+    }
+  }
+
 }

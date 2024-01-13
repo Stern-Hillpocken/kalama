@@ -69,7 +69,15 @@ export class GameSellerComponent {
   }
 
   onBuyRelicReceive(name: string): void {
-    console.log(name)
+    // Remove relic from stock
+    for (let i = 0; i < this.relicsToSell.length; i++) {
+      if (this.relicsToSell[i].name === name && this.relicsToSell[i].gemCost <= this.gameState.gem) {
+        this.relicsToSell.splice(i,1);
+        break;
+      }
+    }
+    // Add
+    this.gameStateService.buyRelic(name);
   }
 
 }
