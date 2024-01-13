@@ -28,4 +28,25 @@ export class SellerProductsComponent {
   @Output()
   informationOfObjectEmitter: EventEmitter<string[]> = new EventEmitter();
 
+  @Output()
+  learnEmitter: EventEmitter<string[]> = new EventEmitter();
+
+  information(name: string, type: "building" | "tower"): void {
+    this.informationOfObjectEmitter.emit([name, type]);
+  }
+
+  learn(name: string, type: "building" | "tower"): void {
+    this.learnEmitter.emit([name, type]);
+  }
+
+  hasBlueprint(name: string, type: "building" | "tower"): boolean {
+    let allElements: string[];
+    if (type === "building") allElements = this.gameState.buildingsBlueprints;
+    else allElements = this.gameState.towersBlueprints;
+    for (let i = 0; i < allElements.length; i++) {
+      if (allElements[i] === name) return true;
+    }
+    return false;
+  }
+
 }

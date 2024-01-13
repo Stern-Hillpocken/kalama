@@ -37,6 +37,9 @@ button {
     min-width: 56px;
     background-color: #d3bf8f;
 }
+button:disabled, .disabled {
+    filter: grayscale(1);
+}
 
 h1, h2, h3 {
     text-align: center;
@@ -47,10 +50,6 @@ h2 {
     background-color: #b1a077;
     border-top: 2px solid #d9cdaf;
     border-bottom: 2px solid #d9cdaf;
-}
-
-.disabled {
-    filter: grayscale(1);
 }
 
 .x {

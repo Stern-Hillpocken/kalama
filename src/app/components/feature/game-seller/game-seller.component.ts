@@ -59,4 +59,8 @@ export class GameSellerComponent {
     this.gameStateService.backToMap();
   }
 
+  onLearnReceive(nameType: string[]): void {
+    this.gameStateService.learnBlueprint(nameType[0], nameType[1] as "building" | "tower");
+  }
+
 }
