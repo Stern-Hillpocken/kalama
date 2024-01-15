@@ -14,19 +14,19 @@
         </tr>
         <tr *ngIf="informationFrame.type === 'tower'">
             <td>Séquence</td><td>
-                <span *ngFor="let s of [].constructor(informationFrame.sequence.length); let i = index" [ngStyle]="{'brightness': i === informationFrame.step ? '1' : '0'}">
+                <span *ngFor="let s of [].constructor(informationFrame.sequence.length); let i = index" [ngStyle]="{'filter': i === informationFrame.step ? 'brightness(1)' : 'brightness(0)'}">
                     <img src="assets/images/icons/{{informationFrame.sequence[i]}}.png">
                 </span>
             </td>
         </tr>
-        <tr *ngIf="informationFrame.type === 'tower'">
+        <tr *ngIf="informationFrame.tileTargeted">
             <td>Cible</td><td><img src="assets/images/icons/{{informationFrame.tileTargeted}}.png"></td>
         </tr>
         <tr *ngIf="informationFrame.type === 'enemy'">
             <td>Déplacement</td>
             <td>
-                <span *ngFor="let move of [].constructor(informationFrame.moves.length); let i = index" [ngStyle]="{'brightness': i === informationFrame.currentMoveStep ? '1' : '0'}">
-                    <img src="assets/images/icons/{{informationFrame.moves[i]}}">
+                <span *ngFor="let move of [].constructor(informationFrame.moves.length); let i = index" [ngStyle]="{'filter': i === informationFrame.currentMoveStep ? 'brightness(1)' : 'brightness(0)'}">
+                    <img src="assets/images/icons/{{informationFrame.moves[i]}}.png">
                 </span>
             </td>
         </tr>
