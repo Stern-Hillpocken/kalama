@@ -11,3 +11,14 @@
         image-rendering: pixelated;
     }
 }
+
+.resources-buildings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+    img {
+        width: 32px;
+        image-rendering: pixelated;
+    }
+}

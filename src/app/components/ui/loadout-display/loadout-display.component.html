@@ -1,14 +1,19 @@
-<div>
-    <p>
-        S:{{ gameState.stone }}
-        /
-        W:{{ gameState.wood }}
-        /
-        G:{{ gameState.gem }}
-        /
-        Strctr:{{ gameState.structure }}
-    </p>
-    <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'hide' : 'show' }}</button>
+<div class="resources-buildings">
+    <div>
+        <img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ gameState.wood }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/gem.png"><span class="x">x</span><span class="x-count">{{ gameState.gem }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/heart-1.png"><span class="x">x</span><span class="x-count">{{ gameState.structure }}</span>
+    </div>
+    <div>
+        <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'Masquer' : 'Afficher' }} les équipements</button>
+    </div>
 </div>
 <div *ngIf="isLoadoutDisplayed" class="loadout">
     <h2 *ngIf="gameState.buildingsUnlocked.length > 0">Buildings</h2>
