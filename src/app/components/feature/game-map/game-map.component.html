@@ -13,6 +13,9 @@
 ></app-map-choices>
 <app-loadout-display
     [gameState]="gameState"
+    [allBuildings]="allBuildings"
+    [allTowers]="allTowers"
+    [allRelics]="allRelics"
     [isLoadoutDisplayed]="isLoadoutDisplayed"
     (loadoutEmitter)="onLoadoutReceive()"
     (informationOfObjectEmitter)="onInformationOfObjectReceive($event)"

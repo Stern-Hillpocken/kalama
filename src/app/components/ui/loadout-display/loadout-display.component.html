@@ -1,17 +1,23 @@
-<div>
-    <p>
-        S:{{ gameState.stone }}
-        /
-        W:{{ gameState.wood }}
-        /
-        G:{{ gameState.gem }}
-        /
-        Strctr:{{ gameState.structure }}
-    </p>
-    <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'hide' : 'show' }}</button>
+<div class="resources-buildings">
+    <div>
+        <img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ gameState.wood }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/gem.png"><span class="x">x</span><span class="x-count">{{ gameState.gem }}</span>
+    </div>
+    <div>
+        <img src="assets/images/icons/heart-1.png"><span class="x">x</span><span class="x-count">{{ gameState.structure }}</span>
+    </div>
+    <div>
+        <button (click)="changeLoadoutDisplay()">{{ isLoadoutDisplayed ? 'Masquer' : 'Afficher' }} les équipements</button>
+    </div>
 </div>
+
 <div *ngIf="isLoadoutDisplayed" class="loadout">
-    <h2 *ngIf="gameState.buildingsUnlocked.length > 0">Buildings</h2>
+    <h2 *ngIf="gameState.buildingsUnlocked.length > 0">Utilitaires</h2>
     <div>
         <div
             *ngFor="let build of gameState.buildingsUnlocked"
@@ -20,7 +26,7 @@
             <img src="assets/images/sprites/buildings/{{build}}.png">
         </div>
     </div>
-    <h2 *ngIf="gameState.towersUnlocked.length > 0">Towers</h2>
+    <h2 *ngIf="gameState.towersUnlocked.length > 0">Tours</h2>
     <div>
         <div
             *ngFor="let tower of gameState.towersUnlocked"
@@ -29,7 +35,7 @@
             <img src="assets/images/sprites/towers/{{tower}}.png">
         </div>
     </div>
-    <h2 *ngIf="gameState.relics.length > 0">Relics</h2>
+    <h2 *ngIf="gameState.relics.length > 0">Reliques</h2>
     <div>
         <div
             *ngFor="let relic of gameState.relics"
@@ -51,6 +57,38 @@
             (click)="displayInfo(tb, 'tower')"
         >
             <img src="assets/images/sprites/towers/{{tb}}-blueprint.png">
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center;"><button (click)="displayAllLoadout()">{{ isAllLoadoutDisplayed ? "Masquer" : "Afficher" }} tous les équipements</button></div>
+
+<div *ngIf="isAllLoadoutDisplayed" class="loadout-all-objects-existing">
+    <h2>Utilitaires</h2>
+    <div>
+        <div
+            *ngFor="let building of allBuildings"
+            (click)="displayInfo(building.name, 'building')"
+            >
+            <img src="assets/images/sprites/buildings/{{building.name}}.png">
+        </div>
+    </div>
+    <h2>Tours</h2>
+    <div>
+        <div
+            *ngFor="let tower of allTowers"
+            (click)="displayInfo(tower.name, 'tower')"
+            >
+            <img src="assets/images/sprites/towers/{{tower.name}}.png">
+        </div>
+    </div>
+    <h2>Reliques</h2>
+    <div>
+        <div
+            *ngFor="let relic of allRelics"
+            (click)="displayInfo(relic.name, 'relic')"
+            >
+            <img src="assets/images/sprites/relics/{{relic.name}}.png">
         </div>
     </div>
 </div>

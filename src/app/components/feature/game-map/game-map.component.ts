@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
+import { Relic } from 'src/app/models/relic.model';
+import { Tower } from 'src/app/models/tower.model';
 import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
 
@@ -12,6 +15,10 @@ export class GameMapComponent {
 
   gameState!: GameState;
 
+  allBuildings!: Building[];
+  allTowers!: Tower[];
+  allRelics!: Relic[];
+
   isLoadoutDisplayed: boolean = false;
 
   informationFrame: any = {};
@@ -23,6 +30,9 @@ export class GameMapComponent {
 
   ngOnInit(): void {
     this.gameStateService._getGameState$().subscribe(state => this.gameState = state);
+    this.allBuildings = this.informationOf.getAllBuildings();
+    this.allTowers = this.informationOf.getAllTowers();
+    this.allRelics = this.informationOf.getAllRelics();
   }
 
   onGoToEventReceive(typeOfEvent: string): void {

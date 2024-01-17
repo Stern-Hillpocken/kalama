@@ -1,8 +1,8 @@
-<div>
-    <p><\3&nbsp;: {{ gameState.structure }}</p>
-    <p>Wood&nbsp;: {{ gameState.wood}}</p>
-    <p>Stone&nbsp;: {{ gameState.stone }}</p>
-    <button (click)="changeLifeDisplay()">Life ?</button>
+<div class="char-info">
+    <p><img src="assets/images/icons/heart-1.png"><span class="x">x</span><span class="x-count">{{ gameState.structure }}</span></p>
+    <p><img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ gameState.wood}}</span></p>
+    <p><img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone }}</span></p>
+    <button (click)="changeLifeDisplay()">{{ gameState.isBattleLifeDisplayed ? "Cacher" : "Afficher" }} la résistance</button>
     <button
         *ngIf="isCharacterOnTheGrid && gameState.status !== 'ready'"
         (click)="readyForBattle();"

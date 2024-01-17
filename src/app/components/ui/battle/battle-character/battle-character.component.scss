@@ -1,3 +1,15 @@
 .power-selected {
     color: red;
 }
+
+.char-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+img {
+    width: 32px;
+    image-rendering: pixelated;
+}
