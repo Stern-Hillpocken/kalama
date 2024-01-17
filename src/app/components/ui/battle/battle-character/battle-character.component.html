@@ -12,10 +12,12 @@
         <button (click)="wait()">Attendre</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.power.maxPowerCoolDown }}</p>
         <button
-            *ngIf="gameState.currentPowerCoolDown === gameState.power.maxPowerCoolDown && gameState.koCounter === 0"
             (click)="usePower()"
             [ngClass]="isPowerSelected ? 'power-selected' : ''"
-            ><img src="assets/images/sprites/powers/{{ gameState.power.name }}.png"></button>
+            [disabled]="gameState.currentPowerCoolDown < gameState.power.maxPowerCoolDown"
+        >
+            <img src="assets/images/sprites/powers/{{ gameState.power.name }}.png">
+        </button>
         <p *ngIf="isPowerSelected">{{ gameState.power.title }}&nbsp;: {{ gameState.power.description }}</p>
     </div>
 </div>
