@@ -1,0 +1,13 @@
+[
+    {
+        "name": "dash",
+        "title": "Bond en avant",
+        "description": "Le personnage peut bondir en ligne droite vers une autre case vide.",
+        "maxPowerCoolDown" : 3
+    },{
+        "name": "tower-reload",
+        "title": "Rechargement",
+        "description": "Active directement toutes les tours en reprenant leur séquence depuis le début.",
+        "maxPowerCoolDown" : 4
+    }
+]
