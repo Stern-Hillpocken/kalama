@@ -130,10 +130,10 @@ export class GameBattleComponent {
   }
 
   onUsePowerReceive(): void {
-    if (this.gameState.currentPowerCoolDown !== this.gameState.maxPowerCoolDown) return;
+    if (this.gameState.currentPowerCoolDown !== this.gameState.power.maxPowerCoolDown) return;
 
     this.isPowerSelected = !this.isPowerSelected;
-    if (this.isPowerSelected && this.gameState.power === "dash"){
+    if (this.isPowerSelected && this.gameState.power.name === "dash"){
       this.addTilesBackground();
     } else {
       this.tilesBackgroundUpdate();
@@ -144,7 +144,7 @@ export class GameBattleComponent {
     if (this.isPowerSelected) {
       let powerZone: number[][] = [];
       let charPos: number[] = this.gameState.characterPosition;
-      if (this.gameState.power === "dash") {
+      if (this.gameState.power.name === "dash") {
         for (let r = 0; r < this.gameState.grid.length; r++){
           for (let c = 0; c < this.gameState.grid[r].length; c++){
             if (this.gameState.grid[r][c] === "" && (r === charPos[0] || c === charPos[1])){

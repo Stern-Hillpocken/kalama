@@ -8,14 +8,14 @@
         (click)="readyForBattle();"
         >Lancer le combat</button>
     <div *ngIf="gameState.status === 'ready'">
-        <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }}</p>
+        <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }} étapes</p>
         <button (click)="wait()">Attendre</button>
-        <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.maxPowerCoolDown }}</p>
+        <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.power.maxPowerCoolDown }}</p>
         <button
-            *ngIf="gameState.currentPowerCoolDown === gameState.maxPowerCoolDown && gameState.koCounter === 0"
+            *ngIf="gameState.currentPowerCoolDown === gameState.power.maxPowerCoolDown && gameState.koCounter === 0"
             (click)="usePower()"
             [ngClass]="isPowerSelected ? 'power-selected' : ''"
-            >{{ gameState.power }}</button>
-        <p *ngIf="isPowerSelected">Power dash explication</p>
+            ><img src="assets/images/sprites/powers/{{ gameState.power.name }}.png"></button>
+        <p *ngIf="isPowerSelected">{{ gameState.power.title }}&nbsp;: {{ gameState.power.description }}</p>
     </div>
 </div>

@@ -10,13 +10,14 @@ import { Resource } from '../models/resource.model';
 import { MapState } from '../models/map-state.model';
 import { InformationOf } from './information-of.service';
 import { Relic } from '../models/relic.model';
+import { Power } from '../models/power.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, "", 0, 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
@@ -35,7 +36,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, "dash", 3, 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   endTurn(): void {
@@ -51,7 +52,7 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.wave ++;
     if (newGameState.koCounter > 0) newGameState.koCounter --;
-    if (newGameState.currentPowerCoolDown < newGameState.maxPowerCoolDown) newGameState.currentPowerCoolDown ++;
+    if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) newGameState.currentPowerCoolDown ++;
     //this._setGameState$(newGameState);
   }
 
@@ -121,7 +122,7 @@ export class GameStateService {
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") {
-                  newGameState.koCounter = newGameState.maxPowerCoolDown;
+                  newGameState.koCounter = newGameState.power.maxPowerCoolDown;
                   newGameState.characterPosition = [-1,-1];
                 }
                 newGameState.grid[r+1][c] = "";
@@ -272,7 +273,7 @@ export class GameStateService {
     newGameState.characterPosition = [-1,-1];
     newGameState.status = "preparation";
     newGameState.koCounter = 0;
-    newGameState.currentPowerCoolDown = newGameState.maxPowerCoolDown;
+    newGameState.currentPowerCoolDown = newGameState.power.maxPowerCoolDown;
     // Decrease event count
     if (type === "battle") newGameState.mapState.battleCount --;
     else if (type === "elite") newGameState.mapState.eliteCount --;
