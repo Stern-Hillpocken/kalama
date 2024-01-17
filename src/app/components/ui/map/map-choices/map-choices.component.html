@@ -11,7 +11,7 @@
         <img src="assets/images/icons/elite.gif">
         Camp d’élites <span class="x">x</span><span class="x-count">{{gameState.mapState.eliteCount}}</span>
     </button>
-    <h2>Évènements facultatifs</h2>
+    <h2 *ngIf="gameState.mapState.shelterCount > 0 || gameState.mapState.sellerCount > 0">Évènements facultatifs</h2>
     <button (click)="goToEvent('shelter')" *ngIf="gameState.mapState.shelterCount !== 0">
         <img src="assets/images/icons/shelter.gif">
         Abris <span class="x">x</span><span class="x-count">{{gameState.mapState.shelterCount}}</span>
