@@ -83,8 +83,12 @@ export class GameStateService {
           // trigger
           if (tower.sequence[tower.step] === "attack"){
             if (tower.tileTargeted.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
+              // Damage
               newGameState.grid[r-1][c].life -= tower.damage;
-              if (newGameState.grid[r-1][c].life <= 0) newGameState.grid[r-1][c] = "";
+              if (newGameState.grid[r-1][c].life <= 0) {
+                newGameState.grid[r-1][c] = "";
+                newGameState.gem ++;
+              }
             }
           }
           // add step
@@ -113,7 +117,7 @@ export class GameStateService {
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
-            } else if (newGameState.grid[r+1][c] !== "enemy"){
+            } else if (newGameState.grid[r+1][c].type !== "enemy"){
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") {
@@ -217,8 +221,12 @@ export class GameStateService {
             newGameState.characterPosition = [position[0],position[1]];
             newGameState.grid[r][c] = "";
           } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
+            // Damage
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
-            if(newGameState.grid[position[0]][position[1]].life <= 0) newGameState.grid[position[0]][position[1]] = "";
+            if(newGameState.grid[position[0]][position[1]].life <= 0) {
+              newGameState.grid[position[0]][position[1]] = "";
+              newGameState.gem ++;
+            }
           }
           this.endTurn();
           return;
