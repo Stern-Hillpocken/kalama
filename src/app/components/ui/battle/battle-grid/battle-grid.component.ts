@@ -28,6 +28,7 @@ export class BattleGridComponent {
 
   ngAfterViewInit(): void {
     let width: number = Math.floor(window.innerWidth / this.gameState.grid[0].length) - 2;
+    if (width > 80) width = 80;
     document.getElementById("grid")?.querySelectorAll("td").forEach(element => {
       element.style.minWidth = width + "px";
       element.style.height = width + "px";

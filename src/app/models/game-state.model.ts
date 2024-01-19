@@ -1,4 +1,5 @@
 import { MapState } from "./map-state.model";
+import { Power } from "./power.model";
 import { Relic } from "./relic.model";
 
 export class GameState {
@@ -16,9 +17,8 @@ export class GameState {
         public wood: number,
         public stone: number,
         public gem: number,
-        public power: string,
+        public power: Power,
         public currentPowerCoolDown: number,
-        public maxPowerCoolDown: number,
         public relics: Relic[],
 
         public buildingsBlueprints: string[],

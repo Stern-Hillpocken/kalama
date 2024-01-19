@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Building } from 'src/app/models/building.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { MapState } from 'src/app/models/map-state.model';
+import { Power } from 'src/app/models/power.model';
 import { Tower } from 'src/app/models/tower.model';
+import { InformationOf } from 'src/app/shared/information-of.service';
 
 @Component({
   selector: 'app-home-loadout',
@@ -16,6 +18,9 @@ export class HomeLoadoutComponent {
 
   @Input()
   towers!: Tower[];
+
+  @Input()
+  powers!: Power[];
 
   @Output()
   closeLoadoutEmitter: EventEmitter<void> = new EventEmitter();
@@ -32,9 +37,14 @@ export class HomeLoadoutComponent {
   availableEventsDisplayed: boolean = false;
   blueprintsDisplayed: boolean = false;
   towersSelectionDisplayed: boolean = false;
+  powersSelectionDisplayed: boolean = false;
 
   lastTowerSlot: number = -1;
   isBlueprintCellHover: boolean = false;
+
+  constructor(
+    private informationOf: InformationOf
+  ){}
 
   ngOnInit(): void {
     this.setGameStateToDifficulty(1);
@@ -49,8 +59,8 @@ export class HomeLoadoutComponent {
   }
 
   setGameStateToDifficulty(value: number): void {
-    if (value === 1) this.gameStateChoice = new GameState("map", 1, "", new MapState(8,3,3,3,11), [], false, 15, 0, 0, 0, 0, "dash", 3, 3, [], [], [], ["stone-cutter", "wood-cutter"], ["wall"], [], ["wall", "ram", "ram"], 0, [], []);
-    else this.gameStateChoice = new GameState("map", 2, "", new MapState(12,3,4,3,15), [], false, 12, 0, 0, 0, 0, "dash", 3, 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "wall"], 0, [], []);
+    if (value === 1) this.gameStateChoice = new GameState("map", 1, "", new MapState(8,3,3,3,11), [], false, 15, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], ["wall"], [], ["wall", "ram", "ram"], 0, [], []);
+    else this.gameStateChoice = new GameState("map", 2, "", new MapState(12,3,4,3,15), [], false, 12, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "wall"], 0, [], []);
   }
 
   changeGameState(type: string, value: number): void {
@@ -130,6 +140,10 @@ export class HomeLoadoutComponent {
 
   onBlueprintCellEnter(): void {
     this.isBlueprintCellHover = true;
+  }
+
+  powerSelection(name: string): void {
+    this.gameStateChoice.power = this.informationOf.getPowerWithName(name);
   }
 
 }

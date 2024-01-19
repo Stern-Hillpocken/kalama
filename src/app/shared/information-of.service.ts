@@ -4,6 +4,7 @@ import { Building } from '../models/building.model';
 import { HttpClient } from '@angular/common/http';
 import { Enemy } from '../models/enemy.model';
 import { Relic } from '../models/relic.model';
+import { Power } from '../models/power.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class InformationOf {
   private allBuildings: Building[] = [];
   private allTowers: Tower[] = [];
   private allRelics: Relic[] = [];
+  private allPowers: Power[] = [];
 
   constructor(
     private http: HttpClient
@@ -36,6 +38,11 @@ export class InformationOf {
     this.http.get('assets/json/relics.json').subscribe((json: any) => {
       for (let i = 0; i < json.length; i++){
           this.allRelics.push(new Relic(json[i].name, json[i].title, json[i].gemCost, json[i].description, 0));
+      }
+    });
+    this.http.get('assets/json/powers.json').subscribe((json: any) => {
+      for (let i = 0; i < json.length; i++){
+          this.allPowers.push(new Power(json[i].name, json[i].title, json[i].description, json[i].maxPowerCoolDown));
       }
     });
   }
@@ -71,6 +78,18 @@ export class InformationOf {
       }
     }
     return {name:"error"};
+  }
+
+  getAllPowers(): Power[] {
+    return this.allPowers;
+  }
+
+  getPowerWithName(name: string): Power {
+    let resultPower: Power = new Power("error", "error", "error", -1);
+    for (let i = 0; i < this.allPowers.length; i++) {
+      if (this.allPowers[i].name === name) resultPower = this.allPowers[i];
+    }
+    return resultPower;
   }
 
 }
