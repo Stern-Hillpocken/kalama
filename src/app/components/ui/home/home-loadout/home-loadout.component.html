@@ -126,8 +126,9 @@
     <div *ngIf="powersSelectionDisplayed" class="powers-carousel">
         <button *ngFor="let power of powers" (click)="powerSelection(power.name)" class="power-card" [ngClass]="power.name === gameStateChoice.power.name ? 'power-card-selected' : ''">
             <img src="assets/images/sprites/powers/{{power.name}}.png">
-            {{ power.title }}<br>
-            Temps de recharge&nbsp;: {{ power.maxPowerCoolDown }}
+            <span style="font-weight: bold;"> {{ power.title }}</span><br>
+            {{ power.description }}<br>
+            <span style="font-weight: bold;">Temps de recharge&nbsp;:</span> {{ power.maxPowerCoolDown }}
         </button>
     </div>
 

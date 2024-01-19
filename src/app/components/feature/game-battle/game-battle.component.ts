@@ -130,13 +130,20 @@ export class GameBattleComponent {
   }
 
   onUsePowerReceive(): void {
-    if (this.gameState.currentPowerCoolDown !== this.gameState.power.maxPowerCoolDown) return;
+    if (this.gameState.currentPowerCoolDown < this.gameState.power.maxPowerCoolDown) return;
 
     this.isPowerSelected = !this.isPowerSelected;
+
     if (this.isPowerSelected && this.gameState.power.name === "dash"){
       this.addTilesBackground();
     } else {
       this.tilesBackgroundUpdate();
+    }
+
+    if (this.isPowerSelected && this.gameState.power.name === "tower-reload") {
+      this.gameStateService.powerTowerReload();
+      this.tilesBackgroundUpdate();
+      this.isPowerSelected = false;
     }
   }
 

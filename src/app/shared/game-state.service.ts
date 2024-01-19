@@ -252,6 +252,7 @@ export class GameStateService {
 
   powerDash(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) return;
     if (newGameState.grid[position[0]][position[1]] === ""){
       newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]];
       newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]] = "";
@@ -259,6 +260,18 @@ export class GameStateService {
       newGameState.currentPowerCoolDown = -1;
       this.endTurn();
     }
+  }
+
+  powerTowerReload() {
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) return;
+    for (let r = 0; r < newGameState.grid.length; r++) {
+      for (let c = 0; c < newGameState.grid[r].length; c++) {
+        if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "tower") newGameState.grid[r][c].step = 0;
+      }
+    }
+    newGameState.currentPowerCoolDown = -1;
+    this.endTurn();
   }
 
   isPositionExistIn(position: number[], array: number[][]): boolean {
