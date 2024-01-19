@@ -12,7 +12,7 @@
 
     <h2>Règlages précis</h2>
 
-    <button (click)="startingResourcesDisplayed = !startingResourcesDisplayed" class="detail-button"><img src="assets/images/icons/wood.png"> Ressources de départ</button>
+    <button (click)="startingResourcesDisplayed = !startingResourcesDisplayed" class="detail-button" [ngClass]="startingResourcesDisplayed ? 'button-selected' : ''"><img src="assets/images/icons/wood.png"> Ressources de départ</button>
     <table *ngIf="startingResourcesDisplayed">
         <tbody>
             <tr>
@@ -27,7 +27,7 @@
         </tbody>
     </table>
 
-    <button (click)="availableEventsDisplayed = !availableEventsDisplayed" class="detail-button"><img src="assets/images/icons/elite.gif"> Évènements disponibles</button>
+    <button (click)="availableEventsDisplayed = !availableEventsDisplayed" class="detail-button" [ngClass]="availableEventsDisplayed ? 'button-selected' : ''"><img src="assets/images/icons/elite.gif"> Évènements disponibles</button>
     <table *ngIf="availableEventsDisplayed">
         <tbody>
             <tr>
@@ -40,12 +40,12 @@
                 <td><img src="assets/images/icons/elite.gif"> Elite</td><td><button (click)="changeGameState('elite',-1)">-</button></td><td>{{ gameStateChoice.mapState.eliteCount }}</td><td><button (click)="changeGameState('elite',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/seller.gif"> Marcand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td>{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
+                <td><img src="assets/images/icons/seller.gif"> Marchand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td>{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
             </tr>
         </tbody>
     </table>
 
-    <button (click)="blueprintsDisplayed = !blueprintsDisplayed" class="detail-button"><img src="assets/images/sprites/towers/wall-blueprint.png"> Schémas de construction</button>
+    <button (click)="blueprintsDisplayed = !blueprintsDisplayed" class="detail-button" [ngClass]="blueprintsDisplayed ? 'button-selected' : ''"><img src="assets/images/sprites/towers/wall-blueprint.png"> Schémas de construction</button>
     <div *ngIf="blueprintsDisplayed">
         <div class="blueprints-carousel">
             <img (click)="buildingListMove('blueprint-list', 'left')" src="assets/images/icons/left-arrow.png">
@@ -92,7 +92,7 @@
         <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
     </div>
 
-    <button (click)="towersSelectionDisplayed = !towersSelectionDisplayed" class="detail-button"><img src="assets/images/sprites/towers/ram.png"> Tours de départ</button>    
+    <button (click)="towersSelectionDisplayed = !towersSelectionDisplayed" class="detail-button" [ngClass]="towersSelectionDisplayed ? 'button-selected' : ''"><img src="assets/images/sprites/towers/ram.png"> Tours de départ</button>  
     <div *ngIf="towersSelectionDisplayed">
         <div class="towers-carousel">
             <img (click)="buildingListMove('tower-list', 'left')" src="assets/images/icons/left-arrow.png">
@@ -120,6 +120,15 @@
             </div>
         </div>
         <div class="remove-selection" (dragenter)="onDragRemoveSelection()"></div>
+    </div>
+
+    <button (click)="powersSelectionDisplayed = !powersSelectionDisplayed" class="detail-button" [ngClass]="powersSelectionDisplayed ? 'button-selected' : ''"><img src="assets/images/sprites/powers/dash.png"> Pouvoir</button>  
+    <div *ngIf="powersSelectionDisplayed" class="powers-carousel">
+        <button *ngFor="let power of powers" (click)="powerSelection(power.name)" class="power-card" [ngClass]="power.name === gameStateChoice.power.name ? 'power-card-selected' : ''">
+            <img src="assets/images/sprites/powers/{{power.name}}.png">
+            {{ power.title }}<br>
+            Temps de recharge&nbsp;: {{ power.maxPowerCoolDown }}
+        </button>
     </div>
 
     <div style="text-align: center;">

@@ -17,6 +17,7 @@
     *ngIf="display === 'loadout'"
     [buildings]="buildings"
     [towers]="towers"
+    [powers]="powers"
     (closeLoadoutEmitter)="onCloseReceive()"
     (launchGameEmitter)="onLaunchGameReceive($event)"
     (buildDisplayEmitter)="onBuildDisplayReceive($event)"

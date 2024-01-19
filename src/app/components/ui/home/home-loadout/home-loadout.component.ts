@@ -19,6 +19,9 @@ export class HomeLoadoutComponent {
   @Input()
   towers!: Tower[];
 
+  @Input()
+  powers!: Power[];
+
   @Output()
   closeLoadoutEmitter: EventEmitter<void> = new EventEmitter();
 
@@ -34,6 +37,7 @@ export class HomeLoadoutComponent {
   availableEventsDisplayed: boolean = false;
   blueprintsDisplayed: boolean = false;
   towersSelectionDisplayed: boolean = false;
+  powersSelectionDisplayed: boolean = false;
 
   lastTowerSlot: number = -1;
   isBlueprintCellHover: boolean = false;
@@ -136,6 +140,10 @@ export class HomeLoadoutComponent {
 
   onBlueprintCellEnter(): void {
     this.isBlueprintCellHover = true;
+  }
+
+  powerSelection(name: string): void {
+    this.gameStateChoice.power = this.informationOf.getPowerWithName(name);
   }
 
 }

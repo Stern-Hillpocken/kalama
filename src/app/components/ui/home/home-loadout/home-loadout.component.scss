@@ -6,6 +6,7 @@ img {
     height: 64px;
     width: 64px;
     image-rendering: pixelated;
+    vertical-align: sub;
 }
 
 table{
@@ -16,6 +17,13 @@ th{
     text-align: center;
 }
 
+.button-selected {
+    filter: hue-rotate(90deg);
+    img {
+        filter: hue-rotate(-90deg);
+    }
+}
+
 .detail-button {
     display: block;
     margin: auto;
@@ -23,8 +31,21 @@ th{
     margin-top: 0.5em;
 }
 
-.blueprints-carousel, .towers-carousel {
+.blueprints-carousel, .towers-carousel, .powers-carousel {
     display: flex;
+}
+
+.powers-carousel {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.power-card-selected {
+    filter: hue-rotate(90deg);
+    img {
+        filter: hue-rotate(-90deg);
+    }
 }
 
 .blueprint-list, .tower-list {

@@ -1,5 +1,8 @@
 .power-selected {
     filter: hue-rotate(90deg);
+    img {
+        filter: hue-rotate(-90deg);
+    }
 }
 
 .char-info {
