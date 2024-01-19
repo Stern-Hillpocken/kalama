@@ -256,7 +256,7 @@ export class GameStateService {
       newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]];
       newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]] = "";
       newGameState.characterPosition = [position[0],position[1]];
-      newGameState.currentPowerCoolDown = 0;
+      newGameState.currentPowerCoolDown = -1;
       this.endTurn();
     }
   }
