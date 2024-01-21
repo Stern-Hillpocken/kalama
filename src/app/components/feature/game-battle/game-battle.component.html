@@ -16,6 +16,7 @@
 ></app-battle-constructions>
 <app-battle-grid
     [gameState]="gameState"
+    [bubbles]="bubbles"
     (clickCellPositionEmitter)="onClickCellPositionReceive($event)"
     (dragPositionEmitter)="onDragPositionReceive($event)"
     ></app-battle-grid>

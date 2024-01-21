@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Character } from 'src/app/models/character.model';
+import { Bubble } from 'src/app/models/bubble.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { PopupMessage } from 'src/app/models/popup-message.model';
+import { BubbleService } from 'src/app/shared/bubble.service';
 import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
 import { PopupService } from 'src/app/shared/popup.service';
@@ -14,6 +15,8 @@ import { PopupService } from 'src/app/shared/popup.service';
 export class GameBattleComponent {
 
   gameState!: GameState;
+
+  bubbles!: Bubble[];
 
   popupMessage!: PopupMessage[];
 
@@ -36,6 +39,7 @@ export class GameBattleComponent {
   constructor(
     private gameStateService: GameStateService,
     private popupService: PopupService,
+    private bubbleService: BubbleService,
     private informationOf: InformationOf
   ){}
 
@@ -46,6 +50,9 @@ export class GameBattleComponent {
     });
     this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
+    });
+    this.bubbleService._getGameState$().subscribe((bb: Bubble[]) => {
+      this.bubbles = bb;
     });
   }
 

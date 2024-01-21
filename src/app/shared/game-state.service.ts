@@ -11,6 +11,8 @@ import { MapState } from '../models/map-state.model';
 import { InformationOf } from './information-of.service';
 import { Relic } from '../models/relic.model';
 import { Power } from '../models/power.model';
+import { BubbleService } from './bubble.service';
+import { Bubble } from '../models/bubble.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,8 @@ export class GameStateService {
 
   constructor(
     private router: Router,
-    private informationOf: InformationOf
+    private informationOf: InformationOf,
+    private bubbleService: BubbleService
   ) { }
 
   _getGameState$(): Observable<GameState> {
@@ -65,8 +68,34 @@ export class GameStateService {
 
           if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
             newGameState.wood += building.efficiency;
+            let cStart: number = c;
+            if (newGameState.grid[r][c-1].name === "wood") cStart = c-1;
+            else cStart = c+1;
+            this.bubbleService.addBubble(new Bubble(
+              "wood",
+              building.efficiency,
+              this.getCoordinateFromRowColumn("w", r, c),
+              this.getCoordinateFromRowColumn("x", r, cStart),
+              this.getCoordinateFromRowColumn("y", r, cStart),
+              this.getCoordinateFromRowColumn("x", r, c),
+              this.getCoordinateFromRowColumn("y", r, c),
+              "positive"
+              ));
           } else if (building.name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
             newGameState.stone += building.efficiency;
+            let cStart: number = c;
+            if (newGameState.grid[r][c-1].name === "stone") cStart = c-1;
+            else cStart = c+1;
+            this.bubbleService.addBubble(new Bubble(
+              "stone",
+              building.efficiency,
+              this.getCoordinateFromRowColumn("w", r, c),
+              this.getCoordinateFromRowColumn("x", r, cStart),
+              this.getCoordinateFromRowColumn("y", r, cStart),
+              this.getCoordinateFromRowColumn("x", r, c),
+              this.getCoordinateFromRowColumn("y", r, c),
+              "positive"
+              ));
           }
 
         }
@@ -86,6 +115,16 @@ export class GameStateService {
             if (tower.tileTargeted.includes("top") && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type && newGameState.grid[r-1][c] && newGameState.grid[r-1][c].type === "enemy"){
               // Damage
               newGameState.grid[r-1][c].life -= tower.damage;
+              this.bubbleService.addBubble(new Bubble(
+                "attack",
+                tower.damage,
+                this.getCoordinateFromRowColumn("w", r, c),
+                this.getCoordinateFromRowColumn("x", r-1, c),
+                this.getCoordinateFromRowColumn("x", r-1, c),
+                this.getCoordinateFromRowColumn("x", r, c),
+                this.getCoordinateFromRowColumn("y", r, c),
+                "positive"
+                ));
               if (newGameState.grid[r-1][c].life <= 0) {
                 newGameState.grid[r-1][c] = "";
                 newGameState.gem ++;
@@ -499,6 +538,15 @@ export class GameStateService {
       newGameState.wood -= this.repairResourceCost["wood"];
       newGameState.structure ++;
     }
+  }
+
+  getCoordinateFromRowColumn(wxy: "w" | "x" | "y", r: number, c: number): number {
+    let cellHeight = document.getElementById("grid")?.getElementsByClassName("object")[0]?.getElementsByTagName("tr")[r]?.getElementsByTagName("td")[c]?.style.height;
+    let coord: number = -1;
+    if (wxy === "w" && typeof(cellHeight) === 'string') coord = parseInt(cellHeight);
+    else if (wxy === "x" && typeof(cellHeight) === 'string') coord = parseInt(cellHeight) * c;
+    else if (wxy === "y" && typeof(cellHeight) === 'string') coord = parseInt(cellHeight) * r;
+    return coord;
   }
 
 }
