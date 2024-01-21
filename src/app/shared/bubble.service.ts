@@ -27,4 +27,8 @@ export class BubbleService {
         oldBubbles.shift();
     }
 
+    reset(): void {
+        this._setGameState$([]);
+    }
+
 }
