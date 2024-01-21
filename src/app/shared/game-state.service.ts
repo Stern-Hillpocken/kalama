@@ -159,6 +159,16 @@ export class GameStateService {
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r+1][c].type !== "enemy"){
               newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
+              this.bubbleService.addBubble(new Bubble(
+                "attack",
+                newGameState.grid[r][c].damage,
+                this.getCoordinateFromRowColumn("w", r, c),
+                this.getCoordinateFromRowColumn("x", r, c),
+                this.getCoordinateFromRowColumn("y", r, c),
+                this.getCoordinateFromRowColumn("x", r+1, c),
+                this.getCoordinateFromRowColumn("y", r+1, c),
+                "negative"
+              ));
               if (newGameState.grid[r+1][c].life <= 0){
                 if (newGameState.grid[r+1][c].type === "character") {
                   newGameState.koCounter = newGameState.power.maxPowerCoolDown;
@@ -263,6 +273,16 @@ export class GameStateService {
           } else if (newGameState.grid[position[0]][position[1]].type && newGameState.grid[position[0]][position[1]].type === "enemy") {
             // Damage
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
+            this.bubbleService.addBubble(new Bubble(
+              "attack",
+              newGameState.grid[r][c].damage,
+              this.getCoordinateFromRowColumn("w", r, c),
+              this.getCoordinateFromRowColumn("x", r, c),
+              this.getCoordinateFromRowColumn("y", r, c),
+              this.getCoordinateFromRowColumn("x", position[0], position[1]),
+              this.getCoordinateFromRowColumn("y", position[0], position[1]),
+              "positive"
+            ));
             if(newGameState.grid[position[0]][position[1]].life <= 0) {
               newGameState.grid[position[0]][position[1]] = "";
               newGameState.gem ++;
