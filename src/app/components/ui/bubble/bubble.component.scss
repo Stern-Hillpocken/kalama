@@ -1,0 +1,8 @@
+.bubble {
+    position: absolute;
+    z-index: 100;
+    text-align: center;
+    img {
+        image-rendering: pixelated;
+    }
+}

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Bubble } from 'src/app/models/bubble.model';
 import { GameState } from 'src/app/models/game-state.model';
 
 @Component({
@@ -11,6 +12,9 @@ export class BattleGridComponent {
 
   @Input()
   gameState!: GameState;
+
+  @Input()
+  bubbles!: Bubble[];
 
   @Output()
   dragPositionEmitter: EventEmitter<number[]> = new EventEmitter();

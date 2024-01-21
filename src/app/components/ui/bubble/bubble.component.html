@@ -1,0 +1,13 @@
+<div class="bubble" [ngStyle]="{
+    'width': bubble.width+'px',
+    'height': bubble.width+'px',
+    'left': bubble.x+'px',
+    'top': bubble.y+'px'
+    }">
+    <p [ngStyle]="{'margin-top': (bubble.width/4)+'px' }">
+        <img [ngStyle]="{'width': (bubble.width/2)+'px'}" src="assets/images/icons/{{ bubble.image }}.png">
+        <span *ngIf="bubble.quantity > 1">
+            <span class="x">x</span><span class="x-count">{{ bubble.quantity }}</span>
+        </span>
+    </p>
+</div>

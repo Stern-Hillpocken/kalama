@@ -31,6 +31,7 @@ import { GameSellerComponent } from './components/feature/game-seller/game-selle
 import { SellerSacrificeComponent } from './components/ui/seller/seller-sacrifice/seller-sacrifice.component';
 import { SellerProductsComponent } from './components/ui/seller/seller-products/seller-products.component';
 import { ShelterRepairComponent } from './components/ui/shelter/shelter-repair/shelter-repair.component';
+import { BubbleComponent } from './components/ui/bubble/bubble.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ShelterRepairComponent } from './components/ui/shelter/shelter-repair/s
     GameSellerComponent,
     SellerSacrificeComponent,
     SellerProductsComponent,
-    ShelterRepairComponent
+    ShelterRepairComponent,
+    BubbleComponent
   ],
   imports: [
     BrowserModule,
