@@ -21,12 +21,14 @@ export class BubbleComponent {
   }
 
   move(): void {
+    let width: number = this.bubble.width/100;
     setTimeout(() => {
-      if (this.bubble.x < this.bubble.xEnd) this.bubble.x ++;
-      else if (this.bubble.x > this.bubble.xEnd) this.bubble.x --;
-      if (this.bubble.y < this.bubble.yEnd) this.bubble.y ++;
-      else if (this.bubble.y > this.bubble.yEnd) this.bubble.y --;
-      if (this.bubble.x !== this.bubble.xEnd || this.bubble.y !== this.bubble.yEnd) this.move();
+      if (this.bubble.x < this.bubble.xEnd) this.bubble.x += width;
+      else if (this.bubble.x > this.bubble.xEnd) this.bubble.x -= width;
+      if (this.bubble.y < this.bubble.yEnd) this.bubble.y += width;
+      else if (this.bubble.y > this.bubble.yEnd) this.bubble.y -= width;
+
+      if (Math.abs(this.bubble.x - this.bubble.xEnd) >= width || Math.abs(this.bubble.y - this.bubble.yEnd) >= width) this.move();
       else this.bubbleService.removeBubble();
     }, 10);
   }
