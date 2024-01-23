@@ -50,7 +50,7 @@ export class GameStateService {
   }
 
   endTurn(): void {
-    const delay = 1000;
+    const delay = 500;
     this.sleep(0)
       .then(() => this.upkeep())
       .then(() => this.sleep(delay/2)) 
@@ -61,7 +61,7 @@ export class GameStateService {
       .then(() => this.moveEnemies())
       .then(() => this.sleep(delay))
       .then(() => this.spawn())
-      .then(() => this.sleep(delay))
+      .then(() => this.sleep(delay/2))
       .then(() => this.checkEndBattle());
     /*this.upkeep();
     this.buildingsProduction();

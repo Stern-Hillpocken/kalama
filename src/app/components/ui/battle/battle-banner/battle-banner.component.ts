@@ -11,16 +11,16 @@ export class BattleBannerComponent {
   gameStateStatus!: string;
   
 
-  displayStatus(): string {
+  displayStatus(tag: string): string {
     switch (this.gameStateStatus) {
-      case "preparation": return "Préparation";
-      case "player": return "À vous de jouer";
-      case "upkeep": return "Compteurs";
-      case "buildings": return "Bâtiments";
-      case "towers": return "Tours";
-      case "enemies": return "Ennemies";
-      case "spawn": return "Apparition";
-      default: return "! Erreur !"
+      case "preparation": return tag === 'h1' ? "Préparation" : "Placez vos constructions";
+      case "player": return tag === 'h1' ? "À vous de jouer" : "Faites une action";
+      case "upkeep": return tag === 'h1' ? "Compteurs" : "De tour de jeu, de ko, de pouvoir";
+      case "buildings": return tag === 'h1' ? "Bâtiments" : "Récolte de ceux présents";
+      case "towers": return tag === 'h1' ? "Tours" : "Activation de leur séquence";
+      case "enemies": return tag === 'h1' ? "Ennemies" : "Déplacement ou attaque";
+      case "spawn": return tag === 'h1' ? "Apparition" : "De nouveaux ennemis, ou pas";
+      default: return tag === 'h1' ? "! Erreur !" : "Dans battle-banner, displayStatus()";
     }
   }
 }
