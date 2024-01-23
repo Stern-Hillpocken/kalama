@@ -46,7 +46,7 @@ export class GameBattleComponent {
   ngOnInit(): void {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
-      console.log(state)
+      console.log(state);
     });
     this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
@@ -58,7 +58,7 @@ export class GameBattleComponent {
 
   ngAfterContentInit(): void {
     // tutorial
-    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Le jeu est divisé en deux phases qui s’alternent : une phase sur une carte, pour choisir vers quel évènement vous rendre, et l’autre phase représentant la résolution de cet évènement. Il y a plusieurs types d’évènements mais le principal est celui du combat. Ce tutoriel explique succinctement son déroulé.","tutorial"),new PopupMessage("Victoire et défaite","Durant un combat, des vagues de monstres arrivent du nord et se déplacent vers le sud. Le jeu est structuré en plusieurs tours, et il est affiché en haut de l’écran à quel tour vous en êtes et si les tours suivants vont faire apparaître des monstres. Vous gagnez le combat si toutes les vagues sont passées sur vous et qu’il ne reste plus de monstre, mais vous perdez si les monstres détruisent votre char-à-voile (en bas de l’écran).","tutorial"),new PopupMessage("Premiers placements","Commencez par placer votre personnage puis les deux constructions à votre disposition en les glissant sur la grille de combat. Vous pouvez observer les caractéristiques de ces dernières en cliquant dessus. Même si vos constructions sont détruites durant un combat, elles seront réparées automatiquement avant le prochain combat.","tutorial")])
+    if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Le jeu est divisé en deux phases qui s’alternent : une phase sur une carte, pour choisir vers quel évènement vous rendre, et l’autre phase représentant la résolution de cet évènement. Il y a plusieurs types d’évènements mais le principal est celui du combat. Ce tutoriel explique succinctement son déroulé.","tutorial"),new PopupMessage("Victoire et défaite","Durant un combat, des vagues de monstres arrivent du nord et se déplacent vers le sud. Le jeu est structuré en plusieurs tours, et il est affiché en haut de l’écran à quel tour vous en êtes et si les tours suivants vont faire apparaître des monstres. Vous gagnez le combat si toutes les vagues sont passées sur vous et qu’il ne reste plus de monstre, mais vous perdez si les monstres détruisent votre char-à-voile (en bas de l’écran).","tutorial"),new PopupMessage("Premiers placements","Commencez par placer votre personnage puis les deux constructions à votre disposition en les glissant sur la grille de combat. Vous pouvez observer les caractéristiques de ces dernières en cliquant dessus. Même si vos constructions sont détruites durant un combat, elles seront réparées automatiquement avant le prochain combat.","tutorial")]);
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {
@@ -113,7 +113,7 @@ export class GameBattleComponent {
       this.fillInformationFrame(this.gameState.grid[position[0]][position[1]]);
     }
     this.tilesBackgroundUpdate();
-    this.addTilesBackground();
+    this.addPowerTilesBackground();
     // tutorial
     if (this.gameState.difficulty === 0.1 && this.gameState.wave === 4){
       this.popupService._setMessage$([new PopupMessage("À l’attaque", "Voici le premier monstre qui vient vers vous ! Vous pouvez vous déplacer sur sa case pour l’attaquer. Si vous le laissez faire, il descendra jusqu’à endommager ce qu’il a devant lui, et donc à un moment : votre char-à-voile.", "tutorial"),new PopupMessage("Zones d’interaction", "Vous avez vu apparaître, devant certaines de vos tours, une zone, c’est leur zone d’attaque. Vous allez retrouver la même chose avec les monstres qui ont leur zone de déplacement. Si un monstre ne peut pas se déplacer dans la zone indiquée, car bloquée par un obstacle, il va à la place attaquer cet obstacle.", "tutorial"),new PopupMessage("Assommé", "Si votre personnage subit trop d’attaque de monstres, il devient assommé. Il vous faut donc <Attendre> pendant trois tours avant de pouvoir revenir dans la zone de combat.", "tutorial")])
@@ -142,7 +142,7 @@ export class GameBattleComponent {
     this.isPowerSelected = !this.isPowerSelected;
 
     if (this.isPowerSelected && this.gameState.power.name === "dash"){
-      this.addTilesBackground();
+      this.addPowerTilesBackground();
     } else {
       this.tilesBackgroundUpdate();
     }
@@ -154,7 +154,7 @@ export class GameBattleComponent {
     }
   }
 
-  addTilesBackground(): void {
+  addPowerTilesBackground(): void {
     if (this.isPowerSelected) {
       let powerZone: number[][] = [];
       let charPos: number[] = this.gameState.characterPosition;

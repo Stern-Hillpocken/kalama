@@ -45,12 +45,12 @@ export class GameStateService {
   sleep(milliseconds: number) {
     let resolve: { (value: unknown): void; };
     let promise = new Promise((_resolve) => resolve = _resolve);
-    setTimeout(() => resolve(42), milliseconds);
+    setTimeout(() => resolve(undefined), milliseconds);
     return promise;
   }
 
   endTurn(): void {
-    const delay = 500;
+    const delay = 1000;
     this.sleep(0)
       .then(() => this.upkeep())
       .then(() => this.sleep(delay/2)) 
@@ -93,7 +93,7 @@ export class GameStateService {
           if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
             newGameState.wood += building.efficiency;
             let cStart: number = c;
-            if (newGameState.grid[r][c-1].name === "wood") cStart = c-1;
+            if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "wood") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "wood",
@@ -108,7 +108,7 @@ export class GameStateService {
           } else if (building.name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
             newGameState.stone += building.efficiency;
             let cStart: number = c;
-            if (newGameState.grid[r][c-1].name === "stone") cStart = c-1;
+            if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "stone") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "stone",
@@ -145,15 +145,25 @@ export class GameStateService {
                 "attack",
                 tower.damage,
                 this.getCoordinateFromRowColumn("w", r, c),
-                this.getCoordinateFromRowColumn("x", r-1, c),
-                this.getCoordinateFromRowColumn("x", r-1, c),
                 this.getCoordinateFromRowColumn("x", r, c),
                 this.getCoordinateFromRowColumn("y", r, c),
+                this.getCoordinateFromRowColumn("x", r-1, c),
+                this.getCoordinateFromRowColumn("y", r-1, c),
                 "positive"
                 ));
               if (newGameState.grid[r-1][c].life <= 0) {
                 newGameState.grid[r-1][c] = "";
                 newGameState.gem ++;
+                this.bubbleService.addBubble(new Bubble(
+                  "gem",
+                  1,
+                  this.getCoordinateFromRowColumn("w", r, c),
+                  this.getCoordinateFromRowColumn("x", r-1, c),
+                  this.getCoordinateFromRowColumn("y", r-1, c),
+                  this.getCoordinateFromRowColumn("x", r, c),
+                  this.getCoordinateFromRowColumn("y", r, c),
+                  "positive"
+                ));
               }
             }
           }
@@ -317,6 +327,16 @@ export class GameStateService {
             if(newGameState.grid[position[0]][position[1]].life <= 0) {
               newGameState.grid[position[0]][position[1]] = "";
               newGameState.gem ++;
+              this.bubbleService.addBubble(new Bubble(
+                "gem",
+                1,
+                this.getCoordinateFromRowColumn("w", r, c),
+                this.getCoordinateFromRowColumn("x", position[0], position[1]),
+                this.getCoordinateFromRowColumn("y", position[0], position[1]),
+                this.getCoordinateFromRowColumn("x", r, c),
+                this.getCoordinateFromRowColumn("y", r, c),
+                "positive"
+              ));
             }
           }
           this.endTurn();
