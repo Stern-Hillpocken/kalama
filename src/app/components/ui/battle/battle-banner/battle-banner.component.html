@@ -1,4 +1,4 @@
-<div class="battle-banner">
+<div class="battle-banner" [ngClass]="gameStateStatus === 'preparation' || gameStateStatus === 'player' ? 'active' : 'passive'">
     <h1>{{ displayStatus("h1") }}</h1>
     <p>{{ displayStatus("p") }}</p>
 </div>
