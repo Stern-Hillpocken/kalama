@@ -6,6 +6,14 @@
         "life": 1,
         "moves": ["down"],
         "damage": 1,
-        "description": "Sortant du sable chaud, il avance encore et encore."
+        "description": "À moitié enfoui dans le sable chaud, il avance, encore et encore."
+    },{
+        "name": "mole",
+        "title": "Taupe indécise",
+        "image": "mole",
+        "life": 2,
+        "moves": ["teleportation"],
+        "damage": 2,
+        "description": "Sortant sa tête, elle replonge pour apparaître ailleurs."
     }
 ]

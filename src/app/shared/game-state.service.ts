@@ -194,33 +194,59 @@ export class GameStateService {
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r+1][c].type !== "enemy"){
-              newGameState.grid[r+1][c].life -= newGameState.grid[r][c].damage;
-              this.bubbleService.addBubble(new Bubble(
-                "attack",
-                newGameState.grid[r][c].damage,
-                this.getCoordinateFromRowColumn("w", r, c),
-                this.getCoordinateFromRowColumn("x", r, c),
-                this.getCoordinateFromRowColumn("y", r, c),
-                this.getCoordinateFromRowColumn("x", r+1, c),
-                this.getCoordinateFromRowColumn("y", r+1, c),
-                "negative"
-              ));
-              if (newGameState.grid[r+1][c].life <= 0){
-                if (newGameState.grid[r+1][c].type === "character") {
-                  newGameState.koCounter = newGameState.power.maxPowerCoolDown;
-                  newGameState.characterPosition = [-1,-1];
-                }
-                setTimeout(() => {
-                  newGameState.grid[r+1][c] = "";
-                }, this.delayBetweenPhases);
+              this.enemyAttackFromTo(r, c, r+1, c);
+            }
+          } else if (newGameState.grid[r][c].moves[newGameState.grid[r][c].currentMoveStep] === "teleportation") {
+            if (r+1 >= newGameState.grid.length) {
+              newGameState.structure -= newGameState.grid[r][c].damage;
+              newGameState.grid[r][c] = "";
+            } else if (newGameState.grid[r+1][c].life && newGameState.grid[r+1][c].type !== "enemy") {
+              this.enemyAttackFromTo(r, c, r+1, c);
+            } else {
+              let spotChoice: number[] = [];
+              for (let ci = 0; ci < newGameState.grid[r+1].length; ci++) {
+                if (newGameState.grid[r+1][ci] === "") spotChoice.push(ci);
               }
-              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
+              if (spotChoice.length > 0) {
+                let randomSpot: number = this.random(0, spotChoice.length-1);
+                newGameState.grid[r+1][spotChoice[randomSpot]] = newGameState.grid[r][c];
+                newGameState.grid[r+1][spotChoice[randomSpot]] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][spotChoice[randomSpot]]);
+                newGameState.grid[r][c] = "";
+              }
             }
           }
         }
 
       }
     }
+    this._setGameState$(newGameState);
+  }
+
+  enemyAttackFromTo(r: number, c: number, rTarget: number, cTarget: number): void {
+    let newGameState: GameState = this._gameState$.getValue();
+
+    newGameState.grid[rTarget][cTarget].life -= newGameState.grid[r][c].damage;
+    this.bubbleService.addBubble(new Bubble(
+      "attack",
+      newGameState.grid[r][c].damage,
+      this.getCoordinateFromRowColumn("w", r, c),
+      this.getCoordinateFromRowColumn("x", r, c),
+      this.getCoordinateFromRowColumn("y", r, c),
+      this.getCoordinateFromRowColumn("x", rTarget, cTarget),
+      this.getCoordinateFromRowColumn("y", rTarget, cTarget),
+      "negative"
+    ));
+    if (newGameState.grid[rTarget][cTarget].life <= 0){
+      if (newGameState.grid[rTarget][cTarget].type === "character") {
+        newGameState.koCounter = newGameState.power.maxPowerCoolDown;
+        newGameState.characterPosition = [-1,-1];
+      }
+      setTimeout(() => {
+        newGameState.grid[rTarget][cTarget] = "";
+      }, this.delayBetweenPhases);
+    }
+    newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
+
     this._setGameState$(newGameState);
   }
 
@@ -468,7 +494,7 @@ export class GameStateService {
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "worm";
+        newGameState.spawnStrip[randomSpawnTime] = "mole";
         enemiesCount --;
       }
     }
