@@ -177,6 +177,7 @@ export class GameStateService {
         }
       }
     }
+    this._setGameState$(newGameState);
   }
 
   moveEnemies(): void {
@@ -221,6 +222,7 @@ export class GameStateService {
 
       }
     }
+    this._setGameState$(newGameState);
   }
 
   enemyPreparationForNextTurn(gs: any): any {
@@ -349,6 +351,7 @@ export class GameStateService {
   checkEndBattle(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.status = "player";
+    this._setGameState$(newGameState);
 
     if (newGameState.wave < newGameState.spawnStrip.length) return;
     for (let r = 0; r < newGameState.grid.length; r++){
