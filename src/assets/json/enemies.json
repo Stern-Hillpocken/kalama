@@ -15,5 +15,13 @@
         "moves": ["teleportation"],
         "damage": 2,
         "description": "Sortant sa tête, elle replonge pour apparaître ailleurs."
+    },{
+        "name": "frog",
+        "title": "Grenouille explosive",
+        "image": "frog",
+        "life": 1,
+        "moves": ["down"],
+        "damage": 1,
+        "description": "Explose à sa mort, faisant des déâts autour d’elle."
     }
 ]
