@@ -28,7 +28,7 @@
                 (click)="onCellClick($event)"
                 (dragenter)="onDragEnter($event)"
                 (dragleave)="onDragLeave($event)">
-                <span *ngIf="gameState.grid[r][c].life">
+                <span *ngIf="gameState.grid[r][c].life && gameState.grid[r][c].life > 0">
                     <img
                     *ngFor="let times of [].constructor(heartTimesDisplay(6, gameState.grid[r][c].life))"
                     src='assets/images/icons/heart-6.png'

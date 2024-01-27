@@ -47,7 +47,7 @@ export class GameBattleComponent {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
       if (this.gameState.status !== "preparation") this.tilesBackgroundUpdate();
-      console.log(state);
+      if (this.gameState.status !== "player") console.log(state);
     });
     this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
@@ -190,7 +190,12 @@ export class GameBattleComponent {
       for (let c = 0; c < this.gameState.grid[r].length; c++){
 
         if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "enemy"){
-          if (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "down" && r+1 < this.gameState.grid.length) {
+          if (r+1 < this.gameState.grid.length &&
+                (
+                  this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "down" ||
+                  (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "teleportation" && this.gameState.grid[r+1][c].type && this.gameState.grid[r+1][c].type !== "enemy")
+                )
+              ) {
             let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style;
             if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
             else currentStyle.background = this.overlapBackgroundEnemy;
