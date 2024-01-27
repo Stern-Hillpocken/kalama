@@ -4,12 +4,12 @@
     <p><img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone }}</span></p>
     <button (click)="changeLifeDisplay()">{{ gameState.isBattleLifeDisplayed ? "Cacher" : "Afficher" }} la résistance</button>
     <button
-        *ngIf="isCharacterOnTheGrid && gameState.status !== 'ready'"
+        *ngIf="isCharacterOnTheGrid && gameState.status === 'preparation'"
         (click)="readyForBattle();"
         >Lancer le combat</button>
-    <div *ngIf="gameState.status === 'ready'">
+    <div *ngIf="gameState.status !== 'preparation'">
         <p *ngIf="gameState.koCounter > 0">ko&nbsp;: {{ gameState.koCounter }} étapes</p>
-        <button (click)="wait()">Attendre</button>
+        <button (click)="wait()" [disabled]="gameState.status !== 'preparation' && gameState.status !== 'player'">Attendre</button>
         <p>Power progress&nbsp;: {{ gameState.currentPowerCoolDown }}/{{ gameState.power.maxPowerCoolDown }}</p>
         <button
             (click)="usePower()"

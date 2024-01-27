@@ -1,0 +1,10 @@
+.battle-banner {
+    text-align: center;
+
+    &.active {
+        background-color: var(--color-complement);
+    }
+    &.passive {
+        background-color: var(--color-light-accent);
+    }
+}

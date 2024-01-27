@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, delay } from 'rxjs';
 import { GameState } from '../models/game-state.model';
 import { Tower } from '../models/tower.model';
 import { Building } from '../models/building.model';
@@ -24,6 +24,8 @@ export class GameStateService {
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
 
+  private delayBetweenPhases: number = 1000;
+
   constructor(
     private router: Router,
     private informationOf: InformationOf,
@@ -42,17 +44,32 @@ export class GameStateService {
     this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
+  sleep(milliseconds: number) {
+    let resolve: { (value: unknown): void; };
+    let promise = new Promise((_resolve) => resolve = _resolve);
+    setTimeout(() => resolve(undefined), milliseconds);
+    return promise;
+  }
+
   endTurn(): void {
-    this.upkeep();
-    this.buildingsProduction();
-    this.towersTrigger();
-    this.moveEnemies();
-    this.spawn();
-    this.checkEndBattle();
+    this.sleep(0)
+      .then(() => this.upkeep())
+      .then(() => this.sleep(this.delayBetweenPhases/2)) 
+      .then(() => this.buildingsProduction())
+      .then(() => this.sleep(this.delayBetweenPhases)) 
+      .then(() => this.towersTrigger())
+      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.moveEnemies())
+      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.spawn())
+      .then(() => this.sleep(this.delayBetweenPhases/2))
+      .then(() => this.checkEndBattle());
   }
 
   upkeep(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "upkeep";
+
     newGameState.wave ++;
     if (newGameState.koCounter > 0) newGameState.koCounter --;
     if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) newGameState.currentPowerCoolDown ++;
@@ -61,6 +78,8 @@ export class GameStateService {
 
   buildingsProduction(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "buildings";
+
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "building"){
@@ -69,7 +88,7 @@ export class GameStateService {
           if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
             newGameState.wood += building.efficiency;
             let cStart: number = c;
-            if (newGameState.grid[r][c-1].name === "wood") cStart = c-1;
+            if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "wood") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "wood",
@@ -84,7 +103,7 @@ export class GameStateService {
           } else if (building.name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
             newGameState.stone += building.efficiency;
             let cStart: number = c;
-            if (newGameState.grid[r][c-1].name === "stone") cStart = c-1;
+            if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "stone") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "stone",
@@ -105,6 +124,8 @@ export class GameStateService {
 
   towersTrigger(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "towers";
+
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "tower"){
@@ -119,15 +140,27 @@ export class GameStateService {
                 "attack",
                 tower.damage,
                 this.getCoordinateFromRowColumn("w", r, c),
-                this.getCoordinateFromRowColumn("x", r-1, c),
-                this.getCoordinateFromRowColumn("x", r-1, c),
                 this.getCoordinateFromRowColumn("x", r, c),
                 this.getCoordinateFromRowColumn("y", r, c),
+                this.getCoordinateFromRowColumn("x", r-1, c),
+                this.getCoordinateFromRowColumn("y", r-1, c),
                 "positive"
                 ));
               if (newGameState.grid[r-1][c].life <= 0) {
-                newGameState.grid[r-1][c] = "";
-                newGameState.gem ++;
+                setTimeout(() => {
+                  newGameState.grid[r-1][c] = "";
+                  newGameState.gem ++;
+                  this.bubbleService.addBubble(new Bubble(
+                    "gem",
+                    1,
+                    this.getCoordinateFromRowColumn("w", r, c),
+                    this.getCoordinateFromRowColumn("x", r-1, c),
+                    this.getCoordinateFromRowColumn("y", r-1, c),
+                    this.getCoordinateFromRowColumn("x", r, c),
+                    this.getCoordinateFromRowColumn("y", r, c),
+                    "positive"
+                  ));
+                }, this.delayBetweenPhases);
               }
             }
           }
@@ -141,10 +174,13 @@ export class GameStateService {
         }
       }
     }
+    this._setGameState$(newGameState);
   }
 
   moveEnemies(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "enemies";
+
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
         // For each cell
@@ -174,7 +210,9 @@ export class GameStateService {
                   newGameState.koCounter = newGameState.power.maxPowerCoolDown;
                   newGameState.characterPosition = [-1,-1];
                 }
-                newGameState.grid[r+1][c] = "";
+                setTimeout(() => {
+                  newGameState.grid[r+1][c] = "";
+                }, this.delayBetweenPhases);
               }
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
             }
@@ -183,6 +221,7 @@ export class GameStateService {
 
       }
     }
+    this._setGameState$(newGameState);
   }
 
   enemyPreparationForNextTurn(gs: any): any {
@@ -198,6 +237,8 @@ export class GameStateService {
 
   spawn(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "spawn";
+
     if (newGameState.wave >= newGameState.spawnStrip.length || newGameState.spawnStrip[newGameState.wave] === "") return;
 
     let emptySpaces: number[] = [];
@@ -223,6 +264,7 @@ export class GameStateService {
 
   placeConstruction(name: string, position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.status !== "preparation" && newGameState.status !== "player") return;
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
     if (name === "character" && newGameState.koCounter === 0) {
@@ -261,7 +303,7 @@ export class GameStateService {
 
   moveCharacter(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
-    if (newGameState.status === "preparation") return;
+    if (newGameState.status !== "player") return;
 
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
@@ -286,6 +328,16 @@ export class GameStateService {
             if(newGameState.grid[position[0]][position[1]].life <= 0) {
               newGameState.grid[position[0]][position[1]] = "";
               newGameState.gem ++;
+              this.bubbleService.addBubble(new Bubble(
+                "gem",
+                1,
+                this.getCoordinateFromRowColumn("w", r, c),
+                this.getCoordinateFromRowColumn("x", position[0], position[1]),
+                this.getCoordinateFromRowColumn("y", position[0], position[1]),
+                this.getCoordinateFromRowColumn("x", r, c),
+                this.getCoordinateFromRowColumn("y", r, c),
+                "positive"
+              ));
             }
           }
           this.endTurn();
@@ -297,6 +349,9 @@ export class GameStateService {
 
   checkEndBattle(): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.status = "player";
+    this._setGameState$(newGameState);
+
     if (newGameState.wave < newGameState.spawnStrip.length) return;
     for (let r = 0; r < newGameState.grid.length; r++){
       for (let c = 0; c < newGameState.grid[r].length; c++){
@@ -312,7 +367,9 @@ export class GameStateService {
 
   powerDash(position: number[]): void {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.status !== "player") return;
     if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) return;
+
     if (newGameState.grid[position[0]][position[1]] === ""){
       newGameState.grid[position[0]][position[1]] = newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]];
       newGameState.grid[newGameState.characterPosition[0]][newGameState.characterPosition[1]] = "";
@@ -324,7 +381,9 @@ export class GameStateService {
 
   powerTowerReload() {
     let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.status !== "player") return;
     if (newGameState.currentPowerCoolDown < newGameState.power.maxPowerCoolDown) return;
+
     for (let r = 0; r < newGameState.grid.length; r++) {
       for (let c = 0; c < newGameState.grid[r].length; c++) {
         if (newGameState.grid[r][c].type && newGameState.grid[r][c].type === "tower") newGameState.grid[r][c].step = 0;

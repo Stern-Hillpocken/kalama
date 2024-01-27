@@ -7,6 +7,9 @@
     [informationFrame]="informationFrame"
     [isCostDisplayed]="false"
     ></app-information-frame>
+<app-battle-banner
+    [gameStateStatus]="gameState.status"
+    ></app-battle-banner>
 <app-battle-spawn-strip [gameState]="gameState"></app-battle-spawn-strip>
 <app-battle-constructions
     [gameState]="gameState"

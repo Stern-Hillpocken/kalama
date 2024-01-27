@@ -3,8 +3,8 @@
         <h2>{{ popupMessage[slideDisplayed].title }}</h2>
         <p>{{ popupMessage[slideDisplayed].message }}</p>
         <div class="buttons-swipe">
-            <button (click)="popupChange('previous')" *ngIf="slideDisplayed > 0">Prev</button>
-            <button (click)="popupChange('next')">{{ slideDisplayed === popupMessage.length-1 ? "Close" : "Next" }}</button>
+            <button (click)="popupChange('previous')" *ngIf="slideDisplayed > 0">< <</button>
+            <button (click)="popupChange('next')">{{ slideDisplayed === popupMessage.length-1 ? "Fermer" : "> >" }}</button>
         </div>
     </div>
 </div>
