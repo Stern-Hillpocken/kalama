@@ -148,18 +148,7 @@ export class GameStateService {
                 ));
               if (newGameState.grid[r-1][c].life <= 0) {
                 setTimeout(() => {
-                  newGameState.grid[r-1][c] = "";
-                  newGameState.gem ++;
-                  this.bubbleService.addBubble(new Bubble(
-                    "gem",
-                    1,
-                    this.getCoordinateFromRowColumn("w", r, c),
-                    this.getCoordinateFromRowColumn("x", r-1, c),
-                    this.getCoordinateFromRowColumn("y", r-1, c),
-                    this.getCoordinateFromRowColumn("x", r, c),
-                    this.getCoordinateFromRowColumn("y", r, c),
-                    "positive"
-                  ));
+                  this.enemyDeathFromTo(r, c, r-1, c);
                 }, this.delayBetweenPhases);
               }
             }
@@ -174,6 +163,50 @@ export class GameStateService {
         }
       }
     }
+    this._setGameState$(newGameState);
+  }
+
+  enemyDeathFromTo(r: number, c: number, rEnemy: number, cEnemy: number): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    newGameState.gem ++;
+    this.bubbleService.addBubble(new Bubble(
+      "gem",
+      1,
+      this.getCoordinateFromRowColumn("w", r, c),
+      this.getCoordinateFromRowColumn("x", rEnemy, cEnemy),
+      this.getCoordinateFromRowColumn("y", rEnemy, cEnemy),
+      this.getCoordinateFromRowColumn("x", r, c),
+      this.getCoordinateFromRowColumn("y", r, c),
+      "positive"
+    ));
+    if (newGameState.grid[rEnemy][cEnemy].name === "frog") {
+      // Explosion
+      if (rEnemy-1 >= 0 && cEnemy-1 >= 0) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy-1, cEnemy-1);
+      if (rEnemy-1 >= 0) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy-1, cEnemy);
+      if (rEnemy-1 >= 0 && cEnemy+1 < newGameState.grid[rEnemy].length) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy-1, cEnemy+1);
+      if (cEnemy-1 >= 0) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy, cEnemy-1);
+      if (cEnemy+1 < newGameState.grid[rEnemy].length) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy, cEnemy+1);
+      if (rEnemy+1 < newGameState.grid.length && cEnemy-1 >= 0) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy+1, cEnemy-1);
+      if (rEnemy+1 < newGameState.grid.length) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy+1, cEnemy);
+      if (rEnemy+1 < newGameState.grid.length && cEnemy+1 < newGameState.grid[rEnemy].length) this.explosionFromEnemyTo(rEnemy, cEnemy, rEnemy+1, cEnemy+1);
+    }
+    newGameState.grid[rEnemy][cEnemy] = "";
+    this._setGameState$(newGameState);
+  }
+
+  explosionFromEnemyTo(rEnemy: number, cEnemy: number, rFinal: number, cFinal: number): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    this.bubbleService.addBubble(new Bubble(
+      "attack",
+      1,
+      this.getCoordinateFromRowColumn("w", rEnemy, cEnemy),
+      this.getCoordinateFromRowColumn("x", rEnemy, cEnemy),
+      this.getCoordinateFromRowColumn("y", rEnemy, cEnemy),
+      this.getCoordinateFromRowColumn("x", rFinal, cFinal),
+      this.getCoordinateFromRowColumn("y", rFinal, cFinal),
+      "negative"
+    ));
+    if (newGameState.grid[rFinal][cFinal].life) this.enemyAttackFromTo(rEnemy, cEnemy, rFinal, cFinal);
     this._setGameState$(newGameState);
   }
 
@@ -352,18 +385,7 @@ export class GameStateService {
               "positive"
             ));
             if(newGameState.grid[position[0]][position[1]].life <= 0) {
-              newGameState.grid[position[0]][position[1]] = "";
-              newGameState.gem ++;
-              this.bubbleService.addBubble(new Bubble(
-                "gem",
-                1,
-                this.getCoordinateFromRowColumn("w", r, c),
-                this.getCoordinateFromRowColumn("x", position[0], position[1]),
-                this.getCoordinateFromRowColumn("y", position[0], position[1]),
-                this.getCoordinateFromRowColumn("x", r, c),
-                this.getCoordinateFromRowColumn("y", r, c),
-                "positive"
-              ));
+              this.enemyDeathFromTo(r, c, position[0], position[1]);
             }
           }
           this.endTurn();
@@ -494,7 +516,7 @@ export class GameStateService {
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "mole";
+        newGameState.spawnStrip[randomSpawnTime] = "frog";
         enemiesCount --;
       }
     }
