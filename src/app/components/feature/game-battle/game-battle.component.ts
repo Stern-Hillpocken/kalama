@@ -46,8 +46,8 @@ export class GameBattleComponent {
   ngOnInit(): void {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
+      if (this.gameState.status !== "preparation") this.tilesBackgroundUpdate();
       console.log(state);
-      this.tilesBackgroundUpdate();
     });
     this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
