@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, delay } from 'rxjs';
 import { GameState } from '../models/game-state.model';
 import { Tower } from '../models/tower.model';
 import { Building } from '../models/building.model';
@@ -23,6 +23,8 @@ export class GameStateService {
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
+
+  private delayBetweenPhases: number = 1000;
 
   constructor(
     private router: Router,
@@ -50,25 +52,18 @@ export class GameStateService {
   }
 
   endTurn(): void {
-    const delay = 1000;
     this.sleep(0)
       .then(() => this.upkeep())
-      .then(() => this.sleep(delay/2)) 
+      .then(() => this.sleep(this.delayBetweenPhases/2)) 
       .then(() => this.buildingsProduction())
-      .then(() => this.sleep(delay)) 
+      .then(() => this.sleep(this.delayBetweenPhases)) 
       .then(() => this.towersTrigger())
-      .then(() => this.sleep(delay))
+      .then(() => this.sleep(this.delayBetweenPhases))
       .then(() => this.moveEnemies())
-      .then(() => this.sleep(delay))
+      .then(() => this.sleep(this.delayBetweenPhases))
       .then(() => this.spawn())
-      .then(() => this.sleep(delay/2))
+      .then(() => this.sleep(this.delayBetweenPhases/2))
       .then(() => this.checkEndBattle());
-    /*this.upkeep();
-    this.buildingsProduction();
-    this.towersTrigger();
-    this.moveEnemies();
-    this.spawn();
-    this.checkEndBattle();*/
   }
 
   upkeep(): void {
@@ -152,18 +147,20 @@ export class GameStateService {
                 "positive"
                 ));
               if (newGameState.grid[r-1][c].life <= 0) {
-                newGameState.grid[r-1][c] = "";
-                newGameState.gem ++;
-                this.bubbleService.addBubble(new Bubble(
-                  "gem",
-                  1,
-                  this.getCoordinateFromRowColumn("w", r, c),
-                  this.getCoordinateFromRowColumn("x", r-1, c),
-                  this.getCoordinateFromRowColumn("y", r-1, c),
-                  this.getCoordinateFromRowColumn("x", r, c),
-                  this.getCoordinateFromRowColumn("y", r, c),
-                  "positive"
-                ));
+                setTimeout(() => {
+                  newGameState.grid[r-1][c] = "";
+                  newGameState.gem ++;
+                  this.bubbleService.addBubble(new Bubble(
+                    "gem",
+                    1,
+                    this.getCoordinateFromRowColumn("w", r, c),
+                    this.getCoordinateFromRowColumn("x", r-1, c),
+                    this.getCoordinateFromRowColumn("y", r-1, c),
+                    this.getCoordinateFromRowColumn("x", r, c),
+                    this.getCoordinateFromRowColumn("y", r, c),
+                    "positive"
+                  ));
+                }, this.delayBetweenPhases);
               }
             }
           }
@@ -213,7 +210,9 @@ export class GameStateService {
                   newGameState.koCounter = newGameState.power.maxPowerCoolDown;
                   newGameState.characterPosition = [-1,-1];
                 }
-                newGameState.grid[r+1][c] = "";
+                setTimeout(() => {
+                  newGameState.grid[r+1][c] = "";
+                }, this.delayBetweenPhases);
               }
               newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c]);
             }
