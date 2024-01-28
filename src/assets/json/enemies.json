@@ -39,5 +39,13 @@
         "moves": ["down"],
         "damage": 2,
         "description": "Ne ce soucis d'aucun obstacle, elle saute par dessus."
+    },{
+        "name": "crab",
+        "title": "Crabe baladeur",
+        "image": "crab",
+        "life": 2,
+        "moves": ["down", "right", "down", "left"],
+        "damage": 2,
+        "description": "Se déplace de ci de là."
     }
 ]
