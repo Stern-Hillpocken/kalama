@@ -31,5 +31,13 @@
         "moves": ["down"],
         "damage": 1,
         "description": "Rend coup pour coup."
+    },{
+        "name": "grasshopper",
+        "title": "Sauterelle fonceuse",
+        "image": "grasshopper",
+        "life": 2,
+        "moves": ["down"],
+        "damage": 2,
+        "description": "Ne ce soucis d'aucun obstacle, elle saute par dessus."
     }
 ]

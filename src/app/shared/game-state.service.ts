@@ -229,6 +229,22 @@ export class GameStateService {
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
               newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c]);
               newGameState.grid[r][c] = "";
+            } else if (newGameState.grid[r][c].name === "grasshopper") {
+              let rLanding: number = -1;
+              for (let ri = r+1; ri < newGameState.grid.length; ri++) {
+                if (newGameState.grid[ri][c] === ""){
+                  rLanding = ri;
+                  break;
+                }
+              }
+              if (rLanding === -1) {
+                newGameState.structure -= newGameState.grid[r][c].damage;
+                newGameState.grid[r][c] = "";
+              } else {
+                newGameState.grid[rLanding][c] = newGameState.grid[r][c];
+                newGameState.grid[rLanding][c] = this.enemyPreparationForNextTurn(newGameState.grid[rLanding][c]);
+                newGameState.grid[r][c] = "";
+              }
             } else if (newGameState.grid[r+1][c].type !== "enemy"){
               this.enemyAttackFromTo(r, c, r+1, c);
             }
@@ -523,7 +539,7 @@ export class GameStateService {
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "hedgehog";
+        newGameState.spawnStrip[randomSpawnTime] = "grasshopper";
         enemiesCount --;
       }
     }
