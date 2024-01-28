@@ -209,9 +209,17 @@ export class GameBattleComponent {
                   (this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "teleportation" && this.gameState.grid[r+1][c].type && this.gameState.grid[r+1][c].type !== "enemy")
                 )
               ) {
-            let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style;
-            if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
-            else currentStyle.background = this.overlapBackgroundEnemy;
+              let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r+1].children[c] as HTMLTableElement).style;
+              if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
+              else currentStyle.background = this.overlapBackgroundEnemy;
+          } else if (c !== 0 && this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "left") {
+              let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r].children[c-1] as HTMLTableElement).style;
+              if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
+              else currentStyle.background = this.overlapBackgroundEnemy;
+          } else if (c+1 !== this.gameState.grid[r].length && this.gameState.grid[r][c].moves[this.gameState.grid[r][c].currentMoveStep] === "right") {
+              let currentStyle = (document.getElementById("grid")?.getElementsByClassName("object")[0].children[r].children[c+1] as HTMLTableElement).style;
+              if (currentStyle.background === this.overlapBackgroundAlly) currentStyle.background = this.overlapBackgroundAllyEnemy;
+              else currentStyle.background = this.overlapBackgroundEnemy;
           }
         } else if (this.gameState.grid[r][c].type && this.gameState.grid[r][c].type === "tower" && this.gameState.grid[r][c].sequence[this.gameState.grid[r][c].step] === "attack"){
           if (this.gameState.grid[r][c].tileTargeted === "top" && r-1 >= 0){
