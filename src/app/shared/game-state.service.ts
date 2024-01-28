@@ -146,6 +146,9 @@ export class GameStateService {
                 this.getCoordinateFromRowColumn("y", r-1, c),
                 "positive"
                 ));
+              if (newGameState.grid[r-1][c].name === "hedgehog") {
+                setTimeout(() => this.enemyAttackFromTo(r-1, c, r, c), this.delayBetweenPhases/2);
+              }
               if (newGameState.grid[r-1][c].life <= 0) {
                 setTimeout(() => {
                   this.enemyDeathFromTo(r, c, r-1, c);
@@ -384,7 +387,10 @@ export class GameStateService {
               this.getCoordinateFromRowColumn("y", position[0], position[1]),
               "positive"
             ));
-            if(newGameState.grid[position[0]][position[1]].life <= 0) {
+            if (newGameState.grid[position[0]][position[1]].name === "hedgehog") {
+              setTimeout(() => this.enemyAttackFromTo(position[0], position[1], r, c), this.delayBetweenPhases/2);
+            }
+            if (newGameState.grid[position[0]][position[1]].life <= 0) {
               this.enemyDeathFromTo(r, c, position[0], position[1]);
             }
           }
@@ -393,6 +399,7 @@ export class GameStateService {
         }
       }
     }
+    this._setGameState$(newGameState);
   }
 
   checkEndBattle(): void {
@@ -516,7 +523,7 @@ export class GameStateService {
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "frog";
+        newGameState.spawnStrip[randomSpawnTime] = "hedgehog";
         enemiesCount --;
       }
     }

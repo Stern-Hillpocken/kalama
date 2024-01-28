@@ -23,5 +23,13 @@
         "moves": ["down"],
         "damage": 1,
         "description": "Explose à sa mort, faisant des déâts autour d’elle."
+    },{
+        "name": "hedgehog",
+        "title": "Hérisson du Talion",
+        "image": "hedgehog",
+        "life": 2,
+        "moves": ["down"],
+        "damage": 1,
+        "description": "Rend coup pour coup."
     }
 ]
