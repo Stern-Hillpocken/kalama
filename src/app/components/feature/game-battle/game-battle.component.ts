@@ -47,7 +47,7 @@ export class GameBattleComponent {
     this.gameStateService._getGameState$().subscribe((state: GameState) => {
       this.gameState = state;
       if (this.gameState.status !== "preparation") this.tilesBackgroundUpdate();
-      if (this.gameState.status !== "player") console.log(state);
+      if (this.gameState.status === "player") console.log(state);
     });
     this.popupService._getMessage$().subscribe((msg: PopupMessage[]) => {
       this.popupMessage = msg;
