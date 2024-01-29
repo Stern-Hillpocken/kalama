@@ -361,6 +361,7 @@ export class GameStateService {
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
     let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
+    if (newGameState.difficulty === 2) newEnemy.life = Math.ceil(newEnemy.life * 1.5);
     newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
