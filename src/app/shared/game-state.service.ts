@@ -137,7 +137,7 @@ export class GameStateService {
               // Damage
               newGameState.grid[r-1][c].life -= tower.damage;
               this.bubbleService.addBubble(new Bubble(
-                "attack",
+                "attack"+this.compassRose(r, c, r-1, c),
                 tower.damage,
                 this.getCoordinateFromRowColumn("w", r, c),
                 this.getCoordinateFromRowColumn("x", r, c),
@@ -200,7 +200,7 @@ export class GameStateService {
   explosionFromEnemyTo(rEnemy: number, cEnemy: number, rFinal: number, cFinal: number): void {
     let newGameState: GameState = this._gameState$.getValue();
     this.bubbleService.addBubble(new Bubble(
-      "attack",
+      "attack"+this.compassRose(rEnemy, cEnemy, rFinal, cFinal),
       1,
       this.getCoordinateFromRowColumn("w", rEnemy, cEnemy),
       this.getCoordinateFromRowColumn("x", rEnemy, cEnemy),
@@ -303,7 +303,7 @@ export class GameStateService {
 
     newGameState.grid[rTarget][cTarget].life -= newGameState.grid[r][c].damage;
     this.bubbleService.addBubble(new Bubble(
-      "attack",
+      "attack"+this.compassRose(r, c, rTarget, cTarget),
       newGameState.grid[r][c].damage,
       this.getCoordinateFromRowColumn("w", r, c),
       this.getCoordinateFromRowColumn("x", r, c),
@@ -421,7 +421,7 @@ export class GameStateService {
             // Damage
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
             this.bubbleService.addBubble(new Bubble(
-              "attack",
+              "attack"+this.compassRose(r, c, position[0], position[1]),
               newGameState.grid[r][c].damage,
               this.getCoordinateFromRowColumn("w", r, c),
               this.getCoordinateFromRowColumn("x", r, c),
@@ -443,6 +443,19 @@ export class GameStateService {
       }
     }
     this._setGameState$(newGameState);
+  }
+
+  compassRose(rStart: number, cStart: number, rEnd: number, cEnd: number): string {
+    let name: string = "";
+    if (rEnd < rStart && cEnd < cStart) name = "-top-left";
+    else if (rEnd < rStart && cEnd === cStart) name = "-top";
+    else if (rEnd < rStart && cEnd > cStart) name = "-top-right";
+    else if (rEnd === rStart && cEnd < cStart) name = "-left";
+    else if (rEnd === rStart && cEnd > cStart) name = "-right";
+    else if (rEnd > rStart && cEnd < cStart) name = "-bottom-left";
+    else if (rEnd > rStart && cEnd === cStart) name = "-bottom";
+    else if (rEnd > rStart && cEnd > cStart) name = "-bottom-right";
+    return name;
   }
 
   checkEndBattle(): void {
