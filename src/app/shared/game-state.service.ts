@@ -137,7 +137,7 @@ export class GameStateService {
               // Damage
               newGameState.grid[r-1][c].life -= tower.damage;
               this.bubbleService.addBubble(new Bubble(
-                "attack",
+                "attack"+this.compassRose(r, c, r-1, c),
                 tower.damage,
                 this.getCoordinateFromRowColumn("w", r, c),
                 this.getCoordinateFromRowColumn("x", r, c),
@@ -200,7 +200,7 @@ export class GameStateService {
   explosionFromEnemyTo(rEnemy: number, cEnemy: number, rFinal: number, cFinal: number): void {
     let newGameState: GameState = this._gameState$.getValue();
     this.bubbleService.addBubble(new Bubble(
-      "attack",
+      "attack"+this.compassRose(rEnemy, cEnemy, rFinal, cFinal),
       1,
       this.getCoordinateFromRowColumn("w", rEnemy, cEnemy),
       this.getCoordinateFromRowColumn("x", rEnemy, cEnemy),
@@ -227,7 +227,7 @@ export class GameStateService {
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r+1][c] === ""){
               newGameState.grid[r+1][c] = newGameState.grid[r][c];
-              newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c], c);
+              newGameState.grid[r+1][c] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][c], r+1, c);
               newGameState.grid[r][c] = "";
             } else if (newGameState.grid[r][c].name === "grasshopper") {
               let rLanding: number = -1;
@@ -242,7 +242,7 @@ export class GameStateService {
                 newGameState.grid[r][c] = "";
               } else {
                 newGameState.grid[rLanding][c] = newGameState.grid[r][c];
-                newGameState.grid[rLanding][c] = this.enemyPreparationForNextTurn(newGameState.grid[rLanding][c], c);
+                newGameState.grid[rLanding][c] = this.enemyPreparationForNextTurn(newGameState.grid[rLanding][c], rLanding, c);
                 newGameState.grid[r][c] = "";
               }
             } else if (newGameState.grid[r+1][c].type !== "enemy"){
@@ -250,11 +250,11 @@ export class GameStateService {
             }
           } else if(newGameState.grid[r][c].moves[newGameState.grid[r][c].currentMoveStep] === "left") {
             if (c === 0 || (newGameState.grid[r][c-1].type && newGameState.grid[r][c-1].type === "enemy")) {
-              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], c);
+              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], r, c);
             } else {
               if (newGameState.grid[r][c-1] === "") {
                 newGameState.grid[r][c-1] = newGameState.grid[r][c];
-                newGameState.grid[r][c-1] = this.enemyPreparationForNextTurn(newGameState.grid[r][c-1], c-1);
+                newGameState.grid[r][c-1] = this.enemyPreparationForNextTurn(newGameState.grid[r][c-1], r, c-1);
                 newGameState.grid[r][c] = "";
               } else {
                 this.enemyAttackFromTo(r, c, r, c-1);
@@ -262,11 +262,11 @@ export class GameStateService {
             }
           } else if(newGameState.grid[r][c].moves[newGameState.grid[r][c].currentMoveStep] === "right") {
             if (c+1 === newGameState.grid[r].length || (newGameState.grid[r][c+1].type && newGameState.grid[r][c+1].type === "enemy")) {
-              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], c);
+              newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], r, c);
             } else {
               if (newGameState.grid[r][c+1] === "") {
                 newGameState.grid[r][c+1] = newGameState.grid[r][c];
-                newGameState.grid[r][c+1] = this.enemyPreparationForNextTurn(newGameState.grid[r][c+1], c+1);
+                newGameState.grid[r][c+1] = this.enemyPreparationForNextTurn(newGameState.grid[r][c+1], r, c+1);
                 newGameState.grid[r][c] = "";
               } else {
                 this.enemyAttackFromTo(r, c, r, c+1);
@@ -286,7 +286,7 @@ export class GameStateService {
               if (spotChoice.length > 0) {
                 let randomSpot: number = this.random(0, spotChoice.length-1);
                 newGameState.grid[r+1][spotChoice[randomSpot]] = newGameState.grid[r][c];
-                newGameState.grid[r+1][spotChoice[randomSpot]] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][spotChoice[randomSpot]], spotChoice[randomSpot]);
+                newGameState.grid[r+1][spotChoice[randomSpot]] = this.enemyPreparationForNextTurn(newGameState.grid[r+1][spotChoice[randomSpot]], r+1, spotChoice[randomSpot]);
                 newGameState.grid[r][c] = "";
               }
             }
@@ -303,7 +303,7 @@ export class GameStateService {
 
     newGameState.grid[rTarget][cTarget].life -= newGameState.grid[r][c].damage;
     this.bubbleService.addBubble(new Bubble(
-      "attack",
+      "attack"+this.compassRose(r, c, rTarget, cTarget),
       newGameState.grid[r][c].damage,
       this.getCoordinateFromRowColumn("w", r, c),
       this.getCoordinateFromRowColumn("x", r, c),
@@ -321,18 +321,23 @@ export class GameStateService {
         newGameState.grid[rTarget][cTarget] = "";
       }, this.delayBetweenPhases);
     }
-    newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], c);
+    newGameState.grid[r][c] = this.enemyPreparationForNextTurn(newGameState.grid[r][c], r, c);
 
     this._setGameState$(newGameState);
   }
 
-  enemyPreparationForNextTurn(gs: any, column: number): any {
-    gs.currentMoveStep ++;
-    if (gs.currentMoveStep >= gs.moves.length) gs.currentMoveStep = 0;
-    if ((column === 0 && gs.moves[gs.currentMoveStep] === "left") || (column+1 === this._gameState$.getValue().grid.length && gs.moves[gs.currentMoveStep] === "right")) gs.currentMoveStep ++;
-    if (gs.currentMoveStep >= gs.moves.length) gs.currentMoveStep = 0;
-    gs.activeWave ++;
-    return gs;
+  enemyPreparationForNextTurn(gsCell: any, row: number, column: number): any {
+    gsCell.currentMoveStep ++;
+    if (gsCell.currentMoveStep >= gsCell.moves.length) gsCell.currentMoveStep = 0;
+    if ((column === 0 && gsCell.moves[gsCell.currentMoveStep] === "left") || (column+1 === this._gameState$.getValue().grid.length && gsCell.moves[gsCell.currentMoveStep] === "right")) gsCell.currentMoveStep ++;
+    if (gsCell.currentMoveStep >= gsCell.moves.length) gsCell.currentMoveStep = 0;
+    gsCell.image = gsCell.name + "-" + gsCell.moves[gsCell.currentMoveStep];
+    if (gsCell.name === "mole" &&
+      (row+1 === this._gameState$.getValue().grid.length ||
+      (row+1 < this._gameState$.getValue().grid.length && this._gameState$.getValue().grid[row+1][column] !== "" && this._gameState$.getValue().grid[row+1][column].type !== "enemy" && this._gameState$.getValue().grid[row+1][column].life > gsCell.damage))
+    ) gsCell.image = gsCell.name + "-down";
+    gsCell.activeWave ++;
+    return gsCell;
   }
 
   random(min: number, max: number): number{
@@ -361,6 +366,12 @@ export class GameStateService {
     let randomSpotChoosed = emptySpaces[this.random(0, emptySpaces.length-1)];
 
     let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
+    if (newGameState.difficulty === 2) newEnemy.life = Math.ceil(newEnemy.life * 1.5);
+    if (newEnemy.name === "mole" && newGameState.grid[rowToSpawn+1][randomSpotChoosed].type && newGameState.grid[rowToSpawn+1][randomSpotChoosed].type !== "enemy") {
+      newEnemy.image = newEnemy.name+"-down";
+    } else {
+      newEnemy.image = newEnemy.name+"-"+newEnemy.moves[0];
+    }
     newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
@@ -420,7 +431,7 @@ export class GameStateService {
             // Damage
             newGameState.grid[position[0]][position[1]].life -= newGameState.grid[r][c].damage;
             this.bubbleService.addBubble(new Bubble(
-              "attack",
+              "attack"+this.compassRose(r, c, position[0], position[1]),
               newGameState.grid[r][c].damage,
               this.getCoordinateFromRowColumn("w", r, c),
               this.getCoordinateFromRowColumn("x", r, c),
@@ -442,6 +453,19 @@ export class GameStateService {
       }
     }
     this._setGameState$(newGameState);
+  }
+
+  compassRose(rStart: number, cStart: number, rEnd: number, cEnd: number): string {
+    let name: string = "";
+    if (rEnd < rStart && cEnd < cStart) name = "-top-left";
+    else if (rEnd < rStart && cEnd === cStart) name = "-top";
+    else if (rEnd < rStart && cEnd > cStart) name = "-top-right";
+    else if (rEnd === rStart && cEnd < cStart) name = "-left";
+    else if (rEnd === rStart && cEnd > cStart) name = "-right";
+    else if (rEnd > rStart && cEnd < cStart) name = "-bottom-left";
+    else if (rEnd > rStart && cEnd === cStart) name = "-bottom";
+    else if (rEnd > rStart && cEnd > cStart) name = "-bottom-right";
+    return name;
   }
 
   checkEndBattle(): void {
@@ -565,7 +589,7 @@ export class GameStateService {
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "crab";
+        newGameState.spawnStrip[randomSpawnTime] = "mole";
         enemiesCount --;
       }
     }

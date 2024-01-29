@@ -33,6 +33,7 @@ import { SellerProductsComponent } from './components/ui/seller/seller-products/
 import { ShelterRepairComponent } from './components/ui/shelter/shelter-repair/shelter-repair.component';
 import { BubbleComponent } from './components/ui/bubble/bubble.component';
 import { BattleBannerComponent } from './components/ui/battle/battle-banner/battle-banner.component';
+import { HomeTipsComponent } from './components/ui/home/home-tips/home-tips.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { BattleBannerComponent } from './components/ui/battle/battle-banner/batt
     SellerProductsComponent,
     ShelterRepairComponent,
     BubbleComponent,
-    BattleBannerComponent
+    BattleBannerComponent,
+    HomeTipsComponent
   ],
   imports: [
     BrowserModule,
