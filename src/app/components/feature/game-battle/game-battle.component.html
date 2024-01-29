@@ -1,3 +1,4 @@
+<div [ngClass]="gameState.status === 'preparation' || gameState.status === 'player' ? 'player-turn' : 'game-turn'">
 <app-popup
     *ngIf="popupMessage.length > 0"
     [popupMessage]="popupMessage"
@@ -32,3 +33,4 @@
     (readyForBattleEmitter)="onReadyForBattleReceive()"
     (usePowerEmitter)="onUsePowerReceive()"
 ></app-battle-character>
+</div>
