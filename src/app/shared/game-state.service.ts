@@ -331,6 +331,7 @@ export class GameStateService {
     if (gs.currentMoveStep >= gs.moves.length) gs.currentMoveStep = 0;
     if ((column === 0 && gs.moves[gs.currentMoveStep] === "left") || (column+1 === this._gameState$.getValue().grid.length && gs.moves[gs.currentMoveStep] === "right")) gs.currentMoveStep ++;
     if (gs.currentMoveStep >= gs.moves.length) gs.currentMoveStep = 0;
+    gs.image = gs.name + "-" + gs.moves[gs.currentMoveStep];
     gs.activeWave ++;
     return gs;
   }
@@ -362,7 +363,7 @@ export class GameStateService {
 
     let newEnemy: Enemy = this.informationOf.getWithNameType(newGameState.spawnStrip[newGameState.wave], "enemy");
     if (newGameState.difficulty === 2) newEnemy.life = Math.ceil(newEnemy.life * 1.5);
-    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
+    newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image+"-"+newEnemy.moves[0], newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
   }
