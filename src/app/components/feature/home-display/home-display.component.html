@@ -1,11 +1,7 @@
 <div *ngIf="display === ''">
     <app-home-title></app-home-title>
     <app-home-choices (buttonSelectionEmitter)="onButtonSelectionReceive($event)"></app-home-choices>
-    <p style="text-align: center;">
-        Séquence d’activation&nbsp;:
-        <br>
-        Vous > constructions > monstres.
-    </p>
+    <app-home-tips></app-home-tips>
     <app-home-settings></app-home-settings>
 </div>
 
