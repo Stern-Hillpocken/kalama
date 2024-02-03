@@ -3,11 +3,11 @@ import { GameState } from 'src/app/models/game-state.model';
 import { Relic } from 'src/app/models/relic.model';
 
 @Component({
-  selector: 'app-battle-reward',
-  templateUrl: './battle-reward.component.html',
-  styleUrls: ['./battle-reward.component.scss']
+  selector: 'app-battle-end-summary',
+  templateUrl: './battle-end-summary.component.html',
+  styleUrls: ['./battle-end-summary.component.scss']
 })
-export class BattleRewardComponent {
+export class BattleEndSummaryComponent {
 
   @Input()
   gameState!: GameState;

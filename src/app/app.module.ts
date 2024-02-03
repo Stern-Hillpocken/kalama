@@ -34,7 +34,7 @@ import { ShelterRepairComponent } from './components/ui/shelter/shelter-repair/s
 import { BubbleComponent } from './components/ui/bubble/bubble.component';
 import { BattleBannerComponent } from './components/ui/battle/battle-banner/battle-banner.component';
 import { HomeTipsComponent } from './components/ui/home/home-tips/home-tips.component';
-import { BattleRewardComponent } from './components/ui/battle/battle-reward/battle-reward.component';
+import { BattleEndSummaryComponent } from './components/ui/battle/battle-end-summary/battle-end-summary.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +69,7 @@ import { BattleRewardComponent } from './components/ui/battle/battle-reward/batt
     BubbleComponent,
     BattleBannerComponent,
     HomeTipsComponent,
-    BattleRewardComponent
+    BattleEndSummaryComponent
   ],
   imports: [
     BrowserModule,
