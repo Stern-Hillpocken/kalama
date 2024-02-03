@@ -586,16 +586,36 @@ export class GameStateService {
       newGameState.spawnStrip.push("");
     }
     let enemiesCount: number = Math.floor(stripLength/3);
+    if (type ===  "elite") enemiesCount = Math.floor(stripLength/2);
+    else if (type === "boss") enemiesCount = stripLength-1;
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "mole";
+        newGameState.spawnStrip[randomSpawnTime] = this.generateEnemyName();
         enemiesCount --;
       }
     }
-    newGameState.spawnStrip[stripLength-1] = "worm";
+    newGameState.spawnStrip[stripLength-1] = this.generateEnemyName();
 
     newGameState.display = "battle";
+  }
+
+  generateEnemyName(): string {
+    let newGameState: GameState = this._gameState$.getValue();
+    let enemyName: string = "worm";
+    let enemiesAllowed: string[] = this.informationOf.getAllEnemiesNames();
+    newGameState.relics.forEach(relic => {
+      if (relic.name.startsWith("anti-")) {
+        for (let i = 0; i < enemiesAllowed.length; i++) {
+          if (relic.name.endsWith(enemiesAllowed[i])) {
+            enemiesAllowed.splice(i,1);
+            i --;
+          }
+        }
+      }
+    });
+    if (enemiesAllowed.length !== 0) enemyName = enemiesAllowed[this.random(0, enemiesAllowed.length-1)];
+    return enemyName;
   }
 
   generateShelter(): void {
