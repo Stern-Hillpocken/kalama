@@ -17,7 +17,7 @@ export class HomeTipsComponent {
 
   generateNewTip(): void {
     this.tipIndex = Math.floor(Math.random() * (this.allTips.length));
-    setTimeout(() => this.generateNewTip(), 2500);
+    setTimeout(() => this.generateNewTip(), 3000);
   }
 
 }
