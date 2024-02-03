@@ -8,6 +8,11 @@
     [informationFrame]="informationFrame"
     [isCostDisplayed]="false"
     ></app-information-frame>
+<app-battle-reward
+    [gameState]="gameState"
+    [gameStartingResources]="gameStartingResources"
+    (returnToMapEmitter)="onReturnToMapReceive()"
+    ></app-battle-reward>
 <app-battle-banner
     [gameStateStatus]="gameState.status"
     ></app-battle-banner>

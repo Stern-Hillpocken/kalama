@@ -480,7 +480,6 @@ export class GameStateService {
       }
     }
     
-    newGameState.display = "map";
     this.bubbleService.reset();
     // End of tuto
     if (newGameState.difficulty < 1) this.router.navigateByUrl("");
