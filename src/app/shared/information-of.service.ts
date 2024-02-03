@@ -92,4 +92,16 @@ export class InformationOf {
     return resultPower;
   }
 
+  getAllEnemies(): Enemy[] {
+    return this.allEnemies;
+  }
+
+  getAllEnemiesNames(): string[] {
+    let allEnemiesNames: string [] = [];
+    this.allEnemies.forEach(enemy => {
+      allEnemiesNames.push(enemy.name);
+    });
+    return allEnemiesNames;
+  }
+
 }

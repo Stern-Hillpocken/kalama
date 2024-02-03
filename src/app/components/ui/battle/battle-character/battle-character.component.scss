@@ -5,11 +5,15 @@
     }
 }
 
-.char-info {
+.char-resources {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5em;
+}
+
+div {
+    text-align: center;
 }
 
 img {

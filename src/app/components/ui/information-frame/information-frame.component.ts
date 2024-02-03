@@ -13,6 +13,9 @@ export class InformationFrameComponent {
   @Input()
   isCostDisplayed!: boolean;
 
+  @Input()
+  gameDisplaySubtype!: string;
+
   close(): void {
     this.informationFrame = {};
   }

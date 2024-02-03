@@ -7,7 +7,15 @@
 <app-information-frame
     [informationFrame]="informationFrame"
     [isCostDisplayed]="false"
+    [gameDisplaySubtype]="gameState.displaySubtype"
     ></app-information-frame>
+<app-battle-end-summary
+    [gameState]="gameState"
+    [gameStartingResources]="gameStartingResources"
+    [relicGain]="relicGain"
+    (returnToMapEmitter)="onReturnToMapReceive()"
+    (returnToHomeEmitter)="onReturnToHomeReceive()"
+    ></app-battle-end-summary>
 <app-battle-banner
     [gameStateStatus]="gameState.status"
     ></app-battle-banner>

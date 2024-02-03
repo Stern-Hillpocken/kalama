@@ -19,7 +19,7 @@ import { Bubble } from '../models/bubble.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", "", 0, "", new MapState(1,0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
@@ -41,7 +41,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", "", 0, "preparation", new MapState(1,0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   sleep(milliseconds: number) {
@@ -372,6 +372,7 @@ export class GameStateService {
     } else {
       newEnemy.image = newEnemy.name+"-"+newEnemy.moves[0];
     }
+    if (newGameState.displaySubtype === "elite" || newGameState.displaySubtype === "boss") newEnemy.life ++;
     newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
@@ -480,7 +481,6 @@ export class GameStateService {
       }
     }
     
-    newGameState.display = "map";
     this.bubbleService.reset();
     // End of tuto
     if (newGameState.difficulty < 1) this.router.navigateByUrl("");
@@ -523,6 +523,7 @@ export class GameStateService {
 
   generateBattle(type: "boss" | "battle" | "elite"): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.displaySubtype = type;
     newGameState.characterPosition = [-1,-1];
     newGameState.status = "preparation";
     newGameState.koCounter = 0;
@@ -530,6 +531,7 @@ export class GameStateService {
     // Decrease event count
     if (type === "battle") newGameState.mapState.battleCount --;
     else if (type === "elite") newGameState.mapState.eliteCount --;
+    else if (type === "boss") newGameState.mapState.bossCount --;
     // Building preparation
     newGameState.buildingsAvailable = [];
     for (let i = 0; i < newGameState.buildingsUnlocked.length; i++) {
@@ -586,16 +588,36 @@ export class GameStateService {
       newGameState.spawnStrip.push("");
     }
     let enemiesCount: number = Math.floor(stripLength/3);
+    if (type ===  "elite") enemiesCount = Math.floor(stripLength/2);
+    else if (type === "boss") enemiesCount = stripLength-1;
     while (enemiesCount !== 0) {
       let randomSpawnTime = this.random(1,stripLength-1);
       if (newGameState.spawnStrip[randomSpawnTime] === "") {
-        newGameState.spawnStrip[randomSpawnTime] = "mole";
+        newGameState.spawnStrip[randomSpawnTime] = this.generateEnemyName();
         enemiesCount --;
       }
     }
-    newGameState.spawnStrip[stripLength-1] = "worm";
+    newGameState.spawnStrip[stripLength-1] = this.generateEnemyName();
 
     newGameState.display = "battle";
+  }
+
+  generateEnemyName(): string {
+    let newGameState: GameState = this._gameState$.getValue();
+    let enemyName: string = "worm";
+    let enemiesAllowed: string[] = this.informationOf.getAllEnemiesNames();
+    newGameState.relics.forEach(relic => {
+      if (relic.name.startsWith("anti-")) {
+        for (let i = 0; i < enemiesAllowed.length; i++) {
+          if (relic.name.endsWith(enemiesAllowed[i])) {
+            enemiesAllowed.splice(i,1);
+            i --;
+          }
+        }
+      }
+    });
+    if (enemiesAllowed.length !== 0) enemyName = enemiesAllowed[this.random(0, enemiesAllowed.length-1)];
+    return enemyName;
   }
 
   generateShelter(): void {
@@ -640,6 +662,10 @@ export class GameStateService {
   backToMap(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.display = "map";
+  }
+
+  backHome(): void {
+    this.router.navigateByUrl("");
   }
 
   getBuildingsToSell(): Building[] {
@@ -748,6 +774,15 @@ export class GameStateService {
     else if (wxy === "x" && typeof(cellHeight) === 'string') coord = parseInt(cellHeight) * c;
     else if (wxy === "y" && typeof(cellHeight) === 'string') coord = parseInt(cellHeight) * r;
     return coord;
+  }
+
+  addNewRandomRelic(): Relic {
+    let allRelics: Relic[] = this.informationOf.getAllRelics();
+    let newRelic: Relic = allRelics[this.random(0, allRelics.length-1)];
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.displaySubtype === "elite") newGameState.relics.push(newRelic);
+    this._setGameState$(newGameState);
+    return newRelic;
   }
 
 }

@@ -15,7 +15,8 @@
                 (dragenter)="onDragEnter($event)"
                 (dragleave)="onDragLeave($event)">
                 <img
-                    *ngIf="gameState.grid[r][c] !== '' "
+                    *ngIf="gameState.grid[r][c] !== ''"
+                    [ngStyle]="{'filter' : gameState.grid[r][c].type === 'enemy' && (gameState.displaySubtype === 'elite' || gameState.displaySubtype === 'boss') ? 'hue-rotate(90deg)' : ''}"
                     src="assets/images/sprites/{{gameState.grid[r][c].type}}s/{{gameState.grid[r][c].image}}.png"
                     draggable="false">
             </td>

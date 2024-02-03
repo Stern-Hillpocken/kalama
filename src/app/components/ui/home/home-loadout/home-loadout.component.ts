@@ -59,8 +59,8 @@ export class HomeLoadoutComponent {
   }
 
   setGameStateToDifficulty(value: number): void {
-    if (value === 1) this.gameStateChoice = new GameState("map", 1, "", new MapState(8,3,3,3,11), [], false, 15, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], ["wall"], [], ["wall", "ram", "ram"], 0, [], []);
-    else this.gameStateChoice = new GameState("map", 2, "", new MapState(12,3,4,3,15), [], false, 12, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "wall"], 0, [], []);
+    if (value === 1) this.gameStateChoice = new GameState("map", "", 1, "", new MapState(1,8,3,3,3,11), [], false, 15, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], ["wall"], [], ["wall", "ram", "ram"], 0, [], []);
+    else this.gameStateChoice = new GameState("map", "", 2, "", new MapState(1,12,3,4,3,15), [], false, 12, 0, 0, 0, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], [], ["stone-cutter", "wood-cutter"], [], [], ["wall", "wall"], 0, [], []);
   }
 
   changeGameState(type: string, value: number): void {
