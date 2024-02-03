@@ -7,6 +7,12 @@
             <li><img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ gameState.wood - gameStartingResources.wood }}</span></li>
             <li [ngStyle]="{'color': gameState.structure - gameStartingResources.structure < 0 ? 'red' : ''}">{{ gameState.structure - gameStartingResources.structure }}&nbsp;<img src="assets/images/icons/heart-1.png"></li>
         </ul>
+        <p *ngIf="gameState.displaySubtype === 'elite'">
+            Relique récupérée&nbsp;:
+            <img
+                src="assets/images/sprites/relics/{{relicGain.name}}.png"
+            >
+        </p>
         <button (click)="returnToMap()">Retour à la carte</button>
     </div>
 </div>

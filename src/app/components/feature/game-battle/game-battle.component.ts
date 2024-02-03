@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Bubble } from 'src/app/models/bubble.model';
 import { GameState } from 'src/app/models/game-state.model';
 import { PopupMessage } from 'src/app/models/popup-message.model';
+import { Relic } from 'src/app/models/relic.model';
 import { BubbleService } from 'src/app/shared/bubble.service';
 import { GameStateService } from 'src/app/shared/game-state.service';
 import { InformationOf } from 'src/app/shared/information-of.service';
@@ -29,6 +30,8 @@ export class GameBattleComponent {
   informationFrame: any = {};
 
   gameStartingResources: any = {};
+
+  relicGain!: Relic;
 
   overlapBackgroundSpecial: string = "repeating-linear-gradient(-45deg,transparent,transparent 12.5%,var(--color-special) 12.5%,var(--color-special) 25%)";
   overlapBackgroundAlly: string = "repeating-linear-gradient(-45deg,transparent,transparent 12.5%,var(--color-ally) 12.5%,var(--color-ally) 25%)";
@@ -64,6 +67,8 @@ export class GameBattleComponent {
     if (this.gameState.difficulty === 0) this.popupService._setMessage$([new PopupMessage("Bienvenue !","Le jeu est divisé en deux phases qui s’alternent : une phase sur une carte, pour choisir vers quel évènement vous rendre, et l’autre phase représentant la résolution de cet évènement. Il y a plusieurs types d’évènements mais le principal est celui du combat. Ce tutoriel explique succinctement son déroulé.","tutorial"),new PopupMessage("Victoire et défaite","Durant un combat, des vagues de monstres arrivent du nord et se déplacent vers le sud. Le jeu est structuré en plusieurs tours, et il est affiché en haut de l’écran à quel tour vous en êtes et si les tours suivants vont faire apparaître des monstres. Vous gagnez le combat si toutes les vagues sont passées sur vous et qu’il ne reste plus de monstre, mais vous perdez si les monstres détruisent votre char-à-voile (en bas de l’écran).","tutorial"),new PopupMessage("Premiers placements","Commencez par placer votre personnage puis les deux constructions à votre disposition en les glissant sur la grille de combat. Vous pouvez observer les caractéristiques de ces dernières en cliquant dessus. Même si vos constructions sont détruites durant un combat, elles seront réparées automatiquement avant le prochain combat.","tutorial")]);
     // starting resources
     this.gameStartingResources = {gem: this.gameState.gem, stone: this.gameState.stone, structure: this.gameState.structure, wood: this.gameState.wood};
+    // relic gain
+    this.relicGain = this.gameStateService.addNewRandomRelic();
   }
 
   checkIfCharacterIsOnTheGrid(): boolean {

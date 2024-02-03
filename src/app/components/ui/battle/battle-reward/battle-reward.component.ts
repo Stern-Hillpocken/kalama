@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameState } from 'src/app/models/game-state.model';
+import { Relic } from 'src/app/models/relic.model';
 
 @Component({
   selector: 'app-battle-reward',
@@ -14,8 +15,13 @@ export class BattleRewardComponent {
   @Input()
   gameStartingResources!: any;
 
+  @Input()
+  relicGain!: Relic;
+
   @Output()
   returnToMapEmitter: EventEmitter<void> = new EventEmitter();
+
+
 
   returnToMap(): void {
     this.returnToMapEmitter.emit();

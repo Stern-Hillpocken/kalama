@@ -771,4 +771,13 @@ export class GameStateService {
     return coord;
   }
 
+  addNewRandomRelic(): Relic {
+    let allRelics: Relic[] = this.informationOf.getAllRelics();
+    let newRelic: Relic = allRelics[this.random(0, allRelics.length-1)];
+    let newGameState: GameState = this._gameState$.getValue();
+    if (newGameState.displaySubtype === "elite") newGameState.relics.push(newRelic);
+    this._setGameState$(newGameState);
+    return newRelic;
+  }
+
 }
