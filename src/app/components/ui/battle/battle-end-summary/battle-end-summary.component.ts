@@ -21,13 +21,18 @@ export class BattleEndSummaryComponent {
   @Output()
   returnToMapEmitter: EventEmitter<void> = new EventEmitter();
 
-
+  @Output()
+  returnToHomeEmitter: EventEmitter<void> = new EventEmitter();
 
   returnToMap(): void {
     this.returnToMapEmitter.emit();
   }
 
-  isDisplayed(): boolean {
+  returnToHome(): void {
+    this.returnToHomeEmitter.emit();
+  }
+
+  isBattleEnded(): boolean {
     if (this.gameState.wave < this.gameState.spawnStrip.length) return false;
     for (let r = 0; r < this.gameState.grid.length; r++){
       for (let c = 0; c < this.gameState.grid[r].length; c++){
@@ -35,6 +40,15 @@ export class BattleEndSummaryComponent {
       }
     }
     return true;
+  }
+
+  isEndGame(): boolean {
+    if (this.gameState.structure <= 0) return true;
+    if (
+      this.isBattleEnded() &&
+      this.gameState.mapState.battleCount === 0 && this.gameState.mapState.eliteCount === 0 && this.gameState.mapState.bossCount === 0
+      ) return true;
+    return false;
   }
 
 }

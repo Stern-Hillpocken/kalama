@@ -19,7 +19,7 @@ import { Bubble } from '../models/bubble.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", "", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", "", 0, "", new MapState(1,0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
@@ -41,7 +41,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", "", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", "", 0, "preparation", new MapState(1,0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   sleep(milliseconds: number) {
@@ -531,6 +531,7 @@ export class GameStateService {
     // Decrease event count
     if (type === "battle") newGameState.mapState.battleCount --;
     else if (type === "elite") newGameState.mapState.eliteCount --;
+    else if (type === "boss") newGameState.mapState.bossCount --;
     // Building preparation
     newGameState.buildingsAvailable = [];
     for (let i = 0; i < newGameState.buildingsUnlocked.length; i++) {
@@ -661,6 +662,10 @@ export class GameStateService {
   backToMap(): void {
     let newGameState: GameState = this._gameState$.getValue();
     newGameState.display = "map";
+  }
+
+  backHome(): void {
+    this.router.navigateByUrl("");
   }
 
   getBuildingsToSell(): Building[] {

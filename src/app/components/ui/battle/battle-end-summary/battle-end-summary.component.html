@@ -1,6 +1,6 @@
-<div *ngIf="isDisplayed()" class="reward-window">
+<div *ngIf="isBattleEnded()" class="reward-window">
     <div class="reward-frame">
-        <h1>Résumé et récompense</h1>
+        <h2>Résumé et récompense</h2>
         <ul>
             <li><img src="assets/images/icons/gem.png"><span class="x">x</span><span class="x-count">{{ gameState.gem - gameStartingResources.gem }}</span></li>
             <li><img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone - gameStartingResources.stone }}</span></li>
@@ -14,5 +14,19 @@
             >
         </p>
         <button (click)="returnToMap()">Retour à la carte</button>
+    </div>
+</div>
+
+<div *ngIf="isEndGame()" class="reward-window">
+    <div class="reward-frame">
+        <h2 *ngIf="gameState.structure > 0">Victoire&nbsp;!</h2>
+        <h2 *ngIf="gameState.structure <= 0">Défaite...</h2>
+        <ul>
+            <li><img src="assets/images/icons/gem.png"><span class="x">x</span><span class="x-count">{{ gameState.gem }}</span></li>
+            <li><img src="assets/images/icons/stone.png"><span class="x">x</span><span class="x-count">{{ gameState.stone }}</span></li>
+            <li><img src="assets/images/icons/wood.png"><span class="x">x</span><span class="x-count">{{ gameState.wood }}</span></li>
+            <li><span style="font-size: 1.5em;">{{ gameState.structure }}</span>&nbsp;<img src="assets/images/icons/heart-1.png"></li>
+        </ul>
+        <button (click)="returnToHome()">Retour à l’accueil</button>
     </div>
 </div>

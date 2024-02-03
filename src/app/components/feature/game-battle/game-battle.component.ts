@@ -254,4 +254,8 @@ export class GameBattleComponent {
     this.gameStateService.backToMap();
   }
 
+  onReturnToHomeReceive(): void {
+    this.gameStateService.backHome();
+  }
+
 }
