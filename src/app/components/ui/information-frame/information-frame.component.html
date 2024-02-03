@@ -1,6 +1,6 @@
 <div *ngIf="informationFrame.name" class="information-frame">
     <h2>{{ informationFrame.title }}</h2>
-    <p *ngIf="informationFrame.type"><img src="assets/images/sprites/{{informationFrame.type}}s/{{informationFrame.image}}.png"></p>
+    <p *ngIf="informationFrame.type"><img [ngStyle]="{'filter' : informationFrame.type === 'enemy' && (gameDisplaySubtype === 'elite' || gameDisplaySubtype === 'boss') ? 'hue-rotate(90deg)' : ''}" src="assets/images/sprites/{{informationFrame.type}}s/{{informationFrame.image}}.png"></p>
     <p *ngIf="!informationFrame.type"><img src="assets/images/sprites/relics/{{informationFrame.name}}.png"></p>
     <table>
         <tr *ngIf="informationFrame.life">

@@ -19,7 +19,7 @@ import { Bubble } from '../models/bubble.model';
 })
 export class GameStateService {
 
-  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
+  private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", "", 0, "", new MapState(0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
   private repairResourceCost = {stone: 4, wood: 5};
@@ -41,7 +41,7 @@ export class GameStateService {
   }
 
   launchTuto(): void {
-    this._setGameState$(new GameState("battle", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
+    this._setGameState$(new GameState("battle", "", 0, "preparation", new MapState(0,0,0,0,0), [-1,-1], false, 15, 0, 3, 2, 0, this.informationOf.getPowerWithName("dash"), 3, [], [], ["stone-cutter", "wood-cutter"], ["stone-cutter", "wood-cutter"], [], ["ram","ram","wall"], ["ram","ram","wall"], 0, ["","","","","worm","","worm"], [["","","","","",""],["","","","","",""],["",new Resource("wood", "Arbre", "wood", 1, "Du bois à récolter", "resource"),"","","",""],["","","","","",""],["","","","",new Resource("stone", "Roche", "stone", 2, "De la pierre à exploiter", "resource"),""],["","","","","",""]]));
   }
 
   sleep(milliseconds: number) {
@@ -372,6 +372,7 @@ export class GameStateService {
     } else {
       newEnemy.image = newEnemy.name+"-"+newEnemy.moves[0];
     }
+    if (newGameState.displaySubtype === "elite" || newGameState.displaySubtype === "boss") newEnemy.life ++;
     newGameState.grid[rowToSpawn][randomSpotChoosed] = new Enemy(newEnemy.name, newEnemy.title, newEnemy.image, newEnemy.life, newEnemy.currentMoveStep, newEnemy.moves, newEnemy.activeWave, newEnemy.damage, newEnemy.description, "enemy");
     newGameState.grid[rowToSpawn][randomSpotChoosed].activeWave = newGameState.wave;
     this._setGameState$(newGameState);
@@ -522,6 +523,7 @@ export class GameStateService {
 
   generateBattle(type: "boss" | "battle" | "elite"): void {
     let newGameState: GameState = this._gameState$.getValue();
+    newGameState.displaySubtype = type;
     newGameState.characterPosition = [-1,-1];
     newGameState.status = "preparation";
     newGameState.koCounter = 0;

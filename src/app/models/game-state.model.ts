@@ -5,6 +5,7 @@ import { Relic } from "./relic.model";
 export class GameState {
     constructor(
         public display: string,
+        public displaySubtype: string,
         public difficulty: number,
         public status: string,
         public mapState: MapState,
