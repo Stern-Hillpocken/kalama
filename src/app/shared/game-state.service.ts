@@ -753,7 +753,6 @@ export class GameStateService {
     for (let i = 0; i < allRelics.length; i++) {
       if (allRelics[i].name === name && newGameState.gem >= allRelics[i].gemCost) {
         this.addRelic(allRelics[i]);
-        console.log(newGameState.relics)
         newGameState.gem -= allRelics[i].gemCost;
       }
     }

@@ -24,4 +24,9 @@ export class ShelterRepairComponent {
     this.repairEmitter.emit();
   }
 
+  hasNotEnoughResources(): boolean {
+    if (this.gameState.stone < this.repairStoneCost || this.gameState.wood < this.repairWoodCost) return true;
+    return false;
+  }
+
 }
