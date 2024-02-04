@@ -751,8 +751,8 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     for (let i = 0; i < allRelics.length; i++) {
-      if (allRelics[i].name === name && allRelics[i].gemCost <= newGameState.gem) {
-        newGameState.relics.push(allRelics[i]);
+      if (allRelics[i].name === name && newGameState.gem >= allRelics[i].gemCost) {
+        this.addRelic(allRelics[i]);
         newGameState.gem -= allRelics[i].gemCost;
       }
     }
@@ -780,9 +780,22 @@ export class GameStateService {
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     let newRelic: Relic = allRelics[this.random(0, allRelics.length-1)];
     let newGameState: GameState = this._gameState$.getValue();
-    if (newGameState.displaySubtype === "elite") newGameState.relics.push(newRelic);
-    this._setGameState$(newGameState);
+    if (newGameState.displaySubtype === "elite") this.addRelic;
     return newRelic;
+  }
+
+  addRelic(newRelic: Relic): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let isAdded: boolean = false;
+    for (let i = 0; i < newGameState.relics.length; i++) {
+      if (newGameState.relics[i].name === newRelic.name) {
+        newGameState.relics[i].quantity ++;
+        isAdded = true;
+        break;
+       }
+    }
+    if (!isAdded) newGameState.relics.push(newRelic);
+    this._setGameState$(newGameState);
   }
 
 }
