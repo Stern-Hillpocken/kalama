@@ -760,12 +760,24 @@ export class GameStateService {
   }
 
   getRelicsToSell(): Relic[] {
+    let newGameState: GameState = this._gameState$.getValue();
     let quantity: number = this.random(1,3);
     let relicsToSell: Relic[] = [];
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     for (let i = 0; i < quantity; i++) {
       let randomIndex: number = this.random(0, allRelics.length-1);
-      relicsToSell.push(allRelics[randomIndex]);
+      if (allRelics[randomIndex].name.startsWith("anti-")) {
+        let exist: boolean = false;
+        for (let r = 0; r < newGameState.relics.length; i++) {
+          if (newGameState.relics[r].name === allRelics[randomIndex].name) {
+            exist = true;
+            i --;
+          }
+        }
+        if (!exist) relicsToSell.push(allRelics[randomIndex]);
+      } else {
+        relicsToSell.push(allRelics[randomIndex]);
+      }
     }
     return relicsToSell;
   }
@@ -802,6 +814,7 @@ export class GameStateService {
   addNewRandomRelic(): Relic {
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     let newRelic: Relic = allRelics[this.random(0, allRelics.length-1)];
+    while (newRelic.name.startsWith("anti-")) newRelic = allRelics[this.random(0, allRelics.length-1)];
     let newGameState: GameState = this._gameState$.getValue();
     if (newGameState.displaySubtype === "elite") this.addRelic;
     return newRelic;
