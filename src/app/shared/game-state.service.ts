@@ -51,18 +51,41 @@ export class GameStateService {
     return promise;
   }
 
+  timeFor(phase: "buildings production" | "towers trigger" | "move enemies" | "spawn"): number {
+    let needToBeDisplayed:boolean = false;
+    let newGameState: GameState = this._gameState$.getValue();
+    if (phase === "spawn") {
+      if (newGameState.spawnStrip[newGameState.wave] !== "") return this.delayBetweenPhases/2;
+      else return 0;
+    }
+    for (let r = 0; r < newGameState.grid.length; r++) {
+      for (let c = 0; c < newGameState.grid[r].length; c++) {
+        if (
+          newGameState.grid[r][c].type &&
+          ((phase === "buildings production" && newGameState.grid[r][c].type === "building") ||
+          (phase === "towers trigger" && newGameState.grid[r][c].type === "tower") ||
+          (phase === "move enemies" && newGameState.grid[r][c].type === "enemy"))
+          ) {
+            needToBeDisplayed = true;
+            break;
+          }
+      }
+    }
+    return needToBeDisplayed ? this.delayBetweenPhases : 0;
+  }
+
   endTurn(): void {
     this.sleep(0)
       .then(() => this.upkeep())
       .then(() => this.sleep(this.delayBetweenPhases/2)) 
       .then(() => this.buildingsProduction())
-      .then(() => this.sleep(this.delayBetweenPhases)) 
+      .then(() => this.sleep(this.timeFor("buildings production"))) 
       .then(() => this.towersTrigger())
-      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.sleep(this.timeFor("towers trigger")))
       .then(() => this.moveEnemies())
-      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.sleep(this.timeFor("move enemies")))
       .then(() => this.spawn())
-      .then(() => this.sleep(this.delayBetweenPhases/2))
+      .then(() => this.sleep(this.timeFor("spawn")))
       .then(() => this.checkEndBattle());
   }
 
@@ -384,7 +407,7 @@ export class GameStateService {
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
     if (name === "character" && newGameState.koCounter === 0) {
-      newGameState.grid[position[0]][position[1]] = new Character("character", "Votre personnage", "character", 1, 1, "C'est vous !", "character");
+      newGameState.grid[position[0]][position[1]] = new Character("character", "Votre personnage", "character", 2, 1, "C'est vous !", "character");
       newGameState.characterPosition = [position[0],position[1]];
       return;
     }
