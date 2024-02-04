@@ -8,31 +8,31 @@
         "name": "gem-extractor",
         "title": "Extracteur spécialisé",
         "gemCost": 8,
-        "description": "Permet d’augmenter les chances d’extraire plus de gemme."
+        "description": "Permet d’augmenter les chances d’extraire plus de gemme (+5%)."
     },{
         "name": "stone-extractor",
         "title": "Piston à répétition",
         "gemCost": 7,
-        "description": "Permet d’augmenter les chances d’extraire plus de pierre."
+        "description": "Permet d’augmenter les chances d’extraire plus de pierre (+10%)."
     },{
         "name": "wood-extractor",
         "title": "Pierre d’affutage",
         "gemCost": 7,
-        "description": "Permet d’augmenter les chances d’extraire plus de bois."
+        "description": "Permet d’augmenter les chances d’extraire plus de bois (+10%)."
     },{
         "name": "reinforced-wall",
         "title": "Renforcement",
         "gemCost": 5,
-        "description": "Renforce la structure de la construction, lui allouant un point de résitance en plus."
+        "description": "Renforce la structure de la construction, lui allouant 1 point de résitance en plus."
     },{
         "name": "repair-cost-reduction",
         "title": "Outils performants",
         "gemCost": 7,
-        "description": "Réduit le coût de la réparation de la structure."
+        "description": "Réduit de 1 le coût de la réparation de la structure pour chaque de ressource (min 3/4)."
     },{
         "name": "seller-cost-reduction",
         "title": "Adhésion de soutien à la guilde",
-        "gemCost": 8,
-        "description": "Réduit le coût d’achat chez le marchand."
+        "gemCost": 5,
+        "description": "Réduit de 1 le coût d’achat chez le marchand (min 3)."
     }
 ]
