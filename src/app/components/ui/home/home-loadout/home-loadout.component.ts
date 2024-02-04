@@ -70,6 +70,8 @@ export class HomeLoadoutComponent {
       if (this.gameStateChoice.stone + value >= 0) this.gameStateChoice.stone += value;
     } else if (type === "wood") {
       if (this.gameStateChoice.wood + value >= 0) this.gameStateChoice.wood += value;
+    } else if (type === "gem") {
+      if (this.gameStateChoice.gem + value >= 0) this.gameStateChoice.gem += value;
     } else if (type === "battle") {
       if (this.gameStateChoice.mapState.battleCount + value >= 0) this.gameStateChoice.mapState.battleCount += value;
     } else if (type === "elite") {
