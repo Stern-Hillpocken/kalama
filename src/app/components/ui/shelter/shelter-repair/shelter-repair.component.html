@@ -1,7 +1,7 @@
 <div>
     <h2>Réparation</h2>
     <div class="repair">
-        <button (click)="repair()">
+        <button (click)="repair()" [disabled]="hasNotEnoughResources()">
             <img src="assets/images/icons/stone.png">
             <span class="x">x</span><span class="x-count">{{ repairStoneCost }}</span>
             +

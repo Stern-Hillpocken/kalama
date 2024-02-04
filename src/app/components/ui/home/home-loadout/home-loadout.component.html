@@ -16,13 +16,16 @@
     <table *ngIf="startingResourcesDisplayed">
         <tbody>
             <tr>
-                <td><img src="assets/images/icons/heart-1.png"> Structure</td><td><button (click)="changeGameState('structure',-1)">-</button></td><td>{{gameStateChoice.structure}}</td><td><button (click)="changeGameState('structure',+1)">+</button></td>
+                <td><img src="assets/images/icons/heart-1.png"> Structure</td><td><button (click)="changeGameState('structure',-1)">-</button></td><td class="quantity">{{gameStateChoice.structure}}</td><td><button (click)="changeGameState('structure',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/stone.png"> Pierre</td><td><button (click)="changeGameState('stone',-1)">-</button></td><td>{{gameStateChoice.stone}}</td><td><button (click)="changeGameState('stone',+1)">+</button></td>
+                <td><img src="assets/images/icons/stone.png"> Pierre</td><td><button (click)="changeGameState('stone',-1)">-</button></td><td class="quantity">{{gameStateChoice.stone}}</td><td><button (click)="changeGameState('stone',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/wood.png"> Bois</td><td><button (click)="changeGameState('wood',-1)">-</button></td><td>{{gameStateChoice.wood}}</td><td><button (click)="changeGameState('wood',+1)">+</button></td>
+                <td><img src="assets/images/icons/wood.png"> Bois</td><td><button (click)="changeGameState('wood',-1)">-</button></td><td class="quantity">{{gameStateChoice.wood}}</td><td><button (click)="changeGameState('wood',+1)">+</button></td>
+            </tr>
+            <tr>
+                <td><img src="assets/images/icons/gem.png"> Gemme</td><td><button (click)="changeGameState('gem',-1)">-</button></td><td class="quantity">{{gameStateChoice.gem}}</td><td><button (click)="changeGameState('gem',+1)">+</button></td>
             </tr>
         </tbody>
     </table>
@@ -31,16 +34,16 @@
     <table *ngIf="availableEventsDisplayed">
         <tbody>
             <tr>
-                <td><img src="assets/images/icons/battle.gif"> Bataille</td><td><button (click)="changeGameState('battle',-1)">-</button></td><td>{{ gameStateChoice.mapState.battleCount }}</td><td><button (click)="changeGameState('battle',+1)">+</button></td>
+                <td><img src="assets/images/icons/battle.gif"> Bataille</td><td><button (click)="changeGameState('battle',-1)">-</button></td><td class="quantity">{{ gameStateChoice.mapState.battleCount }}</td><td><button (click)="changeGameState('battle',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/shelter.gif"> Abris</td><td><button (click)="changeGameState('shelter',-1)">-</button></td><td>{{ gameStateChoice.mapState.shelterCount }}</td><td><button (click)="changeGameState('shelter',+1)">+</button></td>
+                <td><img src="assets/images/icons/shelter.gif"> Abris</td><td><button (click)="changeGameState('shelter',-1)">-</button></td><td class="quantity">{{ gameStateChoice.mapState.shelterCount }}</td><td><button (click)="changeGameState('shelter',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/elite.gif"> Elite</td><td><button (click)="changeGameState('elite',-1)">-</button></td><td>{{ gameStateChoice.mapState.eliteCount }}</td><td><button (click)="changeGameState('elite',+1)">+</button></td>
+                <td><img src="assets/images/icons/elite.gif"> Elite</td><td><button (click)="changeGameState('elite',-1)">-</button></td><td class="quantity">{{ gameStateChoice.mapState.eliteCount }}</td><td><button (click)="changeGameState('elite',+1)">+</button></td>
             </tr>
             <tr>
-                <td><img src="assets/images/icons/seller.gif"> Marchand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td>{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
+                <td><img src="assets/images/icons/seller.gif"> Marchand</td><td><button (click)="changeGameState('seller',-1)">-</button></td><td class="quantity">{{ gameStateChoice.mapState.sellerCount }}</td><td><button (click)="changeGameState('seller',+1)">+</button></td>
             </tr>
         </tbody>
     </table>

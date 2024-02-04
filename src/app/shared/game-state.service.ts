@@ -22,7 +22,7 @@ export class GameStateService {
   private readonly _gameState$: BehaviorSubject<GameState> = new BehaviorSubject<GameState>(new GameState("", "", 0, "", new MapState(1,0,0,0,0,0), [-1,-1], false, 0, 0, 0, 0, 0, new Power("","","",0), 0, [], [], [], [], [], [], [], 0, [], [[],[],[],[],[],[]]));
 
   private sacrificeResourceGain = {gem: 3, stone: 4, wood: 6};
-  private repairResourceCost = {stone: 4, wood: 5};
+  private repairResourceCost = {stone: 6, wood: 8};
 
   private delayBetweenPhases: number = 1000;
 
@@ -51,18 +51,41 @@ export class GameStateService {
     return promise;
   }
 
+  timeFor(phase: "buildings production" | "towers trigger" | "move enemies" | "spawn"): number {
+    let needToBeDisplayed:boolean = false;
+    let newGameState: GameState = this._gameState$.getValue();
+    if (phase === "spawn") {
+      if (newGameState.spawnStrip[newGameState.wave] !== "") return this.delayBetweenPhases/2;
+      else return 0;
+    }
+    for (let r = 0; r < newGameState.grid.length; r++) {
+      for (let c = 0; c < newGameState.grid[r].length; c++) {
+        if (
+          newGameState.grid[r][c].type &&
+          ((phase === "buildings production" && newGameState.grid[r][c].type === "building") ||
+          (phase === "towers trigger" && newGameState.grid[r][c].type === "tower") ||
+          (phase === "move enemies" && newGameState.grid[r][c].type === "enemy"))
+          ) {
+            needToBeDisplayed = true;
+            break;
+          }
+      }
+    }
+    return needToBeDisplayed ? this.delayBetweenPhases : 0;
+  }
+
   endTurn(): void {
     this.sleep(0)
       .then(() => this.upkeep())
       .then(() => this.sleep(this.delayBetweenPhases/2)) 
       .then(() => this.buildingsProduction())
-      .then(() => this.sleep(this.delayBetweenPhases)) 
+      .then(() => this.sleep(this.timeFor("buildings production"))) 
       .then(() => this.towersTrigger())
-      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.sleep(this.timeFor("towers trigger")))
       .then(() => this.moveEnemies())
-      .then(() => this.sleep(this.delayBetweenPhases))
+      .then(() => this.sleep(this.timeFor("move enemies")))
       .then(() => this.spawn())
-      .then(() => this.sleep(this.delayBetweenPhases/2))
+      .then(() => this.sleep(this.timeFor("spawn")))
       .then(() => this.checkEndBattle());
   }
 
@@ -86,13 +109,20 @@ export class GameStateService {
           let building : Building = newGameState.grid[r][c];
 
           if (building.name === "wood-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "wood") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "wood"))){
-            newGameState.wood += building.efficiency;
+            let relicBoost: number = 0;
+            newGameState.relics.forEach(relic => {
+              if (relic.name === "wood-extractor") {
+                let rand: number = this.random(1,100);
+                if (rand <= relic.quantity*10) relicBoost ++;
+              }
+            });
+            newGameState.wood += building.efficiency + relicBoost;
             let cStart: number = c;
             if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "wood") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "wood",
-              building.efficiency,
+              building.efficiency + relicBoost,
               this.getCoordinateFromRowColumn("w", r, c),
               this.getCoordinateFromRowColumn("x", r, cStart),
               this.getCoordinateFromRowColumn("y", r, cStart),
@@ -101,13 +131,20 @@ export class GameStateService {
               "positive"
               ));
           } else if (building.name === "stone-cutter" && ((newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name && newGameState.grid[r][c-1].name === "stone") || (newGameState.grid[r][c+1] && newGameState.grid[r][c+1].name && newGameState.grid[r][c+1].name === "stone"))){
-            newGameState.stone += building.efficiency;
+            let relicBoost: number = 0;
+            newGameState.relics.forEach(relic => {
+              if (relic.name === "stone-extractor") {
+                let rand: number = this.random(1,100);
+                if (rand <= relic.quantity*10) relicBoost ++;
+              }
+            });
+            newGameState.stone += building.efficiency + relicBoost;
             let cStart: number = c;
             if (newGameState.grid[r][c-1] && newGameState.grid[r][c-1].name === "stone") cStart = c-1;
             else cStart = c+1;
             this.bubbleService.addBubble(new Bubble(
               "stone",
-              building.efficiency,
+              building.efficiency + relicBoost,
               this.getCoordinateFromRowColumn("w", r, c),
               this.getCoordinateFromRowColumn("x", r, cStart),
               this.getCoordinateFromRowColumn("y", r, cStart),
@@ -171,10 +208,17 @@ export class GameStateService {
 
   enemyDeathFromTo(r: number, c: number, rEnemy: number, cEnemy: number): void {
     let newGameState: GameState = this._gameState$.getValue();
-    newGameState.gem ++;
+    let gemGain: number = 1;
+    newGameState.relics.forEach(relic => {
+      if (relic.name === "gem-extractor") {
+        let rand: number = this.random(1,100);
+        if (rand <= relic.quantity*5) gemGain ++;
+      }
+    });
+    newGameState.gem += gemGain;
     this.bubbleService.addBubble(new Bubble(
       "gem",
-      1,
+      gemGain,
       this.getCoordinateFromRowColumn("w", r, c),
       this.getCoordinateFromRowColumn("x", rEnemy, cEnemy),
       this.getCoordinateFromRowColumn("y", rEnemy, cEnemy),
@@ -384,7 +428,7 @@ export class GameStateService {
     if (newGameState.grid[position[0]][position[1]] !== "") return;
 
     if (name === "character" && newGameState.koCounter === 0) {
-      newGameState.grid[position[0]][position[1]] = new Character("character", "Votre personnage", "character", 1, 1, "C'est vous !", "character");
+      newGameState.grid[position[0]][position[1]] = new Character("character", "Votre personnage", "character", 2, 1, "C'est vous !", "character");
       newGameState.characterPosition = [position[0],position[1]];
       return;
     }
@@ -393,6 +437,9 @@ export class GameStateService {
       if (newGameState.buildingsAvailable[i] === name){
         newGameState.buildingsAvailable.splice(i,1);
         let newBuilding: Building = this.informationOf.getWithNameType(name, "building");
+        newGameState.relics.forEach(relic => {
+          if (relic.name === "reinforced-"+name) newBuilding.life += relic.quantity;
+        });
         newGameState.grid[position[0]][position[1]] = new Building(newBuilding.name, newBuilding.title, newBuilding.image, newBuilding.life, newBuilding.efficiency, newBuilding.description, newBuilding.gemCost, newBuilding.stoneCost, newBuilding.woodCost, "building");
         return;
       }
@@ -403,6 +450,9 @@ export class GameStateService {
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
+          newGameState.relics.forEach(relic => {
+            if (relic.name === "reinforced-"+name) newTower.life += relic.quantity;
+          });
           newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.title, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, newTower.gemCost, newTower.stoneCost, newTower.woodCost, "tower");
           this.endTurn();
           return;
@@ -669,6 +719,7 @@ export class GameStateService {
   }
 
   getBuildingsToSell(): Building[] {
+    let newGameState: GameState = this._gameState$.getValue();
     let count: number = this.random(0,1);
     if (count === 0) return [];
     let buildings: Building[] = [];
@@ -677,19 +728,34 @@ export class GameStateService {
     for (let i = 0; i < count; i++) {
       let randomIndex: number = this.random(0, allBuildings.length-1);
       buildings.push(allBuildings[randomIndex]);
+      newGameState.relics.forEach(relic => {
+        if (relic.name === "seller-cost-reduction") {
+          buildings[i].gemCost -= relic.quantity;
+          if (buildings[i].gemCost < 3) buildings[i].gemCost = 3;
+        }
+      });
     }
 
     return buildings;
   }
 
   getTowersToSell(): Tower[] {
+    let newGameState: GameState = this._gameState$.getValue();
     let count: number = this.random(1,2);
     let towers: Tower[] = [];
     let allTowers = this.informationOf.getAllTowers();
 
     while (towers.length < count) {
       let randomIndex: number = this.random(0, allTowers.length-1);
-      if (!towers.includes(allTowers[randomIndex])) towers.push(allTowers[randomIndex]);
+      if (!towers.includes(allTowers[randomIndex])) {
+        towers.push(allTowers[randomIndex]);
+        newGameState.relics.forEach(relic => {
+          if (relic.name === "seller-cost-reduction") {
+            towers[towers.length-1].gemCost -= relic.quantity;
+            if (towers[towers.length-1].gemCost < 3) towers[towers.length-1].gemCost = 3;
+          }
+        });
+      }
     }
 
     return towers;    
@@ -737,12 +803,31 @@ export class GameStateService {
   }
 
   getRelicsToSell(): Relic[] {
+    let newGameState: GameState = this._gameState$.getValue();
     let quantity: number = this.random(1,3);
     let relicsToSell: Relic[] = [];
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     for (let i = 0; i < quantity; i++) {
       let randomIndex: number = this.random(0, allRelics.length-1);
-      relicsToSell.push(allRelics[randomIndex]);
+      if (allRelics[randomIndex].name.startsWith("anti-")) {
+        let exist: boolean = false;
+        for (let r = 0; r < newGameState.relics.length; i++) {
+          if (newGameState.relics[r].name === allRelics[randomIndex].name) {
+            exist = true;
+            i --;
+          }
+        }
+        if (!exist) relicsToSell.push(allRelics[randomIndex]);
+      } else {
+        relicsToSell.push(allRelics[randomIndex]);
+      }
+      // reduction
+      newGameState.relics.forEach(relic => {
+        if (relic.name === "seller-cost-reduction") {
+          relicsToSell[i].gemCost -= relic.quantity;
+          if (relicsToSell[i].gemCost < 3) relicsToSell[i].gemCost = 3;
+        }
+      });
     }
     return relicsToSell;
   }
@@ -751,8 +836,8 @@ export class GameStateService {
     let newGameState: GameState = this._gameState$.getValue();
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     for (let i = 0; i < allRelics.length; i++) {
-      if (allRelics[i].name === name && allRelics[i].gemCost <= newGameState.gem) {
-        newGameState.relics.push(allRelics[i]);
+      if (allRelics[i].name === name && newGameState.gem >= allRelics[i].gemCost) {
+        this.addRelic(allRelics[i]);
         newGameState.gem -= allRelics[i].gemCost;
       }
     }
@@ -779,10 +864,32 @@ export class GameStateService {
   addNewRandomRelic(): Relic {
     let allRelics: Relic[] = this.informationOf.getAllRelics();
     let newRelic: Relic = allRelics[this.random(0, allRelics.length-1)];
+    while (newRelic.name.startsWith("anti-")) newRelic = allRelics[this.random(0, allRelics.length-1)];
     let newGameState: GameState = this._gameState$.getValue();
-    if (newGameState.displaySubtype === "elite") newGameState.relics.push(newRelic);
-    this._setGameState$(newGameState);
+    if (newGameState.displaySubtype === "elite") this.addRelic;
     return newRelic;
+  }
+
+  addRelic(newRelic: Relic): void {
+    let newGameState: GameState = this._gameState$.getValue();
+    let isAdded: boolean = false;
+    for (let i = 0; i < newGameState.relics.length; i++) {
+      if (newGameState.relics[i].name === newRelic.name) {
+        newGameState.relics[i].quantity ++;
+        isAdded = true;
+        break;
+       }
+    }
+    if (!isAdded) {
+      newRelic.quantity = 1;
+      newGameState.relics.push(newRelic);
+    }
+    // update price
+    if (newRelic.name === "repair-cost-reduction") {
+      if (this.repairResourceCost.stone > 3) this.repairResourceCost.stone --;
+      if (this.repairResourceCost.wood > 4) this.repairResourceCost.wood --;
+    }
+    this._setGameState$(newGameState);
   }
 
 }

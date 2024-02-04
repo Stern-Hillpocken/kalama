@@ -42,6 +42,7 @@
             (click)="displayInfo(relic.name, 'relic')"
         >
             <img src="assets/images/sprites/relics/{{relic.name}}.png">
+            <span *ngIf="relic.quantity >= 2"><span class="x">x</span><span class="x-count">{{ relic.quantity }}</span></span>
         </div>
     </div>
     <h2 *ngIf="gameState.buildingsBlueprints.length + gameState.towersBlueprints.length > 0">Schémas</h2>
