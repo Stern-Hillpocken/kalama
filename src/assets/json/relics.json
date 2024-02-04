@@ -33,6 +33,6 @@
         "name": "seller-cost-reduction",
         "title": "Adhésion de soutien à la guilde",
         "gemCost": 5,
-        "description": "Réduit de 1 le coût d’achat chez le marchand (min 3)."
+        "description": "Réduit de 1 le coût d’achat chez les prochains marchands (min 3)."
     }
 ]

@@ -450,6 +450,9 @@ export class GameStateService {
         if (this.isDiagonallyNearByCharacter(position)){
           newGameState.towersAvailable.splice(i,1);
           let newTower: Tower = this.informationOf.getWithNameType(name, "tower");
+          newGameState.relics.forEach(relic => {
+            if (relic.name === "reinforced-"+name) newTower.life += relic.quantity;
+          });
           newGameState.grid[position[0]][position[1]] = new Tower(newTower.name, newTower.title, newTower.image, newTower.life, newTower.damage, newTower.sequence, newTower.step, newTower.tileTargeted, newTower.description, newTower.gemCost, newTower.stoneCost, newTower.woodCost, "tower");
           this.endTurn();
           return;
@@ -737,13 +740,22 @@ export class GameStateService {
   }
 
   getTowersToSell(): Tower[] {
+    let newGameState: GameState = this._gameState$.getValue();
     let count: number = this.random(1,2);
     let towers: Tower[] = [];
     let allTowers = this.informationOf.getAllTowers();
 
     while (towers.length < count) {
       let randomIndex: number = this.random(0, allTowers.length-1);
-      if (!towers.includes(allTowers[randomIndex])) towers.push(allTowers[randomIndex]);
+      if (!towers.includes(allTowers[randomIndex])) {
+        towers.push(allTowers[randomIndex]);
+        newGameState.relics.forEach(relic => {
+          if (relic.name === "seller-cost-reduction") {
+            towers[towers.length-1].gemCost -= relic.quantity;
+            if (towers[towers.length-1].gemCost < 3) towers[towers.length-1].gemCost = 3;
+          }
+        });
+      }
     }
 
     return towers;    
@@ -809,6 +821,13 @@ export class GameStateService {
       } else {
         relicsToSell.push(allRelics[randomIndex]);
       }
+      // reduction
+      newGameState.relics.forEach(relic => {
+        if (relic.name === "seller-cost-reduction") {
+          relicsToSell[i].gemCost -= relic.quantity;
+          if (relicsToSell[i].gemCost < 3) relicsToSell[i].gemCost = 3;
+        }
+      });
     }
     return relicsToSell;
   }
